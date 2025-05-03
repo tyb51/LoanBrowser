@@ -1,0 +1,70 @@
+{
+  "diagnosis": [
+    {
+      "month": "October",
+      "year": 2024,
+      "blood_pressure": {
+        "systolic": { "value": 120, "levels": "Normal" },
+        "diastolic": { "value": 80, "levels": "Normal" }
+      },
+      "heart_rate": { "value": 76, "levels": "Normal" },
+      "respiratory_rate": { "value": 18, "levels": "Normal" },
+      "temperature": { "value": 98.2, "levels": "Normal" }
+    },
+    {
+      "month": "November",
+      "year": 2024,
+      "blood_pressure": {
+        "systolic": { "value": 118, "levels": "Normal" },
+        "diastolic": { "value": 78, "levels": "Normal" }
+      },
+      "heart_rate": { "value": 74, "levels": "Normal" },
+      "respiratory_rate": { "value": 19, "levels": "Normal" },
+      "temperature": { "value": 98.3, "levels": "Normal" }
+    },
+    {
+      "month": "December",
+      "year": 2024,
+      "blood_pressure": {
+        "systolic": { "value": 160, "levels": "Higher than Average" },
+        "diastolic": { "value": 106, "levels": "Higher than Average" }
+      },
+      "heart_rate": { "value": 78, "levels": "Normal" },
+      "respiratory_rate": { "value": 20, "levels": "Normal" },
+      "temperature": { "value": 98.5, "levels": "Normal" }
+    },
+    {
+      "month": "January",
+      "year": 2025,
+      "blood_pressure": {
+        "systolic": { "value": 116, "levels": "Normal" },
+        "diastolic": { "value": 96, "levels": "Slightly High" }
+      },
+      "heart_rate": { "value": 77, "levels": "Normal" },
+      "respiratory_rate": { "value": 19, "levels": "Normal" },
+      "temperature": { "value": 98.4, "levels": "Normal" }
+    },
+    {
+      "month": "February",
+      "year": 2025,
+      "blood_pressure": {
+        "systolic": { "value": 150, "levels": "Higher than Average" },
+        "diastolic": { "value": 74, "levels": "Normal" }
+      },
+      "heart_rate": { "value": 79, "levels": "Normal" },
+      "respiratory_rate": { "value": 21, "levels": "Normal" },
+      "temperature": { "value": 98.7, "levels": "Normal" }
+    },
+    {
+      "month": "March",
+      "year": 2025,
+      "blood_pressure": {
+        "systolic": { "value": 160, "levels": "Higher than Average" },
+        "diastolic": { "value": 78, "levels": "Lower than Average" }
+      },
+      "heart_rate": { "value": 78, "levels": "Lower than Average" },
+      "respiratory_rate": { "value": 20, "levels": "Normal" },
+      "temperature": { "value": 98.6, "levels": "Normal" }
+    }
+  ]
+}
