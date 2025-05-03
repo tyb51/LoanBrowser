@@ -105,18 +105,7 @@ export async function calculateLoan(
       [LoanDataField.CUMULATIVE_INTEREST_PAID]: cumulativeInterest,
       [LoanDataField.CUMULATIVE_INSURANCE_PAID]: cumulativeInsurance,
       
-      // Legacy fields for backward compatibility
-      "Maand": month,
-      "Jaar": year,
-      "Betaling Lening (Excl. SSV)": totalMonthlyPayment,
-      "Rente": monthlyInterest,
-      "Kapitaal Aflossing": principalPayment,
-      "Schuldsaldo Premie (Maand)": monthlyInsurance,
-      "Totale Maandelijkse Uitgave": totalMonthlyPayment + monthlyInsurance,
-      "Resterend Kapitaal": remainingPrincipal,
-      "Cumulatief Kapitaal Betaald": cumulativePrincipal,
-      "Cumulatief Rente Betaald": cumulativeInterest,
-      "Cumulatief SSV Betaald": cumulativeInsurance
+
     };
     
     monthlyData.push(monthData);
@@ -156,16 +145,7 @@ export async function calculateLoan(
       [LoanDataField.CUMULATIVE_INSURANCE_YEAR_END]: lastMonth[LoanDataField.CUMULATIVE_INSURANCE_PAID],
       [LoanDataField.CUMULATIVE_PRINCIPAL_YEAR_END]: lastMonth[LoanDataField.CUMULATIVE_PRINCIPAL_PAID],
       
-      // Legacy fields for backward compatibility
-      "Jaar": year,
-      "Jaarlijkse_Rente": yearlyInterest,
-      "Jaarlijkse_Kapitaalaflossing": yearlyPrincipal,
-      "Jaarlijkse_SSV": yearlyInsurance,
-      "Jaarlijkse_Totale_Uitgave": yearlyTotalPayment,
-      "Resterend_Kapitaal_Einde_Jaar": lastMonth["Resterend Kapitaal"],
-      "Cumul_Rente_Einde_Jaar": lastMonth["Cumulatief Rente Betaald"],
-      "Cumul_SSV_Einde_Jaar": lastMonth["Cumulatief SSV Betaald"],
-      "Cumul_Kapitaal_Einde_Jaar": lastMonth["Cumulatief Kapitaal Betaald"]
+
     };
     
     annualData.push(annualDataItem);
@@ -184,12 +164,7 @@ export async function calculateLoan(
     [LoanStatisticsField.TOTAL_LOAN_COSTS]: lastMonth[LoanDataField.CUMULATIVE_INTEREST_PAID] + lastMonth[LoanDataField.CUMULATIVE_INSURANCE_PAID],
     [LoanStatisticsField.HIGHEST_MONTHLY_PAYMENT]: Math.max(...monthlyData.map(m => m[LoanDataField.TOTAL_MONTHLY_PAYMENT])),
     
-    // Legacy fields for backward compatibility
-    "Totaal Kapitaal Betaald": lastMonth["Cumulatief Kapitaal Betaald"],
-    "Totale Rente Betaald": lastMonth["Cumulatief Rente Betaald"],
-    "Totale SSV Premie Betaald": lastMonth["Cumulatief SSV Betaald"],
-    "Totale Kosten Lening (Rente + SSV)": lastMonth["Cumulatief Rente Betaald"] + lastMonth["Cumulatief SSV Betaald"],
-    "Hoogste Maandelijkse Uitgave Lening": Math.max(...monthlyData.map(m => m["Totale Maandelijkse Uitgave"]))
+
   };
   
   return {
@@ -198,6 +173,8 @@ export async function calculateLoan(
     statistics
   };
 }
+
+
 
 export async function compareLoans(
   referenceLoan: LoanParameters,
@@ -258,11 +235,7 @@ export async function compareLoans(
           [LoanDataField.CUMULATIVE_INVESTMENT_CONTRIBUTION]: cumulativeInvestmentContribution,
           [LoanDataField.NET_WORTH]: investmentBalance - altMonthData[LoanDataField.REMAINING_PRINCIPAL],
           
-          // Legacy fields for backward compatibility
-          "Saldo Investering": investmentBalance,
-          "Maandelijkse Bijdrage/Onttrekking": monthlyDifference,
-          "Cumulatieve Bijdrage Investering": cumulativeInvestmentContribution,
-          "Netto Vermogen (Invest - Schuld)": investmentBalance - altMonthData["Resterend Kapitaal"]
+        
         };
         
         investmentSimulation.push(simulationData);

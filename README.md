@@ -1,71 +1,87 @@
 # Loan Browser
 
-An interactive web application for visualizing loan calculations, comparing loan types, and simulating investment strategies.
+A comprehensive web application for visualizing and comparing different loan types, with investment simulation capabilities.
+
+## Overview
+
+Loan Browser is an interactive tool that helps users:
+
+- Calculate and visualize annuity, bullet, and modular loans
+- Compare different loan strategies side-by-side
+- Simulate investment growth alongside loan repayments
+- Visualize the impact of different strategies on net worth
 
 ## Features
 
-- Single Loan Calculator: Calculate and visualize annuity, bullet, and modular loans
-- Loan Comparison: Compare different loan types and their costs
-- Investment Simulation: Simulate investing the difference in monthly payments
+- **Multiple Loan Types**:
+  - Annuity loans (fixed monthly payments)
+  - Bullet loans (interest-only with final balloon payment)
+  - Modular loans (customizable payment schedule)
+
+- **Comprehensive Visualizations**:
+  - Loan balance over time
+  - Payment breakdown (principal vs. interest vs. insurance)
+  - Comparison charts for different loan strategies
+  - Investment growth and net worth projections
+
+- **Analysis Tools**:
+  - Detailed amortization tables
+  - Annual summary statistics
+  - Loan cost comparisons
+  - Minimum required investment growth calculations
+
+- **Advanced Functionality**:
+  - Real-time calculation updates
+  - Multi-language support
+  - Responsive design for all devices
+  - Data export capabilities
 
 ## Project Structure
 
-- `/app`: Next.js app router structure
-  - `/api`: API routes (mock implementation)
-  - `/components`: React components for UI
-  - `/services`: API service clients
-  - `/types`: TypeScript type definitions
-- `/python`: Python calculation functions (for future backend integration)
-- `/_data`: Mock data for development
+The application consists of:
 
-## Tech Stack
-
-- **Frontend**: Next.js 15 with React 19, TypeScript, Tailwind CSS
-- **Data Visualization**: Chart.js with react-chartjs-2
-- **API**: Next.js API routes (mock implementation)
-- **Future Backend**: Python FastAPI (not yet implemented)
+- **Frontend**: NextJS application with TypeScript, Tailwind CSS, and Chart.js
+- **Backend**: Python API with FastAPI for loan calculations
+- **Loan Engine**: Sophisticated calculation functions for various loan types and investment simulations
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v18+)
+- Node.js (v18 or higher)
+- Python (v3.9 or higher)
 - npm or yarn
+- pip
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/loan-browser.git
-   cd loan-browser
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+1. Clone the repository
+2. Set up the Python backend (see [Python README](python/README.md))
+3. Install frontend dependencies with `npm install` or `yarn install`
+4. Start development servers (see [Deployment Guide](DEPLOYMENT.md))
 
 ## Development
 
-### Mock API
+See the [Deployment Guide](DEPLOYMENT.md) for detailed instructions on setting up the development environment.
 
-The current implementation uses mock API endpoints in `/app/api`. In a production environment, these would be connected to the Python backend.
+### Key Directories
 
-### Python Integration
+- `app/`: NextJS frontend application
+- `python/`: Backend API and calculation engine
+- `python/api/`: FastAPI implementation
+- `python/calculation_functions.py`: Core loan calculation functions
+- `planning/`: Project planning documents and specifications
 
-The Python calculation functions are available in the `/python` directory. These would be integrated as a FastAPI server in a production environment.
+## Documentation
+
+Refer to the following documents for more information:
+
+- [Deployment Guide](DEPLOYMENT.md): Instructions for setting up and running the application
+- [Python API Documentation](python/README.md): Details about the Python backend API
+- [Planning Documentation](planning/LoanBrowserPlan.md): Project overview and implementation plan
+- [Technical Implementation](planning/TechnicalImplementation.md): Technical details and data flow
+- [UI Mockups](planning/UIMockups.md): User interface design specifications
 
 ## License
 
-This project is for educational purposes only.
+This project is licensed under the MIT License - see the LICENSE file for details.

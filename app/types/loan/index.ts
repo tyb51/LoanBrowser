@@ -35,19 +35,7 @@ export interface MonthlyLoanData {
   [LoanDataField.CUMULATIVE_PRINCIPAL_PAID]: number;
   [LoanDataField.CUMULATIVE_INTEREST_PAID]: number;
   [LoanDataField.CUMULATIVE_INSURANCE_PAID]: number;
-  
-  // Legacy fields for backwards compatibility - will be removed after migrating all components
-  "Maand": number;
-  "Jaar": number;
-  "Betaling Lening (Excl. SSV)": number;
-  "Rente": number;
-  "Kapitaal Aflossing": number;
-  "Schuldsaldo Premie (Maand)": number;
-  "Totale Maandelijkse Uitgave": number;
-  "Resterend Kapitaal": number;
-  "Cumulatief Kapitaal Betaald": number;
-  "Cumulatief Rente Betaald": number;
-  "Cumulatief SSV Betaald": number;
+
 }
 
 export interface AnnualLoanData {
@@ -60,17 +48,7 @@ export interface AnnualLoanData {
   [LoanDataField.CUMULATIVE_INTEREST_YEAR_END]: number;
   [LoanDataField.CUMULATIVE_INSURANCE_YEAR_END]: number;
   [LoanDataField.CUMULATIVE_PRINCIPAL_YEAR_END]: number;
-  
-  // Legacy fields for backwards compatibility - will be removed after migrating all components
-  "Jaar": number;
-  "Jaarlijkse_Rente": number;
-  "Jaarlijkse_Kapitaalaflossing": number;
-  "Jaarlijkse_SSV": number;
-  "Jaarlijkse_Totale_Uitgave": number;
-  "Resterend_Kapitaal_Einde_Jaar": number;
-  "Cumul_Rente_Einde_Jaar": number;
-  "Cumul_SSV_Einde_Jaar": number;
-  "Cumul_Kapitaal_Einde_Jaar": number;
+
 }
 
 export interface LoanStatistics {
@@ -79,13 +57,7 @@ export interface LoanStatistics {
   [LoanStatisticsField.TOTAL_INSURANCE_PAID]: number;
   [LoanStatisticsField.TOTAL_LOAN_COSTS]: number;
   [LoanStatisticsField.HIGHEST_MONTHLY_PAYMENT]: number;
-  
-  // Legacy fields for backwards compatibility - will be removed after migrating all components
-  "Totaal Kapitaal Betaald": number;
-  "Totale Rente Betaald": number;
-  "Totale SSV Premie Betaald": number;
-  "Totale Kosten Lening (Rente + SSV)": number;
-  "Hoogste Maandelijkse Uitgave Lening": number;
+
 }
 
 export interface LoanCalculationResult {
@@ -97,6 +69,8 @@ export interface LoanCalculationResult {
 export interface InvestmentParameters {
   startCapital?: number;
   annualGrowthRate?: number;
+  refInvestCapital?: number;
+  altInvestCapital?: number;
 }
 
 export interface InvestmentSimulationData extends MonthlyLoanData {
@@ -105,12 +79,18 @@ export interface InvestmentSimulationData extends MonthlyLoanData {
   [LoanDataField.CUMULATIVE_INVESTMENT_CONTRIBUTION]: number;
   [LoanDataField.NET_WORTH]: number;
   
-  // Legacy fields for backwards compatibility
-  "Saldo Investering": number;
-  "Maandelijkse Bijdrage/Onttrekking": number;
-  "Cumulatieve Bijdrage Investering": number;
-  "Netto Vermogen (Invest - Schuld)": number;
+
 }
+
+export interface ComparisonRequest {
+  referenceLoan: LoanParameters;
+  alternativeLoan: LoanParameters;
+  referenceOwnContribution: number;
+  alternativeOwnContribution: number;
+  investmentParams?: InvestmentParameters;
+  modularSchedule?: ModularLoanSchedule;
+}
+
 
 export interface ComparisonResult {
   referenceLoan: LoanCalculationResult;

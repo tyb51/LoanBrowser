@@ -5,6 +5,33 @@ import seaborn as sns
 # Zet een stijl voor de plots
 sns.set(style="whitegrid")
 
+
+
+# --- Stap Z: Functie: Stepped Plot Investering Saldo ---
+def plot_investering_saldo_jaarlijks(df_combined, titel):
+    """Maakt een stepped plot van het jaarlijkse investeringssaldo."""
+    if df_combined.empty or 'Saldo Investering' not in df_combined.columns:
+        print(f"DataFrame voor '{titel}' (investering) is leeg of mist data, kan niet plotten.")
+        return
+
+    # Aggregeer saldo per jaar (laatste waarde van het jaar)
+    df_jaarlijks = df_combined.groupby('Jaar')['Saldo Investering'].last().reset_index()
+
+    plt.figure(figsize=(12, 7))
+    plt.step(df_jaarlijks['Jaar'], df_jaarlijks['Saldo Investering'], where='post', label='Saldo Investering Einde Jaar')
+
+    plt.title(f"{titel}\nJaarlijks Saldo Alternatieve Investering", fontsize=14)
+    plt.xlabel("Jaar")
+    plt.ylabel("Saldo Investering (€)")
+    plt.legend()
+    plt.grid(True)
+    ax = plt.gca()
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: format(int(x), ',')))
+    # Zorg dat x-as alleen gehele jaren toont
+    ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+    plt.tight_layout()
+    plt.show()
+
 # --- Basis Plot Functie (Hergebruik vorige versie) ---
 # --- [HIER CODE VOOR plot_lening_simulatie Kopiëren] ---
 def plot_lening_simulatie(df, titel):

@@ -24,20 +24,20 @@ export function LoanComparisonTable({
 
   // Calculate differences
   const totalCostDifference = 
-    alternativeLoan.statistics["Totale Kosten Lening (Rente + SSV)"] - 
-    referenceLoan.statistics["Totale Kosten Lening (Rente + SSV)"];
+    alternativeLoan.statistics.totalLoanCosts - 
+    referenceLoan.statistics.totalLoanCosts;
   
   const totalInterestDifference = 
-    alternativeLoan.statistics["Totale Rente Betaald"] - 
-    referenceLoan.statistics["Totale Rente Betaald"];
+    alternativeLoan.statistics.totalInterestPaid - 
+    referenceLoan.statistics.totalInterestPaid;
   
   const totalInsuranceDifference = 
-    alternativeLoan.statistics["Totale SSV Premie Betaald"] - 
-    referenceLoan.statistics["Totale SSV Premie Betaald"];
+    alternativeLoan.statistics.totalInsurancePaid - 
+    referenceLoan.statistics.totalInsurancePaid;
   
   const monthlyPaymentDifference = 
-    alternativeLoan.statistics["Hoogste Maandelijkse Uitgave Lening"] - 
-    referenceLoan.statistics["Hoogste Maandelijkse Uitgave Lening"];
+    alternativeLoan.statistics.highestMonthlyPayment - 
+    referenceLoan.statistics.highestMonthlyPayment;
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
@@ -66,10 +66,10 @@ export function LoanComparisonTable({
                 Total Loan Costs (Interest + Insurance)
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(referenceLoan.statistics["Totale Kosten Lening (Rente + SSV)"])}
+                {formatCurrency(referenceLoan.statistics.totalLoanCosts)}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(alternativeLoan.statistics["Totale Kosten Lening (Rente + SSV)"])}
+                {formatCurrency(alternativeLoan.statistics.totalLoanCosts)}
               </td>
               <td className={`px-4 py-4 whitespace-nowrap text-sm font-medium text-right ${
                 totalCostDifference < 0 ? 'text-green-600' : 'text-red-600'
@@ -82,10 +82,10 @@ export function LoanComparisonTable({
                 Total Interest Paid
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(referenceLoan.statistics["Totale Rente Betaald"])}
+                {formatCurrency(referenceLoan.statistics.totalInterestPaid)}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(alternativeLoan.statistics["Totale Rente Betaald"])}
+                {formatCurrency(alternativeLoan.statistics.totalInterestPaid)}
               </td>
               <td className={`px-4 py-4 whitespace-nowrap text-sm font-medium text-right ${
                 totalInterestDifference < 0 ? 'text-green-600' : 'text-red-600'
@@ -98,10 +98,10 @@ export function LoanComparisonTable({
                 Total Insurance Premiums
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(referenceLoan.statistics["Totale SSV Premie Betaald"])}
+                {formatCurrency(referenceLoan.statistics.totalInsurancePaid)}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(alternativeLoan.statistics["Totale SSV Premie Betaald"])}
+                {formatCurrency(alternativeLoan.statistics.totalInsurancePaid)}
               </td>
               <td className={`px-4 py-4 whitespace-nowrap text-sm font-medium text-right ${
                 totalInsuranceDifference < 0 ? 'text-green-600' : 'text-red-600'
@@ -114,10 +114,10 @@ export function LoanComparisonTable({
                 Highest Monthly Payment
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(referenceLoan.statistics["Hoogste Maandelijkse Uitgave Lening"])}
+                {formatCurrency(referenceLoan.statistics.highestMonthlyPayment)}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(alternativeLoan.statistics["Hoogste Maandelijkse Uitgave Lening"])}
+                {formatCurrency(alternativeLoan.statistics.highestMonthlyPayment)}
               </td>
               <td className={`px-4 py-4 whitespace-nowrap text-sm font-medium text-right ${
                 monthlyPaymentDifference < 0 ? 'text-green-600' : 'text-red-600'

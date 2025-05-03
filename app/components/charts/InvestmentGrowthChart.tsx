@@ -38,13 +38,13 @@ export function InvestmentGrowthChart({
   // Filter to yearly data points to avoid overcrowding the chart
   const filteredData = showMonthly 
     ? data 
-    : data.filter(d => d.Maand % 12 === 0 || d.Maand === 1);
+    : data.filter(d => d.month % 12 === 0 || d.month === 1);
   
   // Format labels
   const labels = filteredData.map(d => 
     showMonthly 
-      ? `${d.Jaar}-${d.Maand.toString().padStart(2, '0')}` 
-      : `Year ${d.Jaar}`
+      ? `${d.year}-${d.month.toString().padStart(2, '0')}` 
+      : `Year ${d.year}`
   );
   
   const chartData = {
@@ -52,19 +52,19 @@ export function InvestmentGrowthChart({
     datasets: [
       {
         label: 'Investment Balance',
-        data: filteredData.map(d => d['Saldo Investering']),
+        data: filteredData.map(d => d.investmentBalance),
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
       {
         label: 'Loan Balance',
-        data: filteredData.map(d => d['Resterend Kapitaal']),
+        data: filteredData.map(d => d.remainingPrincipal),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Net Worth (Investment - Loan)',
-        data: filteredData.map(d => d['Netto Vermogen (Invest - Schuld)']),
+        data: filteredData.map(d => d.netWorth),
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         borderWidth: 2,

@@ -15,7 +15,7 @@
 - All data objects maintain both enum fields and legacy string-based fields for compatibility
 
 ## API Endpoints
-- `/api/calculate-loan`: Calculates single loan scenarios
+- `/api/calculate-loan-dummy`: Calculates single loan scenarios
 - `/api/compare-loans`: Compares loans and simulates investments
 - API follows RESTful patterns and returns structured data per types
 

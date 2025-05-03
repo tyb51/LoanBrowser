@@ -43,15 +43,15 @@ export function LoanComparisonChart({
 }: LoanComparisonChartProps) {
   // Find the maximum number of months to display
   const maxMonths = Math.max(
-    referenceLoanData.length > 0 ? referenceLoanData[referenceLoanData.length - 1].Maand : 0,
-    alternativeLoanData.length > 0 ? alternativeLoanData[alternativeLoanData.length - 1].Maand : 0
+    referenceLoanData.length > 0 ? referenceLoanData[referenceLoanData.length - 1].month : 0,
+    alternativeLoanData.length > 0 ? alternativeLoanData[alternativeLoanData.length - 1].month : 0
   );
   
   // Filter to yearly data points to avoid overcrowding the chart
   const filterData = (data: MonthlyLoanData[]) => 
     showMonthly 
       ? data 
-      : data.filter(d => d.Maand % 12 === 0 || d.Maand === 1);
+      : data.filter(d => d.month % 12 === 0 || d.month === 1);
       
   const filteredRefData = filterData(referenceLoanData);
   const filteredAltData = filterData(alternativeLoanData);
@@ -71,15 +71,15 @@ export function LoanComparisonChart({
   const findDataPoint = (data: MonthlyLoanData[], month: number) => {
     // If showing monthly, get exact match
     if (showMonthly) {
-      return data.find(d => d.Maand === month);
+      return data.find(d => d.month === month);
     }
     
     // If showing yearly, find the closest data point
-    const yearData = data.filter(d => Math.abs(d.Maand - month) <= 6);
+    const yearData = data.filter(d => Math.abs(d.month - month) <= 6);
     if (yearData.length === 0) return undefined;
     
     return yearData.reduce((prev, curr) => 
-      Math.abs(curr.Maand - month) < Math.abs(prev.Maand - month) ? curr : prev
+      Math.abs(curr.month - month) < Math.abs(prev.month - month) ? curr : prev
     );
   };
   
@@ -91,7 +91,7 @@ export function LoanComparisonChart({
         label: `${referenceName} - Remaining Principal`,
         data: timePoints.map(month => {
           const dataPoint = findDataPoint(filteredRefData, month);
-          return dataPoint ? dataPoint['Resterend Kapitaal'] : null;
+          return dataPoint ? dataPoint.remainingPrincipal : null;
         }),
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
@@ -100,7 +100,7 @@ export function LoanComparisonChart({
         label: `${alternativeName} - Remaining Principal`,
         data: timePoints.map(month => {
           const dataPoint = findDataPoint(filteredAltData, month);
-          return dataPoint ? dataPoint['Resterend Kapitaal'] : null;
+          return dataPoint ? dataPoint.remainingPrincipal: null;
         }),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -110,7 +110,7 @@ export function LoanComparisonChart({
         data: timePoints.map(month => {
           const dataPoint = findDataPoint(filteredRefData, month);
           return dataPoint 
-            ? dataPoint['Cumulatief Rente Betaald'] + dataPoint['Cumulatief SSV Betaald'] 
+            ? dataPoint.cumulativeInterestPaid + dataPoint.cumulativeInsurancePaid 
             : null;
         }),
         borderColor: 'rgb(75, 192, 192)',
@@ -122,7 +122,7 @@ export function LoanComparisonChart({
         data: timePoints.map(month => {
           const dataPoint = findDataPoint(filteredAltData, month);
           return dataPoint 
-            ? dataPoint['Cumulatief Rente Betaald'] + dataPoint['Cumulatief SSV Betaald'] 
+            ? dataPoint.cumulativeInterestPaid + dataPoint.cumulativeInsurancePaid 
             : null;
         }),
         borderColor: 'rgb(255, 159, 64)',

@@ -32,21 +32,21 @@ export function PaymentBreakdownChart({
   title = 'Annual Payment Breakdown'
 }: PaymentBreakdownChartProps) {
   const chartData = {
-    labels: data.map(d => `Year ${d.Jaar}`),
+    labels: data.map(d => `Year ${d.year}`),
     datasets: [
       {
         label: 'Principal',
-        data: data.map(d => d.Jaarlijkse_Kapitaalaflossing),
+        data: data.map(d => d.annualPrincipal),
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
       },
       {
         label: 'Interest',
-        data: data.map(d => d.Jaarlijkse_Rente),
+        data: data.map(d => d.annualInterest),
         backgroundColor: 'rgba(255, 99, 132, 0.8)',
       },
       {
         label: 'Insurance',
-        data: data.map(d => d.Jaarlijkse_SSV),
+        data: data.map(d => d.annualInsurance),
         backgroundColor: 'rgba(75, 192, 192, 0.8)',
       },
     ],
