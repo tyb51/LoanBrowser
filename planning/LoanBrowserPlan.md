@@ -12,80 +12,92 @@ This project aims to create an interactive web application for visualizing loan 
 
 ### 1. Backend API Setup
 - [ ] Create Python FastAPI or Flask server to expose calculation functions
-  - [ ] Implement endpoints for loan calculations based on `calculation_functions.py`
+  - [ ] Implement endpoints for loan calculations based on `python/calculation_functions.py`
   - [ ] Create data transformation layer to format Python calculations for frontend consumption
   - [ ] Add CORS support for local development
   - [ ] Ensure error handling for calculation edge cases
 
 ### 2. Frontend Data Models
-- [ ] Create TypeScript interfaces for all loan-related data
-  - [ ] LoanParameters interface (loan type, amount, interest rate, term, etc.)
-  - [ ] LoanCalculationResult interface (monthly payments, interest paid, etc.)
-  - [ ] InvestmentSimulation interface (investment growth, comparison results)
-  - [ ] ModularLoanSchedule interface (for bullet/modular loans)
+- [x] Create TypeScript interfaces for all loan-related data
+  - [x] LoanParameters interface (loan type, amount, interest rate, term, etc.)
+  - [x] LoanCalculationResult interface (monthly payments, interest paid, etc.)
+  - [x] InvestmentSimulation interface (investment growth, comparison results)
+  - [x] ModularLoanSchedule interface (for bullet/modular loans)
 
 ### 3. UI Components Development
-- [ ] Create Layout and Container Components
-  - [ ] Responsive layout with sections for inputs, charts, and tables
-  - [ ] Tab navigation for different loan types and comparison views
-  - [ ] Loading states for calculations
+- [x] Create Layout and Container Components
+  - [x] Responsive layout with sections for inputs, charts, and tables
+  - [x] Tab navigation for different loan types and comparison views
+  - [x] Loading states for calculations
 
-- [ ] Input Components
-  - [ ] Loan Type Selection (Annuity vs Bullet/Modular)
-  - [ ] Basic Loan Parameters Form
-    - [ ] Loan amount / Purchase price
-    - [ ] Down payment / Own contribution
-    - [ ] Interest rate
-    - [ ] Loan term
-    - [ ] Start year
-  - [ ] Advanced Parameters Form
-    - [ ] Insurance percentage coverage
-    - [ ] Investment growth rate
-    - [ ] Initial investment capital
-  - [ ] Modular Loan Schedule Builder (for bullet/modular loans)
-  - [ ] Form validation and error handling
+- [x] Input Components
+  - [x] Loan Type Selection (Annuity vs Bullet/Modular)
+  - [x] Basic Loan Parameters Form
+    - [x] Loan amount / Purchase price
+    - [x] Down payment / Own contribution
+    - [x] Interest rate
+    - [x] Loan term
+    - [x] Start year
+  - [x] Advanced Parameters Form
+    - [x] Insurance percentage coverage
+    - [x] Investment growth rate
+    - [x] Initial investment capital
+  - [x] Modular Loan Schedule Builder (for bullet/modular loans)
+  - [x] Form validation and error handling
 
-- [ ] Chart Components
-  - [ ] Loan Balance Over Time Chart
-  - [ ] Payment Breakdown Chart (Principal vs Interest vs Insurance)
-  - [ ] Comparison Chart (for comparing different loan scenarios)
-  - [ ] Investment Growth Chart
-  - [ ] Net Worth Chart (Investment value minus remaining loan)
+- [x] Chart Components
+  - [x] Loan Balance Over Time Chart
+  - [x] Payment Breakdown Chart (Principal vs Interest vs Insurance)
+  - [x] Comparison Chart (for comparing different loan scenarios)
+  - [x] Investment Growth Chart
+  - [x] Net Worth Chart (Investment value minus remaining loan)
   - [ ] Interactive chart controls (zoom, filtering, tooltips)
 
-- [ ] Table Components
-  - [ ] Amortization Schedule Table
-  - [ ] Annual Summary Table
-  - [ ] Loan Comparison Table
-  - [ ] Statistics Summary Table
+- [x] Table Components
+  - [x] Amortization Schedule Table
+  - [x] Annual Summary Table
+  - [x] Loan Comparison Table
+  - [x] Statistics Summary Table
 
 ### 4. State Management
-- [ ] Implement state management for storing:
+- [x] Implement state management for storing:
   - [ ] Multiple loan scenarios
-  - [ ] Calculation results
+  - [x] Calculation results
   - [ ] Chart configuration preferences
   - [ ] User input history
 - [ ] Add localStorage integration for saving calculations
 
 ### 5. API Integration
-- [ ] Create API service for communicating with Python backend
-  - [ ] Calculate loan function (for single loan calculation)
-  - [ ] Compare loans function (for loan comparison)
-  - [ ] Investment simulation function
-  - [ ] Minimum growth rate calculation function
+- [x] Create API service for communicating with Python backend
+  - [x] Calculate loan function (for single loan calculation)
+  - [x] Compare loans function (for loan comparison)
+  - [x] Investment simulation function
+  - [x] Minimum growth rate calculation function
 
 ### 6. Dynamic Features
 - [ ] Real-time calculation updates when parameters change
 - [ ] Ability to save multiple loan scenarios for comparison
 - [ ] Export functionality for charts and tables (PDF, CSV)
-- [ ] Mobile-responsive design
-- [ ] Multi-language support (optional)
+- [x] Mobile-responsive design
+- [x] Multi-language support (optional)
 
 ### 7. Performance Optimization
-- [ ] Implement loading states and suspense boundaries
+- [x] Implement loading states and suspense boundaries
 - [ ] Memoize expensive calculations
 - [ ] Optimize chart rendering
-- [ ] Implement pagination for large datasets
+- [x] Implement pagination for large datasets
+
+### 8. Internationalization
+- [x] Set up i18next for internationalization
+- [x] Create language switcher component
+- [x] Support multiple languages:
+  - [x] English
+  - [x] Dutch
+  - [x] French
+  - [x] German
+  - [x] Spanish
+- [x] Translate all UI elements
+- [x] Format numbers and currencies according to locale
 
 ## Technical Implementation Details
 
@@ -99,7 +111,7 @@ This project aims to create an interactive web application for visualizing loan 
 
 ### Backend Integration
 - **API**: Python FastAPI or Flask server
-- **Calculation Engine**: Existing Python functions from `calculation_functions.py`
+- **Calculation Engine**: Existing Python functions from `python/calculation_functions.py`
 - **Data Format**: JSON
 - **Communication**: HTTP/REST
 

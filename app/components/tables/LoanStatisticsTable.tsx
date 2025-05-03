@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { LoanStatistics } from '@/app/types/loan';
+import { useTranslation } from 'react-i18next';
+import { LoanStatistics, LoanStatisticsField } from '@/app/types/loan';
 
 interface LoanStatisticsTableProps {
   statistics: LoanStatistics;
@@ -10,68 +11,52 @@ interface LoanStatisticsTableProps {
 
 export function LoanStatisticsTable({ 
   statistics, 
-  title = 'Loan Statistics'
+  title
 }: LoanStatisticsTableProps) {
+  const { t, i18n } = useTranslation();
+  
+  // Use the provided title or default to translated title
+  const tableTitle = title || t('tables.loanStatistics');
+  
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(value);
+    return new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'EUR' }).format(value);
   };
+
+  // Define the rows to display with translation keys
+  const rows = [
+    { field: LoanStatisticsField.TOTAL_PRINCIPAL_PAID, label: 'tables.totalPrincipalPaid' },
+    { field: LoanStatisticsField.TOTAL_INTEREST_PAID, label: 'tables.totalInterestPaid' },
+    { field: LoanStatisticsField.TOTAL_INSURANCE_PAID, label: 'tables.totalInsurancePremiums' },
+    { field: LoanStatisticsField.TOTAL_LOAN_COSTS, label: 'tables.totalLoanCosts' },
+    { field: LoanStatisticsField.HIGHEST_MONTHLY_PAYMENT, label: 'tables.highestMonthlyPayment' },
+  ];
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="text-lg font-medium mb-4">{title}</h3>
+      <h3 className="text-lg font-medium mb-4">{tableTitle}</h3>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Metric
+                {t('tables.metric')}
               </th>
               <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Value
+                {t('tables.value')}
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                Total Principal Paid
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(statistics['Totaal Kapitaal Betaald'])}
-              </td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                Total Interest Paid
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(statistics['Totale Rente Betaald'])}
-              </td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                Total Insurance Premiums
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(statistics['Totale SSV Premie Betaald'])}
-              </td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                Total Loan Costs (Interest + Insurance)
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(statistics['Totale Kosten Lening (Rente + SSV)'])}
-              </td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                Highest Monthly Payment
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(statistics['Hoogste Maandelijkse Uitgave Lening'])}
-              </td>
-            </tr>
+            {rows.map(row => (
+              <tr key={row.field}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {t(row.label)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                  {formatCurrency(statistics[row.field])}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

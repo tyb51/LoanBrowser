@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TabNavigation } from '@/app/components/navigation/TabNavigation';
 import { LoanParametersForm } from '@/app/components/forms/LoanParametersForm';
 import { LoanBalanceChart } from '@/app/components/charts/LoanBalanceChart';
@@ -8,15 +9,16 @@ import { PaymentBreakdownChart } from '@/app/components/charts/PaymentBreakdownC
 import { LoanStatisticsTable } from '@/app/components/tables/LoanStatisticsTable';
 import { AmortizationTable } from '@/app/components/tables/AmortizationTable';
 import { calculateLoan } from '@/app/services/loanApi';
-import { LoanParameters, LoanCalculationResult, ModularLoanScheduleItem } from '@/app/types/loan';
+import { LoanParameters, LoanCalculationResult, ModularLoanScheduleItem, LoanType } from '@/app/types/loan';
 
 const mainTabs = [
-  { label: 'Single Loan', href: '/' },
-  { label: 'Loan Comparison', href: '/comparison' },
-  { label: 'Investment Simulation', href: '/investment' },
+  { key: 'navigation.singleLoan', href: '/' },
+  { key: 'navigation.loanComparison', href: '/comparison' },
+  { key: 'navigation.investmentSimulation', href: '/investment' },
 ];
 
 export default function SingleLoanPage() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loanResult, setLoanResult] = useState<LoanCalculationResult | null>(null);
 
@@ -46,7 +48,7 @@ export default function SingleLoanPage() {
         {/* Sidebar with forms */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Loan Parameters</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('forms.loanType')}</h2>
             <LoanParametersForm onSubmit={handleSubmit} isLoading={isLoading} />
           </div>
         </div>
@@ -56,44 +58,44 @@ export default function SingleLoanPage() {
           {loanResult ? (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <LoanStatisticsTable statistics={loanResult.statistics} />
+                <LoanStatisticsTable statistics={loanResult.statistics} title={t('tables.loanStatistics')} />
                 
                 <div className="bg-white rounded-lg shadow p-4">
-                  <h3 className="text-lg font-medium mb-2">Loan Summary</h3>
+                  <h3 className="text-lg font-medium mb-2">{t('tables.loanStatistics')}</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-gray-500">Loan Type</p>
-                      <p className="font-medium">Annuity</p>
+                      <p className="text-sm text-gray-500">{t('forms.loanType')}</p>
+                      <p className="font-medium">{t(`loanTypes.annuity`)}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Loan Amount</p>
+                      <p className="text-sm text-gray-500">{t('forms.principal')}</p>
                       <p className="font-medium">
                         {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
-                          loanResult.statistics["Totaal Kapitaal Betaald"]
+                          loanResult.statistics.totalPrincipalPaid
                         )}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Interest Rate</p>
+                      <p className="text-sm text-gray-500">{t('forms.interestRate')}</p>
                       <p className="font-medium">3.5%</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Term</p>
-                      <p className="font-medium">30 years</p>
+                      <p className="text-sm text-gray-500">{t('forms.termYears')}</p>
+                      <p className="font-medium">30 {t('tables.year')}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Monthly Payment</p>
+                      <p className="text-sm text-gray-500">{t('tables.monthly')} {t('tables.payment')}</p>
                       <p className="font-medium">
                         {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
-                          loanResult.monthlyData[0]?.["Totale Maandelijkse Uitgave"] || 0
+                          loanResult.monthlyData[0]?.totalMonthlyPayment || 0
                         )}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Total Cost</p>
+                      <p className="text-sm text-gray-500">{t('tables.totalLoanCosts')}</p>
                       <p className="font-medium">
                         {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
-                          loanResult.statistics["Totale Kosten Lening (Rente + SSV)"]
+                          loanResult.statistics.totalLoanCosts
                         )}
                       </p>
                     </div>
@@ -101,21 +103,27 @@ export default function SingleLoanPage() {
                 </div>
               </div>
               
-              <LoanBalanceChart data={loanResult.monthlyData} title="Loan Balance & Costs Over Time" />
+              <LoanBalanceChart 
+                data={loanResult.monthlyData} 
+                title={t('charts.loanBalance')} 
+              />
               
-              <PaymentBreakdownChart data={loanResult.annualData} title="Annual Payment Breakdown" />
+              <PaymentBreakdownChart 
+                data={loanResult.annualData} 
+                title={t('charts.paymentBreakdown')} 
+              />
               
               <AmortizationTable 
                 monthlyData={loanResult.monthlyData} 
                 annualData={loanResult.annualData} 
-                title="Amortization Schedule" 
+                title={t('tables.amortizationSchedule')} 
               />
             </div>
           ) : (
             <div className="bg-white rounded-lg shadow p-8 text-center">
-              <h2 className="text-xl font-medium text-gray-600 mb-4">Loan Calculation</h2>
+              <h2 className="text-xl font-medium text-gray-600 mb-4">{t('navigation.singleLoan')}</h2>
               <p className="text-gray-500 mb-6">
-                Enter your loan parameters in the form and click "Calculate Loan" to see the results.
+                {t('placeholders.singleLoanPlaceholder')}
               </p>
               <div className="w-24 h-24 mx-auto bg-blue-50 rounded-full flex items-center justify-center">
                 <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

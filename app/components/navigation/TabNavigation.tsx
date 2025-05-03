@@ -3,9 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 interface Tab {
-  label: string;
+  key: string;
   href: string;
 }
 
@@ -15,6 +16,7 @@ interface TabNavigationProps {
 
 export function TabNavigation({ tabs }: TabNavigationProps) {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <div className="border-b border-gray-200 mb-8">
@@ -33,7 +35,7 @@ export function TabNavigation({ tabs }: TabNavigationProps) {
               `}
               aria-current={isActive ? 'page' : undefined}
             >
-              {tab.label}
+              {t(tab.key)}
             </Link>
           );
         })}

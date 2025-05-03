@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { MonthlyLoanData, AnnualLoanData } from '@/app/types/loan';
+import { useTranslation } from 'react-i18next';
+import { MonthlyLoanData, AnnualLoanData, LoanDataField } from '@/app/types/loan';
 
 interface AmortizationTableProps {
   monthlyData: MonthlyLoanData[];
@@ -13,15 +14,19 @@ interface AmortizationTableProps {
 export function AmortizationTable({ 
   monthlyData, 
   annualData,
-  title = 'Amortization Schedule',
+  title,
   defaultView = 'yearly'
 }: AmortizationTableProps) {
+  const { t, i18n } = useTranslation();
   const [view, setView] = useState<'monthly' | 'yearly'>(defaultView);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 12;
   
+  // Use the provided title or default to translated title
+  const tableTitle = title || t('tables.amortizationSchedule');
+  
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(value);
+    return new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'EUR' }).format(value);
   };
 
   // Calculate pagination for monthly view
@@ -41,7 +46,7 @@ export function AmortizationTable({
   return (
     <div className="bg-white p-4 rounded-lg shadow">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium">{title}</h3>
+        <h3 className="text-lg font-medium">{tableTitle}</h3>
         <div className="flex items-center space-x-4">
           <div className="flex rounded-md shadow-sm">
             <button
@@ -53,7 +58,7 @@ export function AmortizationTable({
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               } border border-gray-300`}
             >
-              Yearly
+              {t('tables.yearly')}
             </button>
             <button
               type="button"
@@ -67,7 +72,7 @@ export function AmortizationTable({
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               } border border-gray-300 border-l-0`}
             >
-              Monthly
+              {t('tables.monthly')}
             </button>
           </div>
         </div>
@@ -79,45 +84,45 @@ export function AmortizationTable({
             <thead className="bg-gray-50">
               <tr>
                 <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Year
+                  {t('tables.year')}
                 </th>
                 <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Annual Principal
+                  {t('tables.annualPrincipal')}
                 </th>
                 <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Annual Interest
+                  {t('tables.annualInterest')}
                 </th>
                 <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Annual Insurance
+                  {t('tables.annualInsurance')}
                 </th>
                 <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Annual Total
+                  {t('tables.annualTotal')}
                 </th>
                 <th scope="col" className="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Remaining Principal
+                  {t('tables.remainingPrincipal')}
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {yearlyDataToShow.map((row) => (
-                <tr key={row.Jaar}>
+                <tr key={row[LoanDataField.YEAR]}>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
-                    {row.Jaar}
+                    {row[LoanDataField.YEAR]}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                    {formatCurrency(row.Jaarlijkse_Kapitaalaflossing)}
+                    {formatCurrency(row[LoanDataField.ANNUAL_PRINCIPAL])}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                    {formatCurrency(row.Jaarlijkse_Rente)}
+                    {formatCurrency(row[LoanDataField.ANNUAL_INTEREST])}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                    {formatCurrency(row.Jaarlijkse_SSV)}
+                    {formatCurrency(row[LoanDataField.ANNUAL_INSURANCE])}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                    {formatCurrency(row.Jaarlijkse_Totale_Uitgave)}
+                    {formatCurrency(row[LoanDataField.ANNUAL_TOTAL_PAYMENT])}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                    {formatCurrency(row.Resterend_Kapitaal_Einde_Jaar)}
+                    {formatCurrency(row[LoanDataField.REMAINING_PRINCIPAL_YEAR_END])}
                   </td>
                 </tr>
               ))}
@@ -129,51 +134,51 @@ export function AmortizationTable({
               <thead className="bg-gray-50">
                 <tr>
                   <th scope="col" className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Month
+                    {t('tables.month')}
                   </th>
                   <th scope="col" className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Year
+                    {t('tables.year')}
                   </th>
                   <th scope="col" className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Payment
+                    {t('tables.payment')}
                   </th>
                   <th scope="col" className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Principal
+                    {t('tables.principal')}
                   </th>
                   <th scope="col" className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Interest
+                    {t('tables.interest')}
                   </th>
                   <th scope="col" className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Insurance
+                    {t('tables.insurance')}
                   </th>
                   <th scope="col" className="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Remaining Principal
+                    {t('tables.remainingPrincipal')}
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {monthlyDataToShow.map((row) => (
-                  <tr key={row.Maand}>
+                  <tr key={row[LoanDataField.MONTH]}>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                      {row.Maand}
+                      {row[LoanDataField.MONTH]}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
-                      {row.Jaar}
+                      {row[LoanDataField.YEAR]}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                      {formatCurrency(row["Totale Maandelijkse Uitgave"])}
+                      {formatCurrency(row[LoanDataField.TOTAL_MONTHLY_PAYMENT])}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                      {formatCurrency(row["Kapitaal Aflossing"])}
+                      {formatCurrency(row[LoanDataField.PRINCIPAL_PAYMENT])}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                      {formatCurrency(row.Rente)}
+                      {formatCurrency(row[LoanDataField.INTEREST])}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                      {formatCurrency(row["Schuldsaldo Premie (Maand)"])}
+                      {formatCurrency(row[LoanDataField.INSURANCE_PREMIUM])}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                      {formatCurrency(row["Resterend Kapitaal"])}
+                      {formatCurrency(row[LoanDataField.REMAINING_PRINCIPAL])}
                     </td>
                   </tr>
                 ))}
@@ -186,11 +191,11 @@ export function AmortizationTable({
                 <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                   <div>
                     <p className="text-sm text-gray-700">
-                      Showing <span className="font-medium">{(currentPage - 1) * rowsPerPage + 1}</span> to{' '}
+                      {t('tables.showing')} <span className="font-medium">{(currentPage - 1) * rowsPerPage + 1}</span> {t('tables.to')}{' '}
                       <span className="font-medium">
                         {Math.min(currentPage * rowsPerPage, monthlyData.length)}
                       </span>{' '}
-                      of <span className="font-medium">{monthlyData.length}</span> results
+                      {t('tables.of')} <span className="font-medium">{monthlyData.length}</span> {t('tables.results')}
                     </p>
                   </div>
                   <div>
@@ -202,7 +207,7 @@ export function AmortizationTable({
                           currentPage === 1 ? 'cursor-not-allowed' : 'hover:bg-gray-50'
                         }`}
                       >
-                        Previous
+                        {t('tables.previous')}
                       </button>
                       
                       {/* Page numbers */}
@@ -241,7 +246,7 @@ export function AmortizationTable({
                           currentPage === totalMonthlyPages ? 'cursor-not-allowed' : 'hover:bg-gray-50'
                         }`}
                       >
-                        Next
+                        {t('tables.next')}
                       </button>
                     </nav>
                   </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LoanParameters, LoanType, ModularLoanScheduleItem } from '@/app/types/loan';
 
 interface LoanParametersFormProps {
@@ -14,8 +15,10 @@ export function LoanParametersForm({
   onSubmit, 
   isLoading = false 
 }: LoanParametersFormProps) {
+  const { t } = useTranslation();
+  
   const [formData, setFormData] = useState<LoanParameters>({
-    loanType: defaultValues?.loanType || 'annuity',
+    loanType: defaultValues?.loanType || LoanType.ANNUITY,
     principal: defaultValues?.principal || 500000,
     interestRate: defaultValues?.interestRate || 3.5,
     termYears: defaultValues?.termYears || 30,
@@ -25,10 +28,6 @@ export function LoanParametersForm({
     startYear: defaultValues?.startYear || 2025,
     insuranceCoveragePct: defaultValues?.insuranceCoveragePct || 1.0,
   });
-
-  const [modularSchedule, setModularSchedule] = useState<ModularLoanScheduleItem[]>([
-    { month: formData.termYears * 12, amount: formData.principal }
-  ]);
 
   const [scheduleItems, setScheduleItems] = useState<{ month: string, amount: string }[]>([
     { month: (formData.termYears * 12).toString(), amount: formData.principal.toString() }
@@ -48,14 +47,14 @@ export function LoanParametersForm({
     }));
 
     // If the principal changes, update the bullet loan schedule
-    if (name === 'principal' && formData.loanType !== 'annuity') {
+    if (name === 'principal' && formData.loanType !== LoanType.ANNUITY) {
       setScheduleItems([
         { month: (formData.termYears * 12).toString(), amount: value }
       ]);
     }
 
     // If loan term changes, update the schedule for bullet loans
-    if (name === 'termYears' && formData.loanType !== 'annuity') {
+    if (name === 'termYears' && formData.loanType !== LoanType.ANNUITY) {
       setScheduleItems([
         { month: (parseInt(value, 10) * 12).toString(), amount: formData.principal.toString() }
       ]);
@@ -71,7 +70,7 @@ export function LoanParametersForm({
     }));
 
     // Reset the schedule for bullet loans
-    if (newLoanType === 'bullet') {
+    if (newLoanType === LoanType.BULLET) {
       setScheduleItems([
         { month: (formData.termYears * 12).toString(), amount: formData.principal.toString() }
       ]);
@@ -107,7 +106,7 @@ export function LoanParametersForm({
       .sort((a, b) => a.month - b.month);
     
     // For annuity loans, no schedule is needed
-    if (formData.loanType === 'annuity') {
+    if (formData.loanType === LoanType.ANNUITY) {
       onSubmit(formData);
     } else {
       onSubmit(formData, parsedSchedule);
@@ -119,40 +118,40 @@ export function LoanParametersForm({
       <div className="grid grid-cols-1 gap-4">
         {/* Loan Type Selection */}
         <div className="col-span-1">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Loan Type</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.loanType')}</label>
           <div className="mt-1 flex space-x-4">
             <label className="inline-flex items-center">
               <input
                 type="radio"
                 name="loanType"
-                value="annuity"
-                checked={formData.loanType === 'annuity'}
+                value={LoanType.ANNUITY}
+                checked={formData.loanType === LoanType.ANNUITY}
                 onChange={handleLoanTypeChange}
                 className="h-4 w-4 text-blue-600"
               />
-              <span className="ml-2">Annuity</span>
+              <span className="ml-2">{t('loanTypes.annuity')}</span>
             </label>
             <label className="inline-flex items-center">
               <input
                 type="radio"
                 name="loanType"
-                value="bullet"
-                checked={formData.loanType === 'bullet'}
+                value={LoanType.BULLET}
+                checked={formData.loanType === LoanType.BULLET}
                 onChange={handleLoanTypeChange}
                 className="h-4 w-4 text-blue-600"
               />
-              <span className="ml-2">Bullet</span>
+              <span className="ml-2">{t('loanTypes.bullet')}</span>
             </label>
             <label className="inline-flex items-center">
               <input
                 type="radio"
                 name="loanType"
-                value="modular"
-                checked={formData.loanType === 'modular'}
+                value={LoanType.MODULAR}
+                checked={formData.loanType === LoanType.MODULAR}
                 onChange={handleLoanTypeChange}
                 className="h-4 w-4 text-blue-600"
               />
-              <span className="ml-2">Modular</span>
+              <span className="ml-2">{t('loanTypes.modular')}</span>
             </label>
           </div>
         </div>
@@ -161,7 +160,7 @@ export function LoanParametersForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Purchase Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Purchase Price (€)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.purchasePrice')}</label>
             <input
               type="number"
               name="purchasePrice"
@@ -173,7 +172,7 @@ export function LoanParametersForm({
 
           {/* Own Contribution */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Down Payment / Own Contribution (€)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.ownContribution')}</label>
             <input
               type="number"
               name="ownContribution"
@@ -185,7 +184,7 @@ export function LoanParametersForm({
 
           {/* Principal Amount */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Loan Principal (€)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.principal')}</label>
             <input
               type="number"
               name="principal"
@@ -197,7 +196,7 @@ export function LoanParametersForm({
 
           {/* Interest Rate */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.interestRate')}</label>
             <input
               type="number"
               step="0.01"
@@ -210,7 +209,7 @@ export function LoanParametersForm({
 
           {/* Term */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Loan Term (Years)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.termYears')}</label>
             <input
               type="number"
               name="termYears"
@@ -222,7 +221,7 @@ export function LoanParametersForm({
 
           {/* Start Year */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Year</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.startYear')}</label>
             <input
               type="number"
               name="startYear"
@@ -234,7 +233,7 @@ export function LoanParametersForm({
 
           {/* Insurance Coverage */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Insurance Coverage (%)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.insuranceCoverage')}</label>
             <input
               type="number"
               step="0.01"
@@ -255,7 +254,7 @@ export function LoanParametersForm({
 
           {/* Delay Months */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Payment Delay (Months)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.delayMonths')}</label>
             <input
               type="number"
               name="delayMonths"
@@ -267,16 +266,16 @@ export function LoanParametersForm({
         </div>
 
         {/* Modular/Bullet Loan Schedule */}
-        {(formData.loanType === 'bullet' || formData.loanType === 'modular') && (
+        {(formData.loanType === LoanType.BULLET || formData.loanType === LoanType.MODULAR) && (
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Payment Schedule</label>
-            {formData.loanType === 'bullet' ? (
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('forms.paymentSchedule')}</label>
+            {formData.loanType === LoanType.BULLET ? (
               <div className="text-sm text-gray-600 mb-2">
-                For bullet loans, principal will be paid in the final month.
+                {t('forms.bulletLoanInfo')}
               </div>
             ) : (
               <div className="text-sm text-gray-600 mb-2">
-                For modular loans, specify when principal payments will be made.
+                {t('forms.modularLoanInfo')}
               </div>
             )}
             
@@ -286,24 +285,24 @@ export function LoanParametersForm({
                   type="number"
                   value={item.month}
                   onChange={(e) => handleScheduleChange(index, 'month', e.target.value)}
-                  placeholder="Month"
+                  placeholder={t('forms.month')}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
                 <input
                   type="number"
                   value={item.amount}
                   onChange={(e) => handleScheduleChange(index, 'amount', e.target.value)}
-                  placeholder="Amount"
+                  placeholder={t('forms.amount')}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
-                {formData.loanType === 'modular' && (
+                {formData.loanType === LoanType.MODULAR && (
                   <>
                     <button 
                       type="button"
                       onClick={() => handleRemoveScheduleItem(index)}
                       className="p-2 bg-red-50 text-red-500 rounded-md hover:bg-red-100"
                     >
-                      Remove
+                      {t('forms.remove')}
                     </button>
                     {index === scheduleItems.length - 1 && (
                       <button 
@@ -311,7 +310,7 @@ export function LoanParametersForm({
                         onClick={handleAddScheduleItem}
                         className="p-2 bg-blue-50 text-blue-500 rounded-md hover:bg-blue-100"
                       >
-                        Add
+                        {t('forms.add')}
                       </button>
                     )}
                   </>
@@ -328,7 +327,7 @@ export function LoanParametersForm({
           disabled={isLoading}
           className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          {isLoading ? 'Calculating...' : 'Calculate Loan'}
+          {isLoading ? t('forms.calculating') : t('forms.calculate')}
         </button>
       </div>
     </form>

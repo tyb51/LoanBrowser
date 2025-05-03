@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { InvestmentParameters } from '@/app/types/loan';
 
 interface InvestmentParametersFormProps {
@@ -14,6 +15,8 @@ export function InvestmentParametersForm({
   onSubmit,
   isLoading = false
 }: InvestmentParametersFormProps) {
+  const { t } = useTranslation();
+  
   const [formData, setFormData] = useState<InvestmentParameters>({
     startCapital: defaultValues?.startCapital || 120000,
     annualGrowthRate: defaultValues?.annualGrowthRate || 8.0,
@@ -43,7 +46,7 @@ export function InvestmentParametersForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Start Capital */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Start Capital (€)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.startCapital')}</label>
           <input
             type="number"
             name="startCapital"
@@ -52,13 +55,13 @@ export function InvestmentParametersForm({
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
           <p className="mt-1 text-xs text-gray-500">
-            Initial investment capital available
+            {t('forms.initialInvestmentCapital')}
           </p>
         </div>
 
         {/* Annual Growth Rate */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Annual Growth Rate (%)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.annualGrowthRate')}</label>
           <input
             type="number"
             step="0.1"
@@ -68,7 +71,7 @@ export function InvestmentParametersForm({
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
           <p className="mt-1 text-xs text-gray-500">
-            Expected annual return on investment
+            {t('forms.expectedAnnualReturn')}
           </p>
         </div>
       </div>
@@ -79,7 +82,7 @@ export function InvestmentParametersForm({
           disabled={isLoading}
           className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          {isLoading ? 'Calculating...' : 'Calculate Investment'}
+          {isLoading ? t('forms.calculating') : t('forms.calculateInvestment')}
         </button>
       </div>
     </form>
