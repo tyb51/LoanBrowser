@@ -110,7 +110,7 @@ This project aims to create an interactive web application for visualizing loan 
 - **API Communication**: Fetch API or Axios
 
 ### Backend Integration
-- **API**: Python FastAPI or Flask server
+- **API**: Python FastAPI with a local fallback 
 - **Calculation Engine**: Existing Python functions from `python/calculation_functions.py`
 - **Data Format**: JSON
 - **Communication**: HTTP/REST

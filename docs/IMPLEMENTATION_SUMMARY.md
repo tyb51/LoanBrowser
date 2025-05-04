@@ -70,13 +70,6 @@ The implementation maintains strong type safety:
 - API responses are properly typed
 - Error handling is consistent across layers
 
-### Backward Compatibility
-
-The backend API supports both:
-- New enum-based field names (e.g., `totalPrincipalPaid`)
-- Legacy string-based field names (e.g., `"Totaal Kapitaal Betaald"`)
-
-This ensures backward compatibility with existing components.
 
 ### Configurability
 
