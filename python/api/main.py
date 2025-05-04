@@ -148,7 +148,7 @@ def transform_statistics(stats: Dict[str, float]) -> Dict[str, Any]:
         "totalInterestPaid": stats["totalInterestPaid"],
         "totalInsurancePaid": stats["totalInsurancePaid"],
         "totalLoanCosts": stats["totalLoanCosts"],
-        "highestMonthlyPayment": stats["highestMonthlyPayment"],
+        "medianMonthlyPayment": stats["medianMonthlyPayment"],
     }
     
     # Add investment statistics if they exist
@@ -183,7 +183,6 @@ async def calculate_loan(params: LoanParameters, modular_schedule: Optional[Modu
         schedule_tuples = []
         if modular_schedule and loan_type in ["bullet", "modular"]:
             schedule_tuples = [(item.month, item.amount) for item in modular_schedule.schedule]
-        print(schedule_tuples)
         # Call the appropriate calculation function based on loan type
         if loan_type == "annuity":
             result_df = simuleer_klassieke_lening(
@@ -257,7 +256,6 @@ async def compare_loans(request: ComparisonRequest):
 
         # Calculate alternative loan
         alt_loan_result = await calculate_loan(request.alternativeLoan, request.modularSchedule)
-        print("here3: ", request.investmentParams)
 
         # If investment parameters are provided, calculate investment simulation
         if request.investmentParams:

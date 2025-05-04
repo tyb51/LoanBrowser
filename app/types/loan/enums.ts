@@ -40,5 +40,5 @@ export enum LoanStatisticsField {
   TOTAL_INTEREST_PAID = 'totalInterestPaid',
   TOTAL_INSURANCE_PAID = 'totalInsurancePaid',
   TOTAL_LOAN_COSTS = 'totalLoanCosts',
-  HIGHEST_MONTHLY_PAYMENT = 'highestMonthlyPayment'
+  MEDIAN_MONTHLY_PAYMENT = 'medianMonthlyPayment'
 }

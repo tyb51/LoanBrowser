@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { LoanStatistics, LoanStatisticsField } from '@/app/types/loan';
 
 interface LoanStatisticsTableProps {
@@ -28,7 +28,7 @@ export function LoanStatisticsTable({
     { field: LoanStatisticsField.TOTAL_INTEREST_PAID, label: 'tables.totalInterestPaid' },
     { field: LoanStatisticsField.TOTAL_INSURANCE_PAID, label: 'tables.totalInsurancePremiums' },
     { field: LoanStatisticsField.TOTAL_LOAN_COSTS, label: 'tables.totalLoanCosts' },
-    { field: LoanStatisticsField.HIGHEST_MONTHLY_PAYMENT, label: 'tables.highestMonthlyPayment' },
+    { field: LoanStatisticsField.MEDIAN_MONTHLY_PAYMENT, label: 'tables.medianMonthlyPayment' },
   ];
 
   return (

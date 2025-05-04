@@ -36,8 +36,8 @@ export function LoanComparisonTable({
     referenceLoan.statistics.totalInsurancePaid;
   
   const monthlyPaymentDifference = 
-    alternativeLoan.statistics.highestMonthlyPayment - 
-    referenceLoan.statistics.highestMonthlyPayment;
+    alternativeLoan.statistics.medianMonthlyPayment - 
+    referenceLoan.statistics.medianMonthlyPayment;
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
@@ -114,10 +114,10 @@ export function LoanComparisonTable({
                 Highest Monthly Payment
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(referenceLoan.statistics.highestMonthlyPayment)}
+                {formatCurrency(referenceLoan.statistics.medianMonthlyPayment)}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                {formatCurrency(alternativeLoan.statistics.highestMonthlyPayment)}
+                {formatCurrency(alternativeLoan.statistics.medianMonthlyPayment)}
               </td>
               <td className={`px-4 py-4 whitespace-nowrap text-sm font-medium text-right ${
                 monthlyPaymentDifference < 0 ? 'text-green-600' : 'text-red-600'

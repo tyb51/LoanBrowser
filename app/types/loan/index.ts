@@ -56,7 +56,7 @@ export interface LoanStatistics {
   [LoanStatisticsField.TOTAL_INTEREST_PAID]: number;
   [LoanStatisticsField.TOTAL_INSURANCE_PAID]: number;
   [LoanStatisticsField.TOTAL_LOAN_COSTS]: number;
-  [LoanStatisticsField.HIGHEST_MONTHLY_PAYMENT]: number;
+  [LoanStatisticsField.MEDIAN_MONTHLY_PAYMENT]: number;
 
 }
 

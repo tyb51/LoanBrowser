@@ -624,7 +624,7 @@ export function LoanStatisticsTable({ statistics, title = 'Loan Statistics' }: L
             </tr>
             <tr>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                Highest Monthly Payment
+                Median Monthly Payment
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
                 {formatCurrency(statistics['Hoogste Maandelijkse Uitgave Lening'])}

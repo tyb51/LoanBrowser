@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { LoanParameters, LoanType, ModularLoanScheduleItem } from '@/app/types/loan';
 
 interface LoanParametersFormProps {
@@ -286,14 +286,14 @@ export function LoanParametersForm({
                   value={item.month}
                   onChange={(e) => handleScheduleChange(index, 'month', e.target.value)}
                   placeholder={t('forms.month')}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                  className="flex-1 px-3 py-2 border w-full border-gray-300 rounded-md"
                 />
                 <input
                   type="number"
                   value={item.amount}
                   onChange={(e) => handleScheduleChange(index, 'amount', e.target.value)}
                   placeholder={t('forms.amount')}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                  className="flex-1 px-3 py-2 border w-full border-gray-300 rounded-md"
                 />
                 {formData.loanType === LoanType.MODULAR && (
                   <>
@@ -302,7 +302,9 @@ export function LoanParametersForm({
                       onClick={() => handleRemoveScheduleItem(index)}
                       className="p-2 bg-red-50 text-red-500 rounded-md hover:bg-red-100"
                     >
-                      {t('forms.remove')}
+                      -
+                      {//t('forms.remove')
+                      }
                     </button>
                     {index === scheduleItems.length - 1 && (
                       <button 
@@ -310,7 +312,9 @@ export function LoanParametersForm({
                         onClick={handleAddScheduleItem}
                         className="p-2 bg-blue-50 text-blue-500 rounded-md hover:bg-blue-100"
                       >
-                        {t('forms.add')}
+                        +
+                         {//t('forms.add')
+                      }
                       </button>
                     )}
                   </>

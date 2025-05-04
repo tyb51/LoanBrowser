@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { TabNavigation } from '@/app/components/navigation/TabNavigation';
 import { LoanParametersForm } from '@/app/components/forms/LoanParametersForm';
 import { LoanBalanceChart } from '@/app/components/charts/LoanBalanceChart';
 import { PaymentBreakdownChart } from '@/app/components/charts/PaymentBreakdownChart';
 import { LoanStatisticsTable } from '@/app/components/tables/LoanStatisticsTable';
 import { AmortizationTable } from '@/app/components/tables/AmortizationTable';
-import { calculateLoan } from '@/app/services/loanApi';
+import { calculateLoan } from '@/app/services/apiService';
 import { LoanParameters, LoanCalculationResult, ModularLoanScheduleItem, LoanType } from '@/app/types/loan';
 
 const mainTabs = [
@@ -21,9 +21,11 @@ export default function SingleLoanPage() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loanResult, setLoanResult] = useState<LoanCalculationResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (params: LoanParameters, modularSchedule?: ModularLoanScheduleItem[]) => {
     setIsLoading(true);
+    setError(null);
     try {
       // Convert modularSchedule to the format expected by the API
       const schedule = modularSchedule ? {
@@ -34,7 +36,7 @@ export default function SingleLoanPage() {
       setLoanResult(result);
     } catch (error) {
       console.error('Error calculating loan:', error);
-      alert('Failed to calculate loan. Please check your inputs and try again.');
+      setError('Failed to calculate loan. Please check your inputs and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -50,6 +52,12 @@ export default function SingleLoanPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold mb-4">{t('forms.loanType')}</h2>
             <LoanParametersForm onSubmit={handleSubmit} isLoading={isLoading} />
+            
+            {error && (
+              <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
+                <p>{error}</p>
+              </div>
+            )}
           </div>
         </div>
         

@@ -5,8 +5,8 @@ import { TabNavigation } from '@/app/components/navigation/TabNavigation';
 import { LoanParametersForm } from '@/app/components/forms/LoanParametersForm';
 import { LoanComparisonChart } from '@/app/components/charts/LoanComparisonChart';
 import { LoanComparisonTable } from '@/app/components/tables/LoanComparisonTable';
-import { compareLoans } from '@/app/services/loanApi';
-import { LoanParameters, ComparisonResult, ModularLoanScheduleItem } from '@/app/types/loan';
+import { compareLoans } from '@/app/services/apiService';
+import { LoanParameters, ComparisonResult, ModularLoanScheduleItem, LoanType } from '@/app/types/loan';
 
 const mainTabs = [
   { label: 'Single Loan', href: '/' },
@@ -17,10 +17,11 @@ const mainTabs = [
 export default function ComparisonPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
   
   // Form state
   const [referenceLoanParams, setReferenceLoanParams] = useState<LoanParameters>({
-    loanType: 'annuity',
+    loanType: LoanType.ANNUITY,
     principal: 500000,
     interestRate: 3.5,
     termYears: 30,
@@ -31,7 +32,7 @@ export default function ComparisonPage() {
   });
   
   const [alternativeLoanParams, setAlternativeLoanParams] = useState<LoanParameters>({
-    loanType: 'bullet',
+    loanType: LoanType.BULLET,
     principal: 500000,
     interestRate: 3.2,
     termYears: 30,
@@ -56,6 +57,7 @@ export default function ComparisonPage() {
 
   const handleCompare = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       // Convert modularSchedule to the format expected by the API
       const schedule = modularSchedule.length > 0 ? {
@@ -74,7 +76,7 @@ export default function ComparisonPage() {
       setComparisonResult(result);
     } catch (error) {
       console.error('Error comparing loans:', error);
-      alert('Failed to compare loans. Please check your inputs and try again.');
+      setError('Failed to compare loans. Please check your inputs and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -118,6 +120,13 @@ export default function ComparisonPage() {
           </button>
         </div>
         
+        {/* Error Message */}
+        {error && (
+          <div className="p-4 bg-red-100 text-red-700 rounded-md">
+            <p>{error}</p>
+          </div>
+        )}
+        
         {/* Comparison Results */}
         {comparisonResult && (
           <div className="space-y-8 mt-4">
@@ -157,17 +166,17 @@ export default function ComparisonPage() {
                   <div>
                     <h4 className="text-sm font-medium text-gray-700">Monthly Payment Difference</h4>
                     <p className={`text-xl font-bold ${
-                      (comparisonResult.alternativeLoan.statistics["Hoogste Maandelijkse Uitgave Lening"] - 
-                       comparisonResult.referenceLoan.statistics["Hoogste Maandelijkse Uitgave Lening"]) < 0 
+                      (comparisonResult.alternativeLoan.statistics.medianMonthlyPayment - 
+                       comparisonResult.referenceLoan.statistics.medianMonthlyPayment) < 0 
                         ? 'text-green-600' 
                         : 'text-red-600'
                     }`}>
                       {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
-                        comparisonResult.alternativeLoan.statistics["Hoogste Maandelijkse Uitgave Lening"] - 
-                        comparisonResult.referenceLoan.statistics["Hoogste Maandelijkse Uitgave Lening"]
+                        comparisonResult.alternativeLoan.statistics.medianMonthlyPayment - 
+                        comparisonResult.referenceLoan.statistics.medianMonthlyPayment
                       )}
-                      {(comparisonResult.alternativeLoan.statistics["Hoogste Maandelijkse Uitgave Lening"] - 
-                        comparisonResult.referenceLoan.statistics["Hoogste Maandelijkse Uitgave Lening"]) < 0 
+                      {(comparisonResult.alternativeLoan.statistics.medianMonthlyPayment - 
+                        comparisonResult.referenceLoan.statistics.medianMonthlyPayment) < 0 
                           ? ' lower per month' 
                           : ' higher per month'
                       }
@@ -240,7 +249,7 @@ export default function ComparisonPage() {
         )}
         
         {/* Placeholder when no comparison results */}
-        {!comparisonResult && (
+        {!comparisonResult && !error && (
           <div className="bg-white rounded-lg shadow p-8 text-center mt-6">
             <h2 className="text-xl font-medium text-gray-600 mb-4">Loan Comparison</h2>
             <p className="text-gray-500 mb-6">

@@ -6,7 +6,7 @@ import { LoanParametersForm } from '@/app/components/forms/LoanParametersForm';
 import { InvestmentParametersForm } from '@/app/components/forms/InvestmentParametersForm';
 import { InvestmentGrowthChart } from '@/app/components/charts/InvestmentGrowthChart';
 import { InvestmentSimulationTable } from '@/app/components/tables/InvestmentSimulationTable';
-import { compareLoans } from '@/app/services/loanApi';
+import { compareLoans } from '@/app/services/apiService';
 import { 
   LoanParameters, 
   ComparisonResult, 
@@ -23,6 +23,7 @@ const mainTabs = [
 export default function InvestmentPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [simulationResult, setSimulationResult] = useState<ComparisonResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
   
   // Form state
   const [referenceLoanParams, setReferenceLoanParams] = useState<LoanParameters>({
@@ -71,6 +72,7 @@ export default function InvestmentPage() {
 
   const handleSimulate = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       // Convert modularSchedule to the format expected by the API
       const schedule = modularSchedule.length > 0 ? {
@@ -89,7 +91,7 @@ export default function InvestmentPage() {
       setSimulationResult(result);
     } catch (error) {
       console.error('Error simulating investment:', error);
-      alert('Failed to simulate investment. Please check your inputs and try again.');
+      setError('Failed to simulate investment. Please check your inputs and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -159,6 +161,13 @@ export default function InvestmentPage() {
             {isLoading ? 'Simulating...' : 'Run Investment Simulation'}
           </button>
         </div>
+        
+        {/* Error Message */}
+        {error && (
+          <div className="p-4 bg-red-100 text-red-700 rounded-md">
+            <p>{error}</p>
+          </div>
+        )}
         
         {/* Simulation Results */}
         {simulationResult?.investmentSimulation && (
@@ -271,7 +280,7 @@ export default function InvestmentPage() {
         )}
         
         {/* Placeholder when no simulation results */}
-        {!simulationResult?.investmentSimulation && (
+        {!simulationResult?.investmentSimulation && !error && (
           <div className="bg-white rounded-lg shadow p-8 text-center mt-6">
             <h2 className="text-xl font-medium text-gray-600 mb-4">Investment Simulation</h2>
             <p className="text-gray-500 mb-6">

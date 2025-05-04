@@ -153,7 +153,7 @@ export async function calculateLoan(
   
   // Sort annual data by year
   annualData.sort((a, b) => a[LoanDataField.YEAR] - b[LoanDataField.YEAR]);
-  
+
   // Calculate statistics
   const lastMonth = monthlyData[monthlyData.length - 1];
   const statistics: LoanStatistics = {
@@ -162,7 +162,7 @@ export async function calculateLoan(
     [LoanStatisticsField.TOTAL_INTEREST_PAID]: lastMonth[LoanDataField.CUMULATIVE_INTEREST_PAID],
     [LoanStatisticsField.TOTAL_INSURANCE_PAID]: lastMonth[LoanDataField.CUMULATIVE_INSURANCE_PAID],
     [LoanStatisticsField.TOTAL_LOAN_COSTS]: lastMonth[LoanDataField.CUMULATIVE_INTEREST_PAID] + lastMonth[LoanDataField.CUMULATIVE_INSURANCE_PAID],
-    [LoanStatisticsField.HIGHEST_MONTHLY_PAYMENT]: Math.max(...monthlyData.map(m => m[LoanDataField.TOTAL_MONTHLY_PAYMENT])),
+    [LoanStatisticsField.MEDIAN_MONTHLY_PAYMENT]: median(...monthlyData.map(m => m[LoanDataField.TOTAL_MONTHLY_PAYMENT])),
     
 
   };

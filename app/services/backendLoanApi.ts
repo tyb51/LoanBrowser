@@ -6,10 +6,20 @@ import {
   LoanCalculationResult,
   InvestmentParameters,
   ComparisonResult,
-  ComparisonRequest,
 } from '@/app/types/loan';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+// Default API base URL (can be updated dynamically)
+let API_BASE_URL = 'http://localhost:8000/api';
+
+/**
+ * Update the base URL for the API
+ * This allows changing the API URL dynamically from the configuration
+ */
+export function updateBaseUrl(newBaseUrl: string) {
+  // Make sure the URL ends with '/api'
+  API_BASE_URL = newBaseUrl.endsWith('/api') ? newBaseUrl : `${newBaseUrl}/api`;
+  console.log(`Backend API URL updated to: ${API_BASE_URL}`);
+}
 
 /**
  * Calculate a loan using the Python backend API
@@ -23,14 +33,13 @@ export async function calculateLoan(
 ): Promise<LoanCalculationResult> {
   try {
     // Send params directly without wrapping
-    const requestData: any = { };
-    requestData.params = params;
+    const requestData: any = {};
+    requestData.params =params 
     // Add modular schedule if provided (directly in the payload)
     if (modularSchedule) {
       requestData.modularSchedule = modularSchedule;
     }
-    console.log('Request data:', requestData);
-
+    
     // Make API request
     const response = await fetch(`${API_BASE_URL}/calculate-loan`, {
       method: 'POST',
@@ -57,6 +66,15 @@ export async function calculateLoan(
   }
 }
 
+// Interface for comparison request to ensure correct formatting
+interface ComparisonRequest {
+  referenceLoan: LoanParameters;
+  alternativeLoan: LoanParameters;
+  referenceOwnContribution: number;
+  alternativeOwnContribution: number;
+  investmentParams?: InvestmentParameters;
+  modularSchedule?: ModularLoanSchedule;
+}
 
 /**
  * Compare loans with optional investment simulation
@@ -78,7 +96,7 @@ export async function compareLoans(
 ): Promise<ComparisonResult> {
   try {
     // Prepare request data using the interface
-    const request: ComparisonRequest = {
+    const requestData: ComparisonRequest = {
       referenceLoan,
       alternativeLoan,
       referenceOwnContribution,
@@ -86,18 +104,15 @@ export async function compareLoans(
       investmentParams,
       modularSchedule,
     };
-    // The backend expects the request body to match the ComparisonRequest model directly,
-    // so do NOT wrap it in an extra {request: ...} object.
-    console.log('Request data:', request);
-
+    
     // Make API request
     const response = await fetch(`${API_BASE_URL}/compare-loans`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(request),
-      // Use 'cors' to allow reading the response and proper CORS handling
+      body: JSON.stringify(requestData),
+      // Add mode: 'cors' explicitly
       mode: 'cors',
       credentials: 'include',
     });

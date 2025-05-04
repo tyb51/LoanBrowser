@@ -71,7 +71,7 @@
     "totalInterestPaid": "Gesamte gezahlte Zinsen",
     "totalInsurancePremiums": "Gesamte Versicherungsprämien",
     "totalLoanCosts": "Gesamte Darlehenskosten (Zinsen + Versicherung)",
-    "highestMonthlyPayment": "Höchste monatliche Zahlung",
+    "medianMonthlyPayment": "Mittlere monatliche Zahlung",
     "monthly": "Monatlich",
     "yearly": "Jährlich",
     "year": "Jahr",

@@ -45,7 +45,6 @@
     "simulating": "Simulating..."
   },
   "charts": {
-    "loanBalance": "Loan Balance Over Time",
     "paymentBreakdown": "Annual Payment Breakdown",
     "loanComparison": "Loan Balance Comparison",
     "investmentGrowth": "Investment Growth & Net Worth Over Time",
@@ -71,7 +70,7 @@
     "totalInterestPaid": "Total Interest Paid",
     "totalInsurancePremiums": "Total Insurance Premiums",
     "totalLoanCosts": "Total Loan Costs (Interest + Insurance)",
-    "highestMonthlyPayment": "Highest Monthly Payment",
+    "medianMonthlyPayment": "Median Monthly Payment",
     "monthly": "Monthly",
     "yearly": "Yearly",
     "year": "Year",

@@ -36,7 +36,7 @@ FIELD_NAME_MAP = {
     "Totale Rente Betaald": "totalInterestPaid",
     "Totale SSV Premie Betaald": "totalInsurancePaid",
     "Totale Kosten Lening (Rente + SSV)": "totalLoanCosts",
-    "Hoogste Maandelijkse Uitgave Lening": "highestMonthlyPayment",
+    "Mediane Maandelijkse Uitgave Lening": "medianMonthlyPayment",
     "Start Investering": "startInvestment",
     "Eindsaldo Investering": "endInvestmentBalance",
     "Netto Groei Investering": "netInvestmentGrowth",

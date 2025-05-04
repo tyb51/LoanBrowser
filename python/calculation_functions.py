@@ -271,9 +271,7 @@ def bereken_min_groei_voor_betaling(
     if df_combined.empty or 'monthlyContribution' not in df_combined.columns:
         print("Kan minimale groei niet berekenen: investeringsdata ontbreekt.")
         return None
-    
-    print(df_combined) # Debug: Bekijk de eerste paar rijen van de dataframe
-    # Haal maandelijkse bijdragen op tot de betalingsmaand
+        # Haal maandelijkse bijdragen op tot de betalingsmaand
     contributions = df_combined[df_combined['month'] <= payment_maand]['monthlyContribution'].values
     # De *eerste* bijdrage in df_combined is het verschil in maand 1.
     # De start_investering is het bedrag *voor* maand 1.
@@ -473,13 +471,15 @@ def bereken_statistieken(df_lening, df_investering=None, hoofdsom=0):
         stats["totalInterestPaid"] = round(total_interest, 2)
         stats["totalInsurancePaid"] = round(total_insurance, 2)
         stats["totalLoanCosts"] = round(total_loan_costs, 2)
-        stats["highestMonthlyPayment"] = round(df_lening["totalMonthlyPayment"].max(), 2)
+        stats["medianMonthlyPayment"] = round(df_lening["totalMonthlyPayment"].median(), 2)
+        print(df_lening["totalMonthlyPayment"])
+        print(stats["medianMonthlyPayment"])
     else:  # No loan
         stats["totalPrincipalPaid"] = 0
         stats["totalInterestPaid"] = 0
         stats["totalInsurancePaid"] = 0
         stats["totalLoanCosts"] = 0
-        stats["highestMonthlyPayment"] = 0
+        stats["medianMonthlyPayment"] = 0
 
     # Investment statistics (if present)
     if (

@@ -71,7 +71,7 @@
     "totalInterestPaid": "Total des Intérêts Payés",
     "totalInsurancePremiums": "Total des Primes d'Assurance",
     "totalLoanCosts": "Coût Total du Prêt (Intérêts + Assurance)",
-    "highestMonthlyPayment": "Paiement Mensuel le Plus Élevé",
+    "medianMonthlyPayment": "Paiement Mensuel Médian",
     "monthly": "Mensuel",
     "yearly": "Annuel",
     "year": "Année",

@@ -12,7 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { MonthlyLoanData, LoanDataField } from '@/app/types/loan';
 
 ChartJS.register(
