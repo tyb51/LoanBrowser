@@ -1,0 +1,202 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id             String    @id @default(uuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  cases    Case[]
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Case/Dossier model
+model Case {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+  
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clients            Client[]
+  loanSimulations    LoanSimulation[]
+  investmentSimulation InvestmentSimulation?
+}
+
+// Client model
+model Client {
+  id             String  @id @default(uuid())
+  name           String
+  type           ClientType
+  age            Int?    // For individuals
+  height         Float?  // For individuals, in cm
+  weight         Float?  // For individuals, in kg
+  smoker         Boolean? // For individuals
+  currentCapital Float
+  currentDebt    Float
+  monthlyIncome  Float
+  caseId         String
+  
+  case      Case        @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  insurances Insurance[]
+}
+
+enum ClientType {
+  INDIVIDUAL
+  COMPANY
+}
+
+// Loan Simulation model
+model LoanSimulation {
+  id              String  @id @default(uuid())
+  name            String
+  loanType        LoanType
+  principal       Float
+  interestRate    Float
+  termYears       Int
+  ownContribution Float
+  purchasePrice   Float?
+  startYear       Int?
+  insuranceCoveragePct Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  caseId          String
+  
+  case             Case                   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  modularSchedule  ModularScheduleItem[]
+  referenceFor     InvestmentSimulation[] @relation("ReferenceLoan")
+  alternativeFor   InvestmentSimulation[] @relation("AlternativeLoan")
+}
+
+enum LoanType {
+  ANNUITY
+  BULLET
+  MODULAR
+}
+
+// Modular Schedule Item model
+model ModularScheduleItem {
+  id              String @id @default(uuid())
+  month           Int
+  amount          Float
+  loanSimulationId String
+  
+  loanSimulation LoanSimulation @relation(fields: [loanSimulationId], references: [id], onDelete: Cascade)
+}
+
+// Investment Simulation model
+model InvestmentSimulation {
+  id              String @id @default(uuid())
+  name            String
+  startCapital    Float
+  annualGrowthRate Float
+  refInvestCapital Float
+  altInvestCapital Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  caseId          String   @unique
+  referenceLoanId String
+  alternativeLoanId String
+  
+  case           Case            @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  referenceLoan  LoanSimulation  @relation("ReferenceLoan", fields: [referenceLoanId], references: [id])
+  alternativeLoan LoanSimulation @relation("AlternativeLoan", fields: [alternativeLoanId], references: [id])
+}
+
+// Insurance model
+model Insurance {
+  id                String @id @default(uuid())
+  type              InsuranceType
+  coveragePercentage Float
+  initialPremium    Float
+  clientId          String
+  
+  client        Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  lifeInsurance  LifeInsurance?
+  homeInsurance  HomeInsurance?
+}
+
+enum InsuranceType {
+  LIFE
+  HOME
+}
+
+// Life Insurance model
+model LifeInsurance {
+  id                     String @id @default(uuid())
+  paymentType            PaymentType
+  basedOnRemainingCapital Boolean
+  insuranceId            String @unique
+  
+  insurance Insurance @relation(fields: [insuranceId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentType {
+  LUMP_SUM
+  DISTRIBUTED
+}
+
+// Home Insurance model
+model HomeInsurance {
+  id           String @id @default(uuid())
+  propertyValue Float
+  propertyType  String
+  insuranceId   String @unique
+  
+  insurance Insurance @relation(fields: [insuranceId], references: [id], onDelete: Cascade)
+}

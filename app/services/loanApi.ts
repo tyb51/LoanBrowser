@@ -23,6 +23,7 @@ export async function calculateLoan(
   params: LoanParameters, 
   modularSchedule?: ModularLoanSchedule
 ): Promise<LoanCalculationResult> {
+  console.warn('Calculating loan WITH BACKUP LOCAL API')
   // Mock response
   const { principal, interestRate, termYears, loanType } = params;
   
@@ -184,6 +185,8 @@ export async function compareLoans(
   investmentParams?: InvestmentParameters,
   modularSchedule?: ModularLoanSchedule
 ): Promise<ComparisonResult> {
+  
+  console.warn('Comparing loan WITH BACKUP LOCAL API')
   // Calculate both loans
   const refResult = await calculateLoan(referenceLoan);
   const altResult = await calculateLoan(alternativeLoan, modularSchedule);

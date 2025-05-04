@@ -44,3 +44,6 @@ next-env.d.ts
 #python
 python/__pycache__
 python/api/__pycache__
+
+#prisma
+prisma/generated

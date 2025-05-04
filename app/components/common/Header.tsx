@@ -1,12 +1,14 @@
 "use client";
 
 import React from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '@/app/i18n/client';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import Link from 'next/link';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 export function Header() {
   const { t } = useTranslation();
+  const { user, status, signOut } = useAuth();
 
   return (
     <header className="bg-blue-600 p-4 text-white">
@@ -26,6 +28,11 @@ export function Header() {
             <Link href="/investment" className="hover:text-blue-200 transition-colors">
               {t('navigation.investmentSimulation')}
             </Link>
+            {status === 'authenticated' && (
+              <Link href="/dashboard" className="hover:text-blue-200 transition-colors">
+                Dashboard
+              </Link>
+            )}
           </nav>
         </div>
         
@@ -51,6 +58,43 @@ export function Header() {
             API
           </Link>
           <LanguageSwitcher />
+          
+          {status === 'authenticated' ? (
+            <div className="relative group">
+              <button className="flex items-center space-x-1 text-white hover:text-blue-200">
+                <span>{user?.name || 'User'}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Dashboard
+                </Link>
+                <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Profile
+                </Link>
+                <Link href="/cases" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  {t('ui.myCases')}
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex space-x-2">
+              <Link href="/auth/signin" className="text-sm px-3 py-1 bg-white text-blue-600 hover:bg-blue-50 rounded">
+                Sign in
+              </Link>
+              <Link href="/auth/register" className="text-sm px-3 py-1 bg-blue-700 hover:bg-blue-800 rounded">
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>

@@ -45,7 +45,6 @@
     "simulating": "Simulation en cours..."
   },
   "charts": {
-    "loanBalance": "Solde du Prêt au Fil du Temps",
     "paymentBreakdown": "Répartition Annuelle des Paiements",
     "loanComparison": "Comparaison des Soldes de Prêt",
     "investmentGrowth": "Croissance de l'Investissement & Valeur Nette au Fil du Temps",

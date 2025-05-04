@@ -27,8 +27,14 @@
     "month": "Month",
     "amount": "Amount",
     "startCapital": "Start Capital (€)",
+    "totalStartCapital": "Total Start Capital (€)",
+    "referenceStartCapital": "Reference Loan Start Capital (€)",
+    "alternativeStartCapital": "Alternative Loan Start Capital (€)",
     "annualGrowthRate": "Annual Growth Rate (%)",
     "initialInvestmentCapital": "Initial investment capital available",
+    "totalInitialInvestmentCapital": "Total initial investment capital available",
+    "referenceInitialCapital": "Initial capital for reference loan investment",
+    "alternativeInitialCapital": "Initial capital for alternative loan investment",
     "expectedAnnualReturn": "Expected annual return on investment",
     "calculate": "Calculate Loan",
     "calculating": "Calculating...",
@@ -36,7 +42,9 @@
     "add": "Add",
     "remove": "Remove",
     "bulletLoanInfo": "For bullet loans, principal will be paid in the final month.",
-    "modularLoanInfo": "For modular loans, specify when principal payments will be made."
+    "modularLoanInfo": "For modular loans, specify when principal payments will be made.",
+    "equalInvestment": "Equalized",
+    "separateInvestment": "Split"
   },
   "buttons": {
     "compare": "Compare Loans",
@@ -141,5 +149,8 @@
     "singleLoanPlaceholder": "Enter your loan parameters in the form and click \"Calculate Loan\" to see the results.",
     "comparisonPlaceholder": "Update the loan parameters for both loans and click \"Compare Loans\" to see a detailed comparison.",
     "investmentPlaceholder": "Configure the loan parameters and investment settings, then click \"Run Investment Simulation\" to see the results."
+  },
+  "ui": {
+    "myCases": "My Cases"
   }
 }

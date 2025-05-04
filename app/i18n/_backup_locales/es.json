@@ -36,7 +36,8 @@
     "add": "Añadir",
     "remove": "Eliminar",
     "bulletLoanInfo": "Para préstamos bullet, el capital se pagará en el último mes.",
-    "modularLoanInfo": "Para préstamos modulares, especifique cuándo se realizarán los pagos de capital."
+    "modularLoanInfo": "Para préstamos modulares, especifique cuándo se realizarán los pagos de capital.",
+    "equalInvestment": "Igualado"
   },
   "buttons": {
     "compare": "Comparar Préstamos",
@@ -45,7 +46,6 @@
     "simulating": "Simulando..."
   },
   "charts": {
-    "loanBalance": "Saldo del Préstamo a lo Largo del Tiempo",
     "paymentBreakdown": "Desglose Anual de Pagos",
     "loanComparison": "Comparación de Saldos de Préstamos",
     "investmentGrowth": "Crecimiento de Inversión y Patrimonio Neto a lo Largo del Tiempo",
@@ -142,5 +142,8 @@
     "singleLoanPlaceholder": "Ingrese sus parámetros de préstamo en el formulario y haga clic en \"Calcular Préstamo\" para ver los resultados.",
     "comparisonPlaceholder": "Actualice los parámetros de ambos préstamos y haga clic en \"Comparar Préstamos\" para ver una comparación detallada.",
     "investmentPlaceholder": "Configure los parámetros del préstamo y la configuración de inversión, luego haga clic en \"Ejecutar Simulación de Inversión\" para ver los resultados."
+  },
+  "ui": {
+    "myCases": ""
   }
 }

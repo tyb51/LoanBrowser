@@ -1,8 +1,9 @@
+// T:\Development\LoanBrowser\app\components\common\LanguageSwitcher.tsx
 "use client";
 
 import React, { useState } from 'react';
-import { useTranslation } from 'next-i18next';
-import { LANGUAGES } from '@/app/i18n';
+import { useTranslation } from '@/app/i18n/client';
+import { LANGUAGES } from '@/app/i18n/settings';
 
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
@@ -20,7 +21,7 @@ export function LanguageSwitcher() {
         className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {LANGUAGES[i18n.language as keyof typeof LANGUAGES]?.nativeName || LANGUAGES.en.nativeName}
+        {LANGUAGES[i18n.resolvedLanguage as keyof typeof LANGUAGES]?.nativeName || LANGUAGES.en.nativeName}
         <svg
           className="w-5 h-5 ml-2 -mr-1"
           xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +44,7 @@ export function LanguageSwitcher() {
               <button
                 key={lng}
                 className={`block px-4 py-2 text-sm text-left w-full ${
-                  i18n.language === lng ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-50'
+                  i18n.resolvedLanguage === lng ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-50'
                 }`}
                 onClick={() => changeLanguage(lng)}
               >

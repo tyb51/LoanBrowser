@@ -6,7 +6,7 @@ This project aims to create an interactive web application for visualizing loan 
 ## Current Structure Analysis
 - **Frontend**: NextJS application with Chart.js integration 
 - **Backend**: Python functions for loan calculations (annuity/bullet loans, investment simulations)
-- **Data Flow**: Currently uses JSON server to serve data
+- **Data Flow**: Python FastAPI server with a graceful fallback to JavaScript mock implementations
 
 ## Implementation Plan
 
@@ -99,6 +99,72 @@ This project aims to create an interactive web application for visualizing loan 
 - [x] Translate all UI elements
 - [x] Format numbers and currencies according to locale
 
+### 9. Authentication and User Management (NEW)
+- [✓] Set up NextAuth.js for authentication
+  - [✓] Implement multiple authentication providers (email/password, Google, etc.)
+  - [✓] Create login and registration pages
+  - [✓] Implement account activation and password recovery workflows
+  - [✓] Set up protected routes and middleware
+- [✓] Configure environment variables
+  - [✓] Create .env.example file with necessary variables
+  - [✓] Document environment setup process
+  - [✓] Set up environment variable validation
+
+### 10. Database Integration (NEW)
+- [✓] Set up PostgreSQL database
+  - [✓] Install and configure PostgreSQL locally for development
+  - [✓] Set up connection pooling for production
+- [✓] Implement Prisma ORM
+  - [✓] Create Prisma schema with necessary models
+  - [✓] Set up database migrations
+  - [✓] Create database seeding scripts for development
+- [✓] Create data models for:
+  - [✓] User profiles and authentication
+  - [✓] Cases/Dossiers
+  - [✓] Clients (individuals and companies)
+  - [✓] Loan simulations
+  - [✓] Investment simulations
+
+### 11. Case Management System (NEW)
+- [✓] Create Case/Dossier management interface
+  - [✓] List, create, edit, and delete cases
+  - [✓] Search and filter cases
+  - [✓] Case status tracking
+- [✓] Implement Client management
+  - [✓] Personal client information (biometrics, financial status)
+  - [✓] Company client information
+  - [✓] Client relationship management
+- [✓] Create loan simulation storage
+  - [✓] Save loan simulations to database
+  - [✓] Associate simulations with cases and clients
+  - [✓] Compare historical simulations
+
+### 12. Enhanced Investment Simulation (NEW)
+- [✓] Update investment simulation to support separate starting capitals
+  - [✓] Modify InvestmentParameters interface to include separate starting capitals
+  - [✓] Update investment simulation calculation logic
+  - [✓] Update UI to show separate starting capital inputs
+- [✓] Enhance investment simulation visualization
+  - [✓] Add toggle controls for showing/hiding different scenarios
+  - [✓] Create comparison view for multiple investment strategies
+  - [✓] Implement visual indicators for profitable vs. risky strategies
+
+### 13. Insurance Approximator Module (NEW)
+- [✓] Implement life insurance calculation module
+  - [✓] Create data models for insurance calculations
+  - [✓] Implement algorithms for premium calculation based on biometrics
+  - [✓] Create UI for insurance configuration
+- [✓] Implement home insurance module
+  - [✓] Develop models for property-based insurance calculation
+  - [✓] Create UI for home insurance configuration
+- [✓] Create insurance comparison functionality
+  - [✓] Compare different insurance providers/options
+  - [✓] Visualize impact of insurance on loan costs
+- [✓] Implement multi-client insurance allocation
+  - [✓] Support for assigning insurance to different clients
+  - [✓] Allow multiple insurance policies per case
+  - [✓] Calculate over-insurance scenarios
+
 ## Technical Implementation Details
 
 ### Frontend Stack
@@ -108,12 +174,15 @@ This project aims to create an interactive web application for visualizing loan 
 - **State Management**: React Context or Zustand
 - **Form Handling**: React Hook Form with Zod validation
 - **API Communication**: Fetch API or Axios
+- **Authentication**: NextAuth.js (NEW)
+- **Database ORM**: Prisma (NEW)
 
 ### Backend Integration
 - **API**: Python FastAPI with a local fallback 
 - **Calculation Engine**: Existing Python functions from `python/calculation_functions.py`
 - **Data Format**: JSON
 - **Communication**: HTTP/REST
+- **Database**: PostgreSQL (NEW)
 
 ### Development Approach
 1. Start with basic input components and single loan calculation
@@ -122,6 +191,10 @@ This project aims to create an interactive web application for visualizing loan 
 4. Add advanced features (investment simulation, etc.)
 5. Enhance UI/UX and responsiveness
 6. Add export and saving functionality
+7. Implement authentication and user management (NEW)
+8. Integrate database and case management (NEW)
+9. Enhance investment simulation (NEW)
+10. Add insurance approximator module (NEW)
 
 ## Visualizations to Implement
 
@@ -139,11 +212,18 @@ This project aims to create an interactive web application for visualizing loan 
    - Difference in total costs
 
 4. **Investment Simulation**
-   - Investment growth curve
+   - Investment growth curve with separate starting capitals (NEW)
+   - Comparative visualization of multiple investment strategies (NEW)
+   - Toggle controls for different scenarios (NEW)
    - Net worth (investment - remaining loan)
 
 5. **Minimum Growth Visualization**
    - Required investment growth rate to break even
+
+6. **Insurance Impact Visualization** (NEW)
+   - Impact of insurance on monthly payments
+   - Life insurance amortization visualization
+   - Insurance cost comparison
 
 ### Tables
 1. **Amortization Schedule**
@@ -162,10 +242,142 @@ This project aims to create an interactive web application for visualizing loan 
    - Key metrics of loan calculations
    - Total interest, total payments, etc.
 
+5. **Insurance Premium Table** (NEW)
+   - Life insurance premium calculation based on client biometrics
+   - Coverage options and their impact
+
+## Database Schema Design (NEW)
+
+### User Model
+- id: UUID (primary key)
+- email: String (unique)
+- name: String
+- hashedPassword: String
+- createdAt: DateTime
+- updatedAt: DateTime
+- Cases: Case[] (relation)
+
+### Case/Dossier Model
+- id: UUID (primary key)
+- title: String
+- description: String (optional)
+- createdAt: DateTime
+- updatedAt: DateTime
+- userId: UUID (foreign key)
+- User: User (relation)
+- Clients: Client[] (relation)
+- LoanSimulations: LoanSimulation[] (relation)
+- InvestmentSimulations: InvestmentSimulation[] (relation)
+
+### Client Model
+- id: UUID (primary key)
+- name: String
+- type: Enum (INDIVIDUAL, COMPANY)
+- age: Int (for individuals)
+- height: Float (for individuals, in cm)
+- weight: Float (for individuals, in kg)
+- smoker: Boolean (for individuals)
+- currentCapital: Float
+- currentDebt: Float
+- monthlyIncome: Float
+- caseId: UUID (foreign key)
+- Case: Case (relation)
+- Insurances: Insurance[] (relation)
+
+### LoanSimulation Model
+- id: UUID (primary key)
+- name: String
+- loanType: Enum (ANNUITY, BULLET, MODULAR)
+- principal: Float
+- interestRate: Float
+- termYears: Int
+- ownContribution: Float
+- purchasePrice: Float (optional)
+- createdAt: DateTime
+- updatedAt: DateTime
+- caseId: UUID (foreign key)
+- Case: Case (relation)
+- ModularSchedule: ModularScheduleItem[] (relation)
+
+### ModularScheduleItem Model
+- id: UUID (primary key)
+- month: Int
+- amount: Float
+- loanSimulationId: UUID (foreign key)
+- LoanSimulation: LoanSimulation (relation)
+
+### InvestmentSimulation Model
+- id: UUID (primary key)
+- name: String
+- startCapital: Float
+- annualGrowthRate: Float
+- refInvestCapital: Float (NEW)
+- altInvestCapital: Float (NEW)
+- createdAt: DateTime
+- updatedAt: DateTime
+- caseId: UUID (foreign key)
+- Case: Case (relation)
+- referenceLoanId: UUID (foreign key)
+- alternativeLoanId: UUID (foreign key)
+- ReferenceLoan: LoanSimulation (relation)
+- AlternativeLoan: LoanSimulation (relation)
+
+### Insurance Model (NEW)
+- id: UUID (primary key)
+- type: Enum (LIFE, HOME)
+- coveragePercentage: Float
+- initialPremium: Float
+- clientId: UUID (foreign key)
+- Client: Client (relation)
+- LifeInsurance: LifeInsurance (relation)
+- HomeInsurance: HomeInsurance (relation)
+
+### LifeInsurance Model (NEW)
+- id: UUID (primary key)
+- paymentType: Enum (LUMP_SUM, DISTRIBUTED)
+- basedOnRemainingCapital: Boolean
+- insuranceId: UUID (foreign key)
+- Insurance: Insurance (relation)
+
+### HomeInsurance Model (NEW)
+- id: UUID (primary key)
+- propertyValue: Float
+- propertyType: String
+- insuranceId: UUID (foreign key)
+- Insurance: Insurance (relation)
+
+## Authentication Implementation (NEW)
+
+### NextAuth.js Setup
+1. **Installation and Configuration**
+   - Install NextAuth.js and dependencies
+   - Create NextAuth API route
+   - Configure providers (email/password, OAuth providers)
+
+2. **Environment Variables**
+   - DATABASE_URL: PostgreSQL connection string
+   - NEXTAUTH_URL: Application URL
+   - NEXTAUTH_SECRET: Secret for JWT encryption
+   - Provider-specific secrets (e.g., GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)
+
+3. **User Authentication Flow**
+   - Registration page with email verification
+   - Login page with credential validation
+   - Password reset functionality
+   - Account settings page
+
+4. **Session Management**
+   - Implement session provider
+   - Create protected routes using middleware
+   - Add user context for global access to session data
+
 ## Future Enhancements (Post-MVP)
 - Integration with real interest rate data
 - Additional loan types and specialized calculations
 - Printable/shareable reports
-- User accounts for saving calculations
 - Mortgage affordability calculator
 - Integration with property value estimation APIs
+- Advanced insurance calculation models
+- Integration with external insurance APIs
+- Multi-user collaboration on cases
+- Document attachment for cases and clients

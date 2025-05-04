@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useTranslation } from 'next-i18next';
 import { TabNavigation } from '@/app/components/navigation/TabNavigation';
 import { LoanParametersForm } from '@/app/components/forms/LoanParametersForm';
 import { LoanBalanceChart } from '@/app/components/charts/LoanBalanceChart';
@@ -10,6 +9,7 @@ import { LoanStatisticsTable } from '@/app/components/tables/LoanStatisticsTable
 import { AmortizationTable } from '@/app/components/tables/AmortizationTable';
 import { calculateLoan } from '@/app/services/apiService';
 import { LoanParameters, LoanCalculationResult, ModularLoanScheduleItem, LoanType } from '@/app/types/loan';
+import { useTranslation } from './i18n/client';
 
 const mainTabs = [
   { key: 'navigation.singleLoan', href: '/' },

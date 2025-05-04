@@ -36,7 +36,8 @@
     "add": "Hinzufügen",
     "remove": "Entfernen",
     "bulletLoanInfo": "Bei endfälligen Darlehen wird der Kapitalbetrag im letzten Monat bezahlt.",
-    "modularLoanInfo": "Bei modularen Darlehen geben Sie an, wann Kapitalzahlungen geleistet werden."
+    "modularLoanInfo": "Bei modularen Darlehen geben Sie an, wann Kapitalzahlungen geleistet werden.",
+    "equalInvestment": "Ausgeglichen"
   },
   "buttons": {
     "compare": "Darlehen vergleichen",
@@ -45,7 +46,6 @@
     "simulating": "Simuliere..."
   },
   "charts": {
-    "loanBalance": "Darlehenssaldo im Zeitverlauf",
     "paymentBreakdown": "Jährliche Zahlungsaufschlüsselung",
     "loanComparison": "Vergleich der Darlehenssalden",
     "investmentGrowth": "Anlagewachstum & Nettovermögen im Zeitverlauf",
@@ -142,5 +142,8 @@
     "singleLoanPlaceholder": "Geben Sie Ihre Darlehensparameter im Formular ein und klicken Sie auf \"Darlehen berechnen\", um die Ergebnisse zu sehen.",
     "comparisonPlaceholder": "Aktualisieren Sie die Darlehensparameter für beide Darlehen und klicken Sie auf \"Darlehen vergleichen\", um einen detaillierten Vergleich zu sehen.",
     "investmentPlaceholder": "Konfigurieren Sie die Darlehensparameter und Investitionseinstellungen und klicken Sie dann auf \"Investitionssimulation starten\", um die Ergebnisse zu sehen."
+  },
+  "ui": {
+    "myCases": ""
   }
 }

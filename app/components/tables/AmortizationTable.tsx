@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '@/app/i18n/client';
 import { MonthlyLoanData, AnnualLoanData, LoanDataField } from '@/app/types/loan';
 
 interface AmortizationTableProps {

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '@/app/i18n/client';
 
 interface Tab {
   key: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from '@/app/i18n/client';
 import { LoanStatistics, LoanStatisticsField } from '@/app/types/loan';
 
 interface LoanStatisticsTableProps {
