@@ -20,11 +20,11 @@ export async function GET(request: Request, { params }: Params) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const clientId = params.id;
+    const {id} = params;
 
     // Check if client exists and belongs to the authenticated user
     const client = await prisma.client.findUnique({
-      where: { id: clientId },
+      where: { id },
       include: {
         case: {
           select: {
@@ -52,7 +52,7 @@ export async function GET(request: Request, { params }: Params) {
 
     // Get all insurances for the client
     const insurances = await prisma.insurance.findMany({
-      where: { clientId },
+      where: { id },
       include: {
         lifeInsurance: true,
         homeInsurance: true,

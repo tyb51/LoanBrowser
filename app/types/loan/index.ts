@@ -57,7 +57,14 @@ export interface LoanStatistics {
   [LoanStatisticsField.TOTAL_INSURANCE_PAID]: number;
   [LoanStatisticsField.TOTAL_LOAN_COSTS]: number;
   [LoanStatisticsField.MEDIAN_MONTHLY_PAYMENT]: number;
-
+  // Multi-client specific fields (optional as they might not be present for single-client calculations)
+  [LoanStatisticsField.DEBT_RATIO]?: number;
+  [LoanStatisticsField.DEBT_RATIO_ASSESSMENT]?: 'good' | 'moderate' | 'high';
+  [LoanStatisticsField.PER_CLIENT_INSURANCE_PAID]?: number;
+  [LoanStatisticsField.PER_CLIENT_DEBT_RATIO]?: number;
+  [LoanStatisticsField.PER_CLIENT_DEBT_RATIO_ASSESSMENT]?: 'good' | 'moderate' | 'high';
+  // Additional fields for client information
+  clientCount?: number;
 }
 
 export interface LoanCalculationResult {

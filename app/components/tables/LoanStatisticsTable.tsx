@@ -18,7 +18,10 @@ export function LoanStatisticsTable({
   // Use the provided title or default to translated title
   const tableTitle = title || t('tables.loanStatistics');
   
-  const formatCurrency = (value: number) => {
+  const formatCurrency = (value: any) => {
+    if (value === undefined || value === null || typeof value !== 'number') {
+      return value;
+    }
     return new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'EUR' }).format(value);
   };
 

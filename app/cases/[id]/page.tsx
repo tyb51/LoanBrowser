@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslation } from '@/app/i18n/client';
 
 interface Client {
   id: string;
@@ -27,6 +28,7 @@ interface LoanSimulation {
   termYears: number;
   ownContribution: number;
   purchasePrice?: number | null;
+  clients?: Client[];
 }
 
 interface Case {
@@ -35,11 +37,15 @@ interface Case {
   description: string | null;
   createdAt: string;
   updatedAt: string;
+  projectName?: string | null;
+  purchasePrice?: number | null;
+  purchaseDate?: string | null;
   clients: Client[];
   loanSimulations: LoanSimulation[];
 }
 
 export default function CaseDetail() {
+  const { t } = useTranslation();
   const { user, status, requireAuth } = useAuth();
   const router = useRouter();
   const params = useParams();
@@ -49,8 +55,13 @@ export default function CaseDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  
+  // Form data for editing
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [projectName, setProjectName] = useState('');
+  const [purchasePrice, setPurchasePrice] = useState<number | ''>(0);
+  const [purchaseDate, setPurchaseDate] = useState('');
 
   // Check authentication on component mount
   useEffect(() => {
@@ -67,9 +78,9 @@ export default function CaseDetail() {
         
         if (!response.ok) {
           if (response.status === 404) {
-            throw new Error('Case not found');
+            throw new Error(t('case.notFound'));
           } else {
-            throw new Error('Failed to fetch case');
+            throw new Error(t('case.failedToFetch'));
           }
         }
         
@@ -77,16 +88,20 @@ export default function CaseDetail() {
         setCaseData(data.case);
         setTitle(data.case.title);
         setDescription(data.case.description || '');
+        setProjectName(data.case.projectName || '');
+        setPurchasePrice(data.case.purchasePrice || '');
+        setPurchaseDate(data.case.purchaseDate ? 
+          new Date(data.case.purchaseDate).toISOString().split('T')[0] : '');
       } catch (error) {
         console.error('Error fetching case:', error);
-        setError(error instanceof Error ? error.message : 'An unexpected error occurred');
+        setError(error instanceof Error ? error.message : t('common.unexpectedError'));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchCase();
-  }, [id, status]);
+  }, [id, status, t]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -95,6 +110,10 @@ export default function CaseDetail() {
   const handleCancel = () => {
     setTitle(caseData?.title || '');
     setDescription(caseData?.description || '');
+    setProjectName(caseData?.projectName || '');
+    setPurchasePrice(caseData?.purchasePrice || '');
+    setPurchaseDate(caseData?.purchaseDate ? 
+      new Date(caseData.purchaseDate).toISOString().split('T')[0] : '');
     setIsEditing(false);
   };
 
@@ -108,11 +127,14 @@ export default function CaseDetail() {
         body: JSON.stringify({
           title,
           description,
+          projectName,
+          purchasePrice: purchasePrice === '' ? null : purchasePrice,
+          purchaseDate: purchaseDate || null,
         }),
       });
       
       if (!response.ok) {
-        throw new Error('Failed to update case');
+        throw new Error(t('case.failedToUpdate'));
       }
       
       const data = await response.json();
@@ -120,17 +142,20 @@ export default function CaseDetail() {
         ...caseData!,
         title: data.case.title,
         description: data.case.description,
+        projectName: data.case.projectName,
+        purchasePrice: data.case.purchasePrice,
+        purchaseDate: data.case.purchaseDate,
         updatedAt: data.case.updatedAt,
       });
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating case:', error);
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
+      setError(error instanceof Error ? error.message : t('common.unexpectedError'));
     }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this case? This action cannot be undone.')) {
+    if (!window.confirm(t('case.confirmDelete'))) {
       return;
     }
     
@@ -140,13 +165,13 @@ export default function CaseDetail() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to delete case');
+        throw new Error(t('case.failedToDelete'));
       }
       
       router.push('/cases');
     } catch (error) {
       console.error('Error deleting case:', error);
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
+      setError(error instanceof Error ? error.message : t('common.unexpectedError'));
     }
   };
 
@@ -174,7 +199,7 @@ export default function CaseDetail() {
             onClick={() => router.push('/cases')}
             className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
           >
-            Back to Cases
+            {t('case.backToCases')}
           </button>
         </div>
       </div>
@@ -186,12 +211,12 @@ export default function CaseDetail() {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white p-4 rounded-md shadow">
-          <p className="text-gray-700">Case not found</p>
+          <p className="text-gray-700">{t('case.notFound')}</p>
           <button
             onClick={() => router.push('/cases')}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
-            Back to Cases
+            {t('case.backToCases')}
           </button>
         </div>
       </div>
@@ -228,13 +253,13 @@ export default function CaseDetail() {
                 onClick={handleCancel}
                 className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
               >
-                Cancel
+                {t('buttons.cancel')}
               </button>
               <button
                 onClick={handleSave}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
-                Save
+                {t('buttons.save')}
               </button>
             </>
           ) : (
@@ -243,30 +268,31 @@ export default function CaseDetail() {
                 onClick={handleEdit}
                 className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
               >
-                Edit
+                {t('buttons.edit')}
               </button>
               <button
                 onClick={handleDelete}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
               >
-                Delete
+                {t('buttons.delete')}
               </button>
             </>
           )}
         </div>
       </div>
 
+      {/* Basic Case Details */}
       <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Case Details</h3>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">{t('case.details')}</h3>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            Basic information about this case.
+            {t('case.basicInformation')}
           </p>
         </div>
         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <dt className="text-sm font-medium text-gray-500">Description</dt>
+              <dt className="text-sm font-medium text-gray-500">{t('case.description')}</dt>
               <dd className="mt-1 text-sm text-gray-900">
                 {isEditing ? (
                   <textarea
@@ -276,20 +302,84 @@ export default function CaseDetail() {
                     className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   />
                 ) : (
-                  description || 'No description provided'
+                  description || t('case.noDescriptionProvided')
                 )}
               </dd>
             </div>
-            <div>
-              <dt className="text-sm font-medium text-gray-500">Created</dt>
+            
+            {/* Project Information */}
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">{t('case.projectName')}</dt>
               <dd className="mt-1 text-sm text-gray-900">
-                {new Date(caseData.createdAt).toLocaleDateString()} at {new Date(caseData.createdAt).toLocaleTimeString()}
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                ) : (
+                  projectName || t('common.notSpecified')
+                )}
               </dd>
             </div>
-            <div>
-              <dt className="text-sm font-medium text-gray-500">Last Updated</dt>
+            
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">{t('case.purchaseDate')}</dt>
               <dd className="mt-1 text-sm text-gray-900">
-                {new Date(caseData.updatedAt).toLocaleDateString()} at {new Date(caseData.updatedAt).toLocaleTimeString()}
+                {isEditing ? (
+                  <input
+                    type="date"
+                    value={purchaseDate}
+                    onChange={(e) => setPurchaseDate(e.target.value)}
+                    className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                ) : (
+                  caseData.purchaseDate ? 
+                    new Date(caseData.purchaseDate).toLocaleDateString() : 
+                    t('common.notSpecified')
+                )}
+              </dd>
+            </div>
+            
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">{t('case.purchasePrice')}</dt>
+              <dd className="mt-1 text-sm text-gray-900">
+                {isEditing ? (
+                  <div className="relative rounded-md shadow-sm">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-500 sm:text-sm">€</span>
+                    </div>
+                    <input
+                      type="number"
+                      value={purchasePrice}
+                      onChange={(e) => setPurchasePrice(e.target.value === '' ? '' : parseFloat(e.target.value))}
+                      className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                      placeholder="0.00"
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <span className="text-gray-500 sm:text-sm">EUR</span>
+                    </div>
+                  </div>
+                ) : (
+                  caseData.purchasePrice ? 
+                    new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(caseData.purchasePrice) : 
+                    t('common.notSpecified')
+                )}
+              </dd>
+            </div>
+            
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">{t('case.created')}</dt>
+              <dd className="mt-1 text-sm text-gray-900">
+                {new Date(caseData.createdAt).toLocaleDateString()} {t('common.at')} {new Date(caseData.createdAt).toLocaleTimeString()}
+              </dd>
+            </div>
+            
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">{t('case.lastUpdated')}</dt>
+              <dd className="mt-1 text-sm text-gray-900">
+                {new Date(caseData.updatedAt).toLocaleDateString()} {t('common.at')} {new Date(caseData.updatedAt).toLocaleTimeString()}
               </dd>
             </div>
           </dl>
@@ -301,37 +391,61 @@ export default function CaseDetail() {
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
             <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Clients</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">{t('client.clients')}</h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                People or companies associated with this case.
+                {t('client.associatedWithCase')}
               </p>
             </div>
             <Link href={`/cases/${id}/clients/new`} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
-              Add Client
+              {t('client.addClient')}
             </Link>
           </div>
           <div className="border-t border-gray-200">
             {caseData.clients.length === 0 ? (
               <div className="px-4 py-5 sm:px-6 text-center">
-                <p className="text-sm text-gray-500">No clients added yet.</p>
-                <p className="mt-2 text-sm text-gray-500">Add a client to get started.</p>
+                <p className="text-sm text-gray-500">{t('client.noClientsYet')}</p>
+                <p className="mt-2 text-sm text-gray-500">{t('client.addClientToStart')}</p>
               </div>
             ) : (
-              <ul className="divide-y divide-gray-200">
-                {caseData.clients.map((client) => (
-                  <li key={client.id} className="px-4 py-4 sm:px-6 hover:bg-gray-50">
-                    <Link href={`/cases/${id}/clients/${client.id}`} className="flex justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-blue-600">{client.name}</p>
-                        <p className="text-xs text-gray-500">{client.type}</p>
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        Income: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(client.monthlyIncome)} / month
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <>
+                {/* Client Summary (only displayed when there is more than one client) */}
+                {caseData.clients.length > 1 && (
+                  <div className="px-4 py-3 bg-blue-50">
+                    <h4 className="text-sm font-medium text-blue-700 mb-1">{t('client.clientSummary')}</h4>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-blue-800">
+                      <div>{t('client.totalClients')}: {caseData.clients.length}</div>
+                      <div>{t('client.totalMonthlyIncome')}: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
+                        caseData.clients.reduce((sum, client) => sum + client.monthlyIncome, 0)
+                      )}</div>
+                      <div>{t('client.totalCapital')}: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
+                        caseData.clients.reduce((sum, client) => sum + client.currentCapital, 0)
+                      )}</div>
+                      <div>{t('client.totalDebt')}: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
+                        caseData.clients.reduce((sum, client) => sum + client.currentDebt, 0)
+                      )}</div>
+                      <div className="col-span-2">{t('client.combinedNetWorth')}: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(
+                        caseData.clients.reduce((sum, client) => sum + (client.currentCapital - client.currentDebt), 0)
+                      )}</div>
+                    </div>
+                  </div>
+                )}
+                <ul className="divide-y divide-gray-200">
+                  {caseData.clients.map((client) => (
+                    <li key={client.id} className="px-4 py-4 sm:px-6 hover:bg-gray-50">
+                      <Link href={`/cases/${id}/clients/${client.id}`} className="flex justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-blue-600">{client.name}</p>
+                          <p className="text-xs text-gray-500">{client.type}</p>
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          <div>{t('client.income')}: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(client.monthlyIncome)} / {t('common.month')}</div>
+                          <div className="text-xs text-right">{t('client.netWorth')}: {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(client.currentCapital - client.currentDebt)}</div>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         </div>
@@ -340,20 +454,20 @@ export default function CaseDetail() {
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
             <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Loan Simulations</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">{t('loan.loanSimulations')}</h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Loan scenarios created for this case.
+                {t('loan.scenariosForCase')}
               </p>
             </div>
             <Link href={`/cases/${id}/loans/new`} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
-              Add Simulation
+              {t('loan.addSimulation')}
             </Link>
           </div>
           <div className="border-t border-gray-200">
             {caseData.loanSimulations.length === 0 ? (
               <div className="px-4 py-5 sm:px-6 text-center">
-                <p className="text-sm text-gray-500">No loan simulations added yet.</p>
-                <p className="mt-2 text-sm text-gray-500">Add a loan simulation to get started.</p>
+                <p className="text-sm text-gray-500">{t('loan.noSimulationsYet')}</p>
+                <p className="mt-2 text-sm text-gray-500">{t('loan.addSimulationToStart')}</p>
               </div>
             ) : (
               <ul className="divide-y divide-gray-200">
@@ -362,14 +476,23 @@ export default function CaseDetail() {
                     <Link href={`/cases/${id}/loans/${loan.id}`} className="flex justify-between">
                       <div>
                         <p className="text-sm font-medium text-blue-600">{loan.name}</p>
-                        <p className="text-xs text-gray-500">{loan.loanType}</p>
+                        <div className="flex items-center mt-1">
+                          <p className="text-xs text-gray-500 mr-2">{t(`loanTypes.${loan.loanType.toLowerCase()}`)}</p>
+                          
+                          {/* Show number of associated clients if available */}
+                          {loan.clients && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
+                              {loan.clients.length} {t('client.clients')}
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">
-                          {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(loan.principal)} at {loan.interestRate}%
+                          {new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(loan.principal)} {t('common.at')} {loan.interestRate}%
                         </p>
-                        <p className="text-xs text-gray-500">
-                          {loan.termYears} years
+                        <p className="text-xs text-gray-500 text-right">
+                          {loan.termYears} {t('common.years')}
                         </p>
                       </div>
                     </Link>
@@ -384,9 +507,9 @@ export default function CaseDetail() {
       {/* Quick Actions */}
       <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Quick Actions</h3>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">{t('common.quickActions')}</h3>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            Common operations for this case.
+            {t('common.commonOperations')}
           </p>
         </div>
         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
@@ -398,7 +521,7 @@ export default function CaseDetail() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
               </svg>
-              <span className="text-sm font-medium text-gray-900">Add New Client</span>
+              <span className="text-sm font-medium text-gray-900">{t('client.addNewClient')}</span>
             </Link>
             
             <Link 
@@ -408,7 +531,7 @@ export default function CaseDetail() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-sm font-medium text-gray-900">Create Loan Simulation</span>
+              <span className="text-sm font-medium text-gray-900">{t('loan.createLoanSimulation')}</span>
             </Link>
             
             <Link 
@@ -418,7 +541,7 @@ export default function CaseDetail() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              <span className="text-sm font-medium text-gray-900">Configure Insurance</span>
+              <span className="text-sm font-medium text-gray-900">{t('insurance.configureInsurance')}</span>
             </Link>
             
             <Link 
@@ -428,7 +551,7 @@ export default function CaseDetail() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              <span className="text-sm font-medium text-gray-900">Run Investment Simulation</span>
+              <span className="text-sm font-medium text-gray-900">{t('investment.runSimulation')}</span>
             </Link>
             
             <Link 
@@ -438,7 +561,7 @@ export default function CaseDetail() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              <span className="text-sm font-medium text-gray-900">Export Case Data</span>
+              <span className="text-sm font-medium text-gray-900">{t('case.exportData')}</span>
             </Link>
             
             <Link 
@@ -450,7 +573,7 @@ export default function CaseDetail() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
               </svg>
-              <span className="text-sm font-medium text-gray-900">Compare Simulations</span>
+              <span className="text-sm font-medium text-gray-900">{t('common.compareSimulations')}</span>
             </Link>
           </div>
         </div>

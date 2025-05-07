@@ -1,6 +1,6 @@
-# Loan Browser UI Mockups
+# LoanLogic UI Mockups
 
-This document provides wireframes and UI mockups for the Loan Browser application, showing the layout and interaction flow for the key screens.
+This document provides wireframes and UI mockups for the LoanLogic application, showing the layout and interaction flow for the key screens.
 
 ## Main Layout
 

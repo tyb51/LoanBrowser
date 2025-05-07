@@ -1,6 +1,6 @@
-# Loan Browser Python API
+# LoanLogic Python API
 
-This directory contains the Python backend API for the Loan Browser application. The API is built using FastAPI and provides endpoints for loan calculations and comparisons.
+This directory contains the Python backend API for the LoanLogic application. The API is built using FastAPI and provides endpoints for loan calculations and comparisons.
 
 ## Setup
 

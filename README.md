@@ -1,10 +1,10 @@
-# Loan Browser
+# LoanLogic
 
 A comprehensive web application for visualizing and comparing different loan types, with investment simulation capabilities.
 
 ## Overview
 
-Loan Browser is an interactive tool that helps users:
+LoanLogic is an interactive tool that helps users:
 
 - Calculate and visualize annuity, bullet, and modular loans
 - Compare different loan strategies side-by-side
@@ -78,7 +78,7 @@ Refer to the following documents for more information:
 
 - [Deployment Guide](DEPLOYMENT.md): Instructions for setting up and running the application
 - [Python API Documentation](python/README.md): Details about the Python backend API
-- [Planning Documentation](planning/LoanBrowserPlan.md): Project overview and implementation plan
+- [Planning Documentation](planning/LoanLogicPlan.md): Project overview and implementation plan
 - [Technical Implementation](planning/TechnicalImplementation.md): Technical details and data flow
 - [UI Mockups](planning/UIMockups.md): User interface design specifications
 

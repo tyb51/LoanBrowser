@@ -99,25 +99,25 @@ export function InvestmentSimulationTable({
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {yearlyData.map((row) => (
-              <tr key={row.Maand}>
+              <tr key={row.month}>
                 <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
-                  {row.Jaar}
+                  {row.year}
                 </td>
                 <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                  {formatCurrency(row["Saldo Investering"])}
+                  {formatCurrency(row.investmentBalance)}
                 </td>
                 <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-right">
-                  {formatCurrency(row["Resterend Kapitaal"])}
+                  {formatCurrency(row.remainingPrincipal)}
                 </td>
                 <td className={`px-3 py-2 whitespace-nowrap text-sm font-medium text-right ${
-                  row["Netto Vermogen (Invest - Schuld)"] >= 0 ? 'text-green-600' : 'text-red-600'
+                  row.netWorth >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {formatCurrency(row["Netto Vermogen (Invest - Schuld)"])}
+                  {formatCurrency(row.netWorth)}
                 </td>
                 <td className={`px-3 py-2 whitespace-nowrap text-sm font-medium text-right ${
-                  row["Maandelijkse Bijdrage/Onttrekking"] >= 0 ? 'text-green-600' : 'text-red-600'
+                  row.monthlyContribution >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {formatCurrency(row["Maandelijkse Bijdrage/Onttrekking"])}
+                  {formatCurrency(row.monthlyContribution)}
                 </td>
               </tr>
             ))}

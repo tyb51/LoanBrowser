@@ -1,6 +1,6 @@
-# Loan Browser Technical Implementation
+# LoanLogic Technical Implementation
 
-This document outlines the detailed technical implementation for the Loan Browser application, expanding on the high-level plan.
+This document outlines the detailed technical implementation for the LoanLogic application, expanding on the high-level plan.
 
 ## Data Flow Architecture
 

@@ -1,12 +1,18 @@
 {
   "common": {
-    "appName": "Darlehens-Browser",
-    "copyright": "© {{year}} Darlehens-Browser - Nur für Bildungszwecke"
+    "appName": "LoanLogic",
+    "copyright": "© {{year}} LoanLogic - Nur für Bildungszwecke",
+    "months": "Monate",
+    "notAvailable": "Nicht verfügbar"
   },
   "navigation": {
     "singleLoan": "Einzeldarlehen",
     "loanComparison": "Darlehensvergleich",
-    "investmentSimulation": "Investitionssimulation"
+    "investmentSimulation": "Investitionssimulation",
+    "profile": "Profil",
+    "logout": "Abmelden",
+    "settings": "Einstellungen",
+    "signup": "Melden Sie sich an"
   },
   "loanTypes": {
     "annuity": "Annuität",
@@ -37,13 +43,32 @@
     "remove": "Entfernen",
     "bulletLoanInfo": "Bei endfälligen Darlehen wird der Kapitalbetrag im letzten Monat bezahlt.",
     "modularLoanInfo": "Bei modularen Darlehen geben Sie an, wann Kapitalzahlungen geleistet werden.",
-    "equalInvestment": "Ausgeglichen"
+    "equalInvestment": "Ausgeglichen",
+    "required": "Pflichtfeld",
+    "invalid": "Ungültige Eingabe",
+    "success": "Erfolgreich gesendet",
+    "error": "Ein Fehler ist aufgetreten"
+  },
+  "notifications": {
+    "success": "Erfolg!",
+    "error": "Fehler!",
+    "info": "Info",
+    "warning": "Warnung"
+  },
+  "pagination": {
+    "previous": "Zurück",
+    "next": "Weiter",
+    "page": "Seite",
+    "of": "von"
   },
   "buttons": {
     "compare": "Darlehen vergleichen",
     "comparing": "Vergleiche...",
     "simulate": "Investitionssimulation starten",
-    "simulating": "Simuliere..."
+    "simulating": "Simuliere...",
+    "next": "Nächste",
+    "save": "Speichern",
+    "saving": "Aufbewahren"
   },
   "charts": {
     "paymentBreakdown": "Jährliche Zahlungsaufschlüsselung",
@@ -57,7 +82,13 @@
     "insurance": "Versicherung",
     "investmentBalance": "Anlagebilanz",
     "loanBalance": "Darlehenssaldo",
-    "netWorth": "Nettovermögen (Investition - Darlehen)"
+    "netWorth": "Nettovermögen (Investition - Darlehen)",
+    "noData": "Keine Daten verfügbar",
+    "loading": "Diagramm wird geladen...",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "lastWeek": "Letzte Woche",
+    "lastMonth": "Letzter Monat"
   },
   "tables": {
     "loanStatistics": "Darlehensstatistik",
@@ -94,7 +125,11 @@
     "of": "von",
     "results": "Ergebnissen",
     "previous": "Zurück",
-    "next": "Weiter"
+    "next": "Weiter",
+    "noResults": "Keine Ergebnisse gefunden",
+    "loading": "Daten werden geladen...",
+    "search": "Suchen...",
+    "rowsPerPage": "Zeilen pro Seite:"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Mindesterforderliche Wachstumsrate",
@@ -144,6 +179,31 @@
     "investmentPlaceholder": "Konfigurieren Sie die Darlehensparameter und Investitionseinstellungen und klicken Sie dann auf \"Investitionssimulation starten\", um die Ergebnisse zu sehen."
   },
   "ui": {
-    "myCases": ""
+    "myCases": "Meine Fälle"
+  },
+  "about": {
+    "story": {
+      "title": "Unsere Geschichte"
+    },
+    "mission": {
+      "description": "Wir möchten Werbung für Unternehmen jeder Größe zugänglicher, effektiver und transparenter machen."
+    }
+  },
+  "footer": {
+    "legal": {
+      "title": "Legal"
+    },
+    "quickLinks": "Schnelle Links",
+    "features": "Merkmale"
+  },
+  "client": {
+    "selectClients": "Wählen Sie Client",
+    "selectAll": "Alle",
+    "selectNone": "Keiner",
+    "selectedClientsSummary": "Ausgewählte Clients Zusammenfassung"
+  },
+  "case": {
+    "backToCase": "Zurück zu Fall",
+    "title": "Titel"
   }
 }

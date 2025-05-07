@@ -1,6 +1,6 @@
 # Python Backend Integration Guide
 
-This document explains how the LoanBrowser frontend integrates with the Python backend API.
+This document explains how the LoanLogic frontend integrates with the Python backend API.
 
 ## Architecture Overview
 

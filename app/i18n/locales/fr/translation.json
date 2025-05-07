@@ -1,12 +1,25 @@
 {
   "common": {
-    "appName": "Navigateur de Prêts",
-    "copyright": "© {{year}} Navigateur de Prêts - À des fins éducatives uniquement"
+    "appName": "LoanLogic",
+    "copyright": "© {{year}} LoanLogic - À des fins éducatives uniquement",
+    "months": "mois",
+    "notAvailable": "Pas disponible"
   },
   "navigation": {
     "singleLoan": "Prêt Unique",
     "loanComparison": "Comparaison de Prêts",
-    "investmentSimulation": "Simulation d'Investissement"
+    "investmentSimulation": "Simulation d'Investissement",
+    "home": "Accueil",
+    "features": "Fonctionnalités",
+    "pricing": "Tarification",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "logout": "Déconnexion"
   },
   "loanTypes": {
     "annuity": "Annuité",
@@ -36,13 +49,39 @@
     "add": "Ajouter",
     "remove": "Supprimer",
     "bulletLoanInfo": "Pour les prêts bullet, le capital sera payé au dernier mois.",
-    "modularLoanInfo": "Pour les prêts modulaires, spécifiez quand les paiements de capital seront effectués."
+    "modularLoanInfo": "Pour les prêts modulaires, spécifiez quand les paiements de capital seront effectués.",
+    "required": "Champ obligatoire",
+    "invalid": "Entrée invalide",
+    "success": "Envoyé avec succès",
+    "error": "Une erreur s'est produite"
   },
   "buttons": {
     "compare": "Comparer les Prêts",
     "comparing": "Comparaison en cours...",
     "simulate": "Lancer la Simulation d'Investissement",
-    "simulating": "Simulation en cours..."
+    "simulating": "Simulation en cours...",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "learn": "En savoir plus",
+    "viewAll": "Voir tout"
+  },
+  "notifications": {
+    "success": "Succès !",
+    "error": "Erreur !",
+    "info": "Info",
+    "warning": "Avertissement"
+  },
+  "pagination": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page",
+    "of": "sur"
   },
   "charts": {
     "paymentBreakdown": "Répartition Annuelle des Paiements",
@@ -56,7 +95,13 @@
     "insurance": "Assurance",
     "investmentBalance": "Solde d'Investissement",
     "loanBalance": "Solde du Prêt",
-    "netWorth": "Valeur Nette (Investissement - Prêt)"
+    "netWorth": "Valeur Nette (Investissement - Prêt)",
+    "noData": "Aucune donnée disponible",
+    "loading": "Chargement du graphique...",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "lastWeek": "Semaine dernière",
+    "lastMonth": "Mois dernier"
   },
   "tables": {
     "loanStatistics": "Statistiques du Prêt",
@@ -93,7 +138,11 @@
     "of": "de",
     "results": "résultats",
     "previous": "Précédent",
-    "next": "Suivant"
+    "next": "Suivant",
+    "noResults": "Aucun résultat trouvé",
+    "loading": "Chargement des données...",
+    "search": "Rechercher...",
+    "rowsPerPage": "Lignes par page :"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Taux de Croissance Minimum Requis",
@@ -141,5 +190,309 @@
     "singleLoanPlaceholder": "Entrez vos paramètres de prêt dans le formulaire et cliquez sur \"Calculer le Prêt\" pour voir les résultats.",
     "comparisonPlaceholder": "Mettez à jour les paramètres des deux prêts et cliquez sur \"Comparer les Prêts\" pour voir une comparaison détaillée.",
     "investmentPlaceholder": "Configurez les paramètres du prêt et les paramètres d'investissement, puis cliquez sur \"Lancer la Simulation d'Investissement\" pour voir les résultats."
+  },
+  "landing": {
+    "hero": {
+      "title": "Découvrez une nouvelle façon de faire de la publicité",
+      "subtitle": "Atteignez votre public cible plus efficacement avec notre plateforme publicitaire avancée",
+      "cta": "Commencer maintenant",
+      "secondaryCta": "En savoir plus"
+    },
+    "features": {
+      "title": "Nos fonctionnalités principales",
+      "subtitle": "Conçues pour améliorer vos campagnes publicitaires",
+      "feature1": {
+        "title": "Ciblage avancé",
+        "description": "Atteignez les bonnes personnes au bon moment"
+      },
+      "feature2": {
+        "title": "Analyses détaillées",
+        "description": "Visualisez les résultats en temps réel et optimisez vos campagnes"
+      },
+      "feature3": {
+        "title": "Intégration simple",
+        "description": "Fonctionne parfaitement avec vos outils marketing existants"
+      }
+    },
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "subtitle": "Trois étapes simples pour commencer",
+      "step1": {
+        "title": "Créez un compte",
+        "description": "Inscrivez-vous et configurez votre profil en quelques minutes"
+      },
+      "step2": {
+        "title": "Créez votre campagne",
+        "description": "Concevez vos publicités et définissez votre audience"
+      },
+      "step3": {
+        "title": "Lancez et optimisez",
+        "description": "Démarrez votre campagne et améliorez-la en fonction des résultats"
+      }
+    },
+    "testimonials": {
+      "title": "Ce que disent nos clients",
+      "subtitle": "Témoignages d'annonceurs qui réussissent",
+      "testimonial1": {
+        "quote": "Cette plateforme a augmenté nos taux de conversion de 40% en seulement deux mois.",
+        "author": "Marie Dubois",
+        "company": "TechStart SAS"
+      },
+      "testimonial2": {
+        "quote": "L'interface intuitive et les analyses détaillées rendent la publicité plus facile que jamais.",
+        "author": "Thomas Laurent",
+        "company": "Croissance Marketing"
+      },
+      "testimonial3": {
+        "quote": "Nous avons enfin trouvé une plateforme qui répond à notre audience spécifique.",
+        "author": "Sophie Martin",
+        "company": "SantéPlus"
+      }
+    },
+    "partners": {
+      "title": "Nos partenaires",
+      "subtitle": "Collaborations qui renforcent notre plateforme"
+    },
+    "cta": {
+      "title": "Prêt à faire passer vos publicités au niveau supérieur ?",
+      "subtitle": "Inscrivez-vous aujourd'hui et commencez à voir de meilleurs résultats",
+      "button": "Commencer l'essai gratuit"
+    }
+  },
+  "pricing": {
+    "title": "Tarification transparente",
+    "subtitle": "Choisissez le forfait qui répond à vos besoins",
+    "monthly": "Mensuel",
+    "annually": "Annuel",
+    "plans": {
+      "basic": {
+        "title": "Basique",
+        "price": "29 €",
+        "period": "/mois",
+        "description": "Parfait pour les petites entreprises et les startups",
+        "features": [
+          "Jusqu'à 5 campagnes",
+          "Ciblage d'audience de base",
+          "Analyses standard",
+          "Support par e-mail"
+        ],
+        "cta": "Choisir Basique"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "79 €",
+        "period": "/mois",
+        "description": "Idéal pour les entreprises en croissance",
+        "features": [
+          "Jusqu'à 20 campagnes",
+          "Ciblage avancé",
+          "Analyses complètes",
+          "Support prioritaire",
+          "Accès API"
+        ],
+        "cta": "Choisir Pro"
+      },
+      "enterprise": {
+        "title": "Entreprise",
+        "price": "199 €",
+        "period": "/mois",
+        "description": "Pour les grandes organisations avec des besoins complexes",
+        "features": [
+          "Campagnes illimitées",
+          "Ciblage premium",
+          "Analyses personnalisées",
+          "Gestionnaire de compte dédié",
+          "Accès API complet",
+          "Intégrations personnalisées"
+        ],
+        "cta": "Choisir Entreprise"
+      }
+    },
+    "adOptions": {
+      "title": "Options publicitaires",
+      "subtitle": "Options flexibles pour différents budgets",
+      "option1": {
+        "title": "Paiement par clic",
+        "description": "Payez uniquement lorsque les utilisateurs cliquent sur vos publicités"
+      },
+      "option2": {
+        "title": "Impressions",
+        "description": "Payez pour le nombre de fois que votre publicité est affichée"
+      },
+      "option3": {
+        "title": "Conversions",
+        "description": "Payez uniquement pour les résultats qui mènent à une action"
+      }
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "question1": "Puis-je changer de forfait ?",
+      "answer1": "Oui, vous pouvez passer à un forfait supérieur ou inférieur à tout moment. La facturation sera ajustée en fonction des jours restants dans votre période de facturation.",
+      "question2": "Y a-t-il des contrats à long terme ?",
+      "answer2": "Non, tous les forfaits peuvent être facturés mensuellement ou annuellement sans engagement à long terme.",
+      "question3": "Puis-je ajouter plusieurs utilisateurs à mon compte ?",
+      "answer3": "Oui, les forfaits Pro et Entreprise permettent d'ajouter plusieurs utilisateurs avec différents niveaux d'accès."
+    }
+  },
+  "about": {
+    "mission": {
+      "title": "Notre mission",
+      "description": "Nous nous efforçons de rendre la publicité plus accessible, plus efficace et plus transparente pour les entreprises de toute taille."
+    },
+    "story": {
+      "title": "Notre histoire",
+      "description": "Fondée en 2018, nous avons commencé comme une petite équipe avec une grande vision. Aujourd'hui, nous aidons des milliers d'entreprises à optimiser leurs campagnes publicitaires.",
+      "paragraph1": "Tout a commencé par une idée simple : la publicité devait être plus simple et plus efficace.",
+      "paragraph2": "Après des années de recherche et de développement, nous avons construit une plateforme qui concrétise cette vision.",
+      "paragraph3": "Nous continuons d'innover et nous nous efforçons de rester à la pointe dans le monde en constante évolution de la publicité numérique."
+    },
+    "team": {
+      "title": "Notre équipe",
+      "description": "Rencontrez les personnes derrière notre plateforme",
+      "member1": {
+        "name": "Jean Dupont",
+        "position": "PDG et fondateur",
+        "bio": "Avec 15 ans d'expérience en marketing numérique, Jean dirige notre orientation stratégique."
+      },
+      "member2": {
+        "name": "Emma Lefèvre",
+        "position": "Directrice technique",
+        "bio": "Emma veille à ce que notre plateforme reste techniquement avancée et fiable."
+      },
+      "member3": {
+        "name": "Lucas Martin",
+        "position": "Responsable du succès client",
+        "bio": "Lucas s'assure que nos clients obtiennent des résultats maximaux avec notre plateforme."
+      }
+    },
+    "values": {
+      "title": "Nos valeurs",
+      "value1": {
+        "title": "Transparence",
+        "description": "Nous croyons en une communication honnête et ouverte avec nos clients."
+      },
+      "value2": {
+        "title": "Innovation",
+        "description": "Nous nous efforçons constamment d'améliorer notre plateforme et de développer de nouvelles fonctionnalités."
+      },
+      "value3": {
+        "title": "Orientation client",
+        "description": "Le succès de nos clients est au cœur de tout ce que nous faisons."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Nous aimerions avoir de vos nouvelles",
+    "form": {
+      "nameLabel": "Nom",
+      "namePlaceholder": "Votre nom complet",
+      "emailLabel": "Adresse e-mail",
+      "emailPlaceholder": "votre.email@exemple.fr",
+      "subjectLabel": "Sujet",
+      "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tapez votre message ici...",
+      "submitButton": "Envoyer le message"
+    },
+    "info": {
+      "title": "Informations de contact",
+      "email": "info@plateformepub.fr",
+      "phone": "+33 1 23 45 67 89",
+      "address": "123 Avenue de Paris, 75001 Paris"
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "question1": "Sous quel délai puis-je espérer une réponse ?",
+      "answer1": "Nous nous efforçons de répondre à toutes les demandes dans les 24 heures.",
+      "question2": "Puis-je obtenir une démonstration de la plateforme ?",
+      "answer2": "Oui, vous pouvez demander une démonstration personnalisée via le formulaire de contact.",
+      "question3": "Proposez-vous une assistance le week-end ?",
+      "answer3": "Notre service client est disponible du lundi au vendredi, mais les demandes urgentes sont également traitées le week-end."
+    }
+  },
+  "features": {
+    "title": "Découvrez nos fonctionnalités",
+    "subtitle": "Tout ce dont vous avez besoin pour créer des campagnes publicitaires réussies",
+    "feature1": {
+      "title": "Ciblage personnalisé",
+      "description": "Définissez votre public idéal en fonction des données démographiques, des intérêts, du comportement et plus encore.",
+      "benefit1": "Atteignez exactement les bonnes personnes",
+      "benefit2": "Minimisez les impressions gaspillées",
+      "benefit3": "Améliorez le ROI grâce à un ciblage précis"
+    },
+    "feature2": {
+      "title": "Analyses en temps réel",
+      "description": "Visualisez et analysez les résultats de campagne au fur et à mesure qu'ils arrivent.",
+      "benefit1": "Effectuez des ajustements immédiats",
+      "benefit2": "Comprenez le comportement des utilisateurs",
+      "benefit3": "Optimisez pour de meilleurs résultats"
+    },
+    "feature3": {
+      "title": "Tests A/B",
+      "description": "Testez différentes variantes de publicités pour voir ce qui fonctionne le mieux.",
+      "benefit1": "Comparez les performances",
+      "benefit2": "Prenez des décisions basées sur les données",
+      "benefit3": "Amélioration continue des campagnes"
+    },
+    "feature4": {
+      "title": "Automatisation",
+      "description": "Laissez la plateforme effectuer automatiquement des ajustements basés sur des règles prédéfinies.",
+      "benefit1": "Économisez du temps et des efforts",
+      "benefit2": "Réagissez immédiatement aux changements",
+      "benefit3": "Éliminez les erreurs humaines"
+    },
+    "feature5": {
+      "title": "Intégrations",
+      "description": "Connectez-vous facilement à vos outils et plateformes marketing existants.",
+      "benefit1": "Données centralisées",
+      "benefit2": "Rationalisez votre flux de travail",
+      "benefit3": "Rapports complets"
+    }
+  },
+  "footer": {
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos",
+      "careers": "Carrières",
+      "news": "Actualités",
+      "contact": "Contact"
+    },
+    "product": {
+      "title": "Produit",
+      "features": "Fonctionnalités",
+      "pricing": "Tarification",
+      "tutorials": "Tutoriels",
+      "resources": "Ressources"
+    },
+    "legal": {
+      "title": "Mentions légales",
+      "terms": "Conditions générales",
+      "privacy": "Politique de confidentialité",
+      "cookies": "Politique de cookies",
+      "security": "Informations de sécurité"
+    },
+    "newsletter": {
+      "title": "Restez informé",
+      "description": "Abonnez-vous à notre newsletter pour recevoir des mises à jour, des conseils et des offres spéciales",
+      "placeholder": "Votre adresse e-mail",
+      "button": "S'abonner"
+    },
+    "copyright": "© 2025 Prosolaid. Tous droits réservés.",
+    "quickLinks": "Liens rapides",
+    "features": "Caractéristiques"
+  },
+  "ui": {
+    "myCases": "Mes cas"
+  },
+  "client": {
+    "selectClients": "Sélectionner le client",
+    "selectAll": "Tous",
+    "selectNone": "Aucun",
+    "selectedClientsSummary": "Résumé des clients sélectionnés"
+  },
+  "case": {
+    "backToCase": "Retour au cas",
+    "title": "Titre"
   }
 }

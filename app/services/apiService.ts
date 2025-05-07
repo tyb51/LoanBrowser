@@ -19,7 +19,7 @@ const getApiConfig = () => {
   }
   
   try {
-    const storedConfig = localStorage.getItem('loanBrowserApiConfig');
+    const storedConfig = localStorage.getItem('LoanLogicApiConfig');
     if (storedConfig) {
       return JSON.parse(storedConfig);
     }

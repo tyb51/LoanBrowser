@@ -40,5 +40,11 @@ export enum LoanStatisticsField {
   TOTAL_INTEREST_PAID = 'totalInterestPaid',
   TOTAL_INSURANCE_PAID = 'totalInsurancePaid',
   TOTAL_LOAN_COSTS = 'totalLoanCosts',
-  MEDIAN_MONTHLY_PAYMENT = 'medianMonthlyPayment'
+  MEDIAN_MONTHLY_PAYMENT = 'medianMonthlyPayment',
+  // Multi-client specific fields
+  DEBT_RATIO = 'debtRatio',
+  DEBT_RATIO_ASSESSMENT = 'debtRatioAssessment',
+  PER_CLIENT_INSURANCE_PAID = 'perClientInsurancePaid',
+  PER_CLIENT_DEBT_RATIO = 'perClientDebtRatio',
+  PER_CLIENT_DEBT_RATIO_ASSESSMENT = 'perClientDebtRatioAssessment'
 }

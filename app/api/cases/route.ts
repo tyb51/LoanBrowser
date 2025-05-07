@@ -43,7 +43,13 @@ export async function POST(request: Request) {
 
     // Get the request body
     const body = await request.json();
-    const { title, description } = body;
+    const { 
+      title, 
+      description, 
+      projectName, 
+      purchasePrice, 
+      purchaseDate 
+    } = body;
 
     // Validate input
     if (!title) {
@@ -53,11 +59,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create the case
+    // Create the case with new project fields
     const newCase = await prisma.case.create({
       data: {
         title,
         description,
+        projectName: projectName || null,
+        purchasePrice: purchasePrice || null,
+        purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
         userId: session.user.id,
       },
     });

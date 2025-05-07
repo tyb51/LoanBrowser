@@ -17,7 +17,7 @@ export async function GET(
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const id = params.id;
+    const {id} = await params
 
     // Get the case with all related data
     const caseData = await prisma.case.findUnique({
@@ -103,7 +103,13 @@ export async function PUT(
 
     // Get the request body
     const body = await request.json();
-    const { title, description } = body;
+    const { 
+      title, 
+      description, 
+      projectName, 
+      purchasePrice, 
+      purchaseDate 
+    } = body;
 
     // Validate input
     if (!title) {
@@ -119,6 +125,9 @@ export async function PUT(
       data: {
         title,
         description,
+        projectName: projectName || null,
+        purchasePrice: purchasePrice || null,
+        purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
       },
     });
 

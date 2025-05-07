@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import numpy as np
 from enum import Enum
+from fastapi.routing import APIRouter
 
 # Add parent directory to path to import calculation functions
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -19,7 +20,7 @@ from calculation_functions import (
     bereken_min_groei_voor_betaling
 )
 
-app = FastAPI(title="Loan Browser API", 
+app = FastAPI(title="LoanLogic API", 
               description="API for loan calculations and simulations")
 
 # Configure CORS - IMPORTANT: Make sure this is before any routes
@@ -30,6 +31,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 # Enum classes to match the TypeScript enums
 class LoanType(str, Enum):
@@ -139,7 +142,7 @@ def transform_annual_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
     
     return result
 
-def transform_statistics(stats: Dict[str, float]) -> Dict[str, Any]:
+def transform_statistics(stats: Dict[str, Any]) -> Dict[str, Any]:
     """Transform statistics dictionary to the expected API response format"""
     # Create a dictionary with both enum-based and legacy string-based fields
     result = {
@@ -167,12 +170,31 @@ def transform_statistics(stats: Dict[str, float]) -> Dict[str, Any]:
     if "netWorthEndOfTerm" in stats:
         result["netWorthEndOfTerm"] = stats["netWorthEndOfTerm"]
     
+    # Add multi-client specific statistics if they exist
+    if "debtRatio" in stats:
+        result["debtRatio"] = stats["debtRatio"]
+    
+    if "debtRatioAssessment" in stats:
+        result["debtRatioAssessment"] = stats["debtRatioAssessment"]
+    
+    if "perClientInsurancePaid" in stats:
+        result["perClientInsurancePaid"] = stats["perClientInsurancePaid"]
+    
+    if "perClientDebtRatio" in stats:
+        result["perClientDebtRatio"] = stats["perClientDebtRatio"]
+    
+    if "perClientDebtRatioAssessment" in stats:
+        result["perClientDebtRatioAssessment"] = stats["perClientDebtRatioAssessment"]
+    
+    if "clientCount" in stats:
+        result["clientCount"] = stats["clientCount"]
+    
     return result
 
 # API endpoints
 @app.get("/")
 async def root():
-    return {"message": "Loan Browser API is running. Visit /docs for API documentation."}
+    return {"message": "LoanLogic API is running. Visit /docs for API documentation."}
 
 @app.post("/api/calculate-loan")
 async def calculate_loan(params: LoanParameters, modular_schedule: Optional[ModularLoanSchedule] = None):
@@ -330,3 +352,9 @@ async def options_route(path: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# Import routers - Must be after FastAPI initialization
+from .multi_client_loan import router as multi_client_router
+
+# Include routers
+app.include_router(multi_client_router, prefix="/api")

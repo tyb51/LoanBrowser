@@ -1,4 +1,4 @@
-# Loan Browser Website Plan
+# LoanLogic Website Plan
 
 ## Project Overview
 This project aims to create an interactive web application for visualizing loan calculations. The application will leverage NextJS frontend with Chart.js for visualizations and connect to Python backend functions for complex loan calculations.

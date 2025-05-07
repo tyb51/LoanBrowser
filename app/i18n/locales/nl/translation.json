@@ -1,12 +1,25 @@
 {
   "common": {
-    "appName": "Leningenbrowser",
-    "copyright": "© {{year}} Leningenbrowser - Alleen voor educatieve doeleinden"
+    "appName": "LoanLogic",
+    "copyright": "© {{year}} LoanLogic - Alleen voor educatieve doeleinden",
+    "months": "maanden",
+    "notAvailable": "Niet beschikbaar"
   },
   "navigation": {
     "singleLoan": "Enkele Lening",
     "loanComparison": "Leningvergelijking",
-    "investmentSimulation": "Investeringssimulatie"
+    "investmentSimulation": "Investeringssimulatie",
+    "home": "Home",
+    "features": "Functies",
+    "pricing": "Prijzen",
+    "about": "Over Ons",
+    "contact": "Contact",
+    "login": "Inloggen",
+    "signup": "Registreren",
+    "dashboard": "Dashboard",
+    "settings": "Instellingen",
+    "profile": "Profiel",
+    "logout": "Uitloggen"
   },
   "loanTypes": {
     "annuity": "Annuïteit",
@@ -37,13 +50,28 @@
     "remove": "Verwijderen",
     "bulletLoanInfo": "Voor bullet leningen wordt de hoofdsom in de laatste maand betaald.",
     "modularLoanInfo": "Voor modulaire leningen, specificeer wanneer hoofdsombetalingen worden gedaan.",
-    "equalInvestment": "Gelijk"
+    "equalInvestment": "Gelijk",
+    "required": "Verplicht veld",
+    "invalid": "Ongeldige invoer",
+    "success": "Succesvol verzonden",
+    "error": "Er is een fout opgetreden"
   },
   "buttons": {
     "compare": "Vergelijk Leningen",
     "comparing": "Vergelijken...",
     "simulate": "Voer Investeringssimulatie Uit",
-    "simulating": "Simuleren..."
+    "simulating": "Simuleren...",
+    "submit": "Versturen",
+    "cancel": "Annuleren",
+    "save": "Opslaan",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "create": "Aanmaken",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "learn": "Meer informatie",
+    "viewAll": "Alles bekijken",
+    "saving": "Aan het opslaan"
   },
   "charts": {
     "loanBalance": "Leningsaldo",
@@ -57,7 +85,25 @@
     "interest": "Rente",
     "insurance": "Verzekering",
     "investmentBalance": "Investeringssaldo",
-    "netWorth": "Netto Vermogen (Investering - Lening)"
+    "netWorth": "Netto Vermogen (Investering - Lening)",
+    "noData": "Geen gegevens beschikbaar",
+    "loading": "Grafiek laden...",
+    "today": "Vandaag",
+    "yesterday": "Gisteren",
+    "lastWeek": "Afgelopen week",
+    "lastMonth": "Afgelopen maand"
+  },
+  "notifications": {
+    "success": "Succes!",
+    "error": "Fout!",
+    "info": "Info",
+    "warning": "Waarschuwing"
+  },
+  "pagination": {
+    "previous": "Vorige",
+    "next": "Volgende",
+    "page": "Pagina",
+    "of": "van"
   },
   "tables": {
     "loanStatistics": "Leningstatistieken",
@@ -94,7 +140,11 @@
     "of": "van",
     "results": "resultaten",
     "previous": "Vorige",
-    "next": "Volgende"
+    "next": "Volgende",
+    "noResults": "Geen resultaten gevonden",
+    "loading": "Gegevens laden...",
+    "search": "Zoeken...",
+    "rowsPerPage": "Rijen per pagina:"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Minimaal Vereiste Groeivoet",
@@ -144,6 +194,308 @@
     "investmentPlaceholder": "Configureer de leningparameters en investeringsinstellingen, en klik dan op \"Voer Investeringssimulatie Uit\" om de resultaten te zien."
   },
   "ui": {
-    "myCases": ""
+    "myCases": "Mijn zaken"
+  },
+  "landing": {
+    "hero": {
+      "title": "Ontdek een nieuwe manier om te adverteren",
+      "subtitle": "Bereik uw doelgroep effectiever met onze geavanceerde advertentieplatform",
+      "cta": "Begin nu",
+      "secondaryCta": "Meer informatie"
+    },
+    "features": {
+      "title": "Onze belangrijkste functies",
+      "subtitle": "Ontworpen om uw advertentiecampagnes te verbeteren",
+      "feature1": {
+        "title": "Geavanceerde targeting",
+        "description": "Bereik precies de juiste mensen op het juiste moment"
+      },
+      "feature2": {
+        "title": "Gedetailleerde analyses",
+        "description": "Bekijk real-time resultaten en optimaliseer uw campagnes"
+      },
+      "feature3": {
+        "title": "Eenvoudige integratie",
+        "description": "Werkt naadloos samen met uw bestaande marketingtools"
+      }
+    },
+    "howItWorks": {
+      "title": "Hoe het werkt",
+      "subtitle": "Drie eenvoudige stappen om te beginnen",
+      "step1": {
+        "title": "Maak een account aan",
+        "description": "Registreer en stel uw profiel in binnen enkele minuten"
+      },
+      "step2": {
+        "title": "Maak uw campagne",
+        "description": "Ontwerp uw advertenties en stel uw doelgroep in"
+      },
+      "step3": {
+        "title": "Lanceer en optimaliseer",
+        "description": "Start uw campagne en verbeter op basis van resultaten"
+      }
+    },
+    "testimonials": {
+      "title": "Wat onze klanten zeggen",
+      "subtitle": "Verhalen van succesvolle adverteerders",
+      "testimonial1": {
+        "quote": "Dit platform heeft onze conversieratio's met 40% verhoogd in slechts twee maanden.",
+        "author": "Lisa Jansen",
+        "company": "TechStart BV"
+      },
+      "testimonial2": {
+        "quote": "De intuïtieve interface en gedetailleerde analyses maken adverteren eenvoudiger dan ooit.",
+        "author": "Martijn de Vries",
+        "company": "Groei Marketing"
+      },
+      "testimonial3": {
+        "quote": "We hebben eindelijk een platform gevonden dat aansluit bij onze specifieke doelgroep.",
+        "author": "Sophie Bakker",
+        "company": "HealthPlus"
+      }
+    },
+    "partners": {
+      "title": "Onze partners",
+      "subtitle": "Samenwerkingen die ons platform versterken"
+    },
+    "cta": {
+      "title": "Klaar om uw advertenties naar een hoger niveau te tillen?",
+      "subtitle": "Meld u vandaag nog aan en begin met betere resultaten te zien",
+      "button": "Start gratis proef"
+    }
+  },
+  "pricing": {
+    "title": "Transparante prijzen",
+    "subtitle": "Kies het plan dat bij uw behoeften past",
+    "monthly": "Maandelijks",
+    "annually": "Jaarlijks",
+    "plans": {
+      "basic": {
+        "title": "Basis",
+        "price": "€29",
+        "period": "/maand",
+        "description": "Perfect voor kleine bedrijven en startups",
+        "features": [
+          "Tot 5 campagnes",
+          "Basisdoelgroep targeting",
+          "Standaardanalyses",
+          "E-mailondersteuning"
+        ],
+        "cta": "Kies Basis"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "€79",
+        "period": "/maand",
+        "description": "Ideaal voor groeiende bedrijven",
+        "features": [
+          "Tot 20 campagnes",
+          "Geavanceerde targeting",
+          "Uitgebreide analyses",
+          "Prioriteitsondersteuning",
+          "API toegang"
+        ],
+        "cta": "Kies Pro"
+      },
+      "enterprise": {
+        "title": "Enterprise",
+        "price": "€199",
+        "period": "/maand",
+        "description": "Voor grote organisaties met complexe behoeften",
+        "features": [
+          "Onbeperkte campagnes",
+          "Premium targeting",
+          "Aangepaste analyses",
+          "Toegewijde accountmanager",
+          "Volledige API toegang",
+          "Aangepaste integraties"
+        ],
+        "cta": "Kies Enterprise"
+      }
+    },
+    "adOptions": {
+      "title": "Advertentieopties",
+      "subtitle": "Flexibele opties voor verschillende budgetten",
+      "option1": {
+        "title": "Pay-per-Click",
+        "description": "Betaal alleen wanneer gebruikers op uw advertenties klikken"
+      },
+      "option2": {
+        "title": "Impressies",
+        "description": "Betaal voor het aantal keren dat uw advertentie wordt weergegeven"
+      },
+      "option3": {
+        "title": "Conversies",
+        "description": "Betaal alleen voor resultaten die tot een actie leiden"
+      }
+    },
+    "faq": {
+      "title": "Veelgestelde vragen",
+      "question1": "Kan ik van plan veranderen?",
+      "answer1": "Ja, u kunt op elk moment upgraden of downgraden. De facturering wordt aangepast aan de resterende dagen in uw factureringsperiode.",
+      "question2": "Zijn er langetermijncontracten?",
+      "answer2": "Nee, alle plannen kunnen maandelijks of jaarlijks worden gefactureerd zonder langetermijnverplichtingen.",
+      "question3": "Kan ik meerdere gebruikers aan mijn account toevoegen?",
+      "answer3": "Ja, Pro- en Enterprise-plannen bieden ondersteuning voor meerdere gebruikers met verschillende toegangsniveaus."
+    }
+  },
+  "about": {
+    "mission": {
+      "title": "Onze missie",
+      "description": "Wij streven ernaar om adverteren toegankelijker, effectiever en transparanter te maken voor bedrijven van elke grootte."
+    },
+    "story": {
+      "title": "Ons verhaal",
+      "description": "Opgericht in 2018, begonnen we als een klein team met een grote visie. Vandaag helpen we duizenden bedrijven hun advertentiecampagnes te optimaliseren.",
+      "paragraph1": "Alles begon met een eenvoudig idee: adverteren moest eenvoudiger en effectiever zijn.",
+      "paragraph2": "Na jaren van onderzoek en ontwikkeling hebben we een platform gebouwd dat deze visie waarmaakt.",
+      "paragraph3": "We blijven innoveren en streven ernaar om voorop te blijven lopen in de steeds veranderende wereld van digitale advertenties."
+    },
+    "team": {
+      "title": "Ons team",
+      "description": "Maak kennis met de mensen achter ons platform",
+      "member1": {
+        "name": "Jan Smit",
+        "position": "CEO & Oprichter",
+        "bio": "Met 15 jaar ervaring in digitale marketing, leidt Jan onze strategische richting."
+      },
+      "member2": {
+        "name": "Emma de Jong",
+        "position": "CTO",
+        "bio": "Emma zorgt ervoor dat ons platform technisch geavanceerd en betrouwbaar blijft."
+      },
+      "member3": {
+        "name": "Lucas Visser",
+        "position": "Hoofd Klantsucces",
+        "bio": "Lucas zorgt ervoor dat onze klanten maximale resultaten behalen met ons platform."
+      }
+    },
+    "values": {
+      "title": "Onze waarden",
+      "value1": {
+        "title": "Transparantie",
+        "description": "We geloven in eerlijke en open communicatie met onze klanten."
+      },
+      "value2": {
+        "title": "Innovatie",
+        "description": "We streven er voortdurend naar om ons platform te verbeteren en nieuwe functies te ontwikkelen."
+      },
+      "value3": {
+        "title": "Klantgerichtheid",
+        "description": "Het succes van onze klanten staat centraal in alles wat we doen."
+      }
+    }
+  },
+  "contact": {
+    "title": "Neem contact met ons op",
+    "subtitle": "We horen graag van u",
+    "form": {
+      "nameLabel": "Naam",
+      "namePlaceholder": "Uw volledige naam",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "uw.email@voorbeeld.nl",
+      "subjectLabel": "Onderwerp",
+      "subjectPlaceholder": "Hoe kunnen we u helpen?",
+      "messageLabel": "Bericht",
+      "messagePlaceholder": "Typ hier uw bericht...",
+      "submitButton": "Verstuur bericht"
+    },
+    "info": {
+      "title": "Contactgegevens",
+      "email": "info@advertplatform.nl",
+      "phone": "+31 20 123 4567",
+      "address": "Amsterdamseweg 123, 1000 AB Amsterdam"
+    },
+    "faq": {
+      "title": "Veelgestelde vragen",
+      "question1": "Hoe snel krijg ik antwoord?",
+      "answer1": "We streven ernaar om binnen 24 uur te reageren op alle vragen.",
+      "question2": "Kan ik een demo van het platform krijgen?",
+      "answer2": "Ja, u kunt een gepersonaliseerde demo aanvragen via het contactformulier.",
+      "question3": "Bieden jullie ondersteuning in het weekend?",
+      "answer3": "Onze klantenservice is beschikbaar van maandag t/m vrijdag, maar urgente verzoeken worden ook in het weekend behandeld."
+    }
+  },
+  "features": {
+    "title": "Ontdek onze functies",
+    "subtitle": "Alles wat u nodig heeft om succesvolle advertentiecampagnes te maken",
+    "feature1": {
+      "title": "Targeting op maat",
+      "description": "Definieer uw ideale publiek op basis van demografische gegevens, interesses, gedrag en meer.",
+      "benefit1": "Bereik precies de juiste mensen",
+      "benefit2": "Minimaliseer verspilde vertoningen",
+      "benefit3": "Verbeter ROI dankzij nauwkeurige targeting"
+    },
+    "feature2": {
+      "title": "Real-time analyses",
+      "description": "Bekijk en analyseer campagneresultaten terwijl ze binnenkomen.",
+      "benefit1": "Maak directe aanpassingen",
+      "benefit2": "Begrijp gebruikersgedrag",
+      "benefit3": "Optimaliseer voor betere resultaten"
+    },
+    "feature3": {
+      "title": "A/B testen",
+      "description": "Test verschillende advertentievarianten om te zien wat het beste werkt.",
+      "benefit1": "Vergelijk prestaties",
+      "benefit2": "Neem beslissingen op basis van gegevens",
+      "benefit3": "Continue verbetering van campagnes"
+    },
+    "feature4": {
+      "title": "Automatisering",
+      "description": "Laat het platform automatisch aanpassingen maken op basis van vooraf ingestelde regels.",
+      "benefit1": "Bespaar tijd en moeite",
+      "benefit2": "Reageer onmiddellijk op veranderingen",
+      "benefit3": "Elimineer menselijke fouten"
+    },
+    "feature5": {
+      "title": "Integraties",
+      "description": "Verbind naadloos met uw bestaande marketingtools en platformen.",
+      "benefit1": "Gecentraliseerde gegevens",
+      "benefit2": "Stroomlijn uw workflow",
+      "benefit3": "Uitgebreide rapportage"
+    }
+  },
+  "footer": {
+    "company": {
+      "title": "Bedrijf",
+      "about": "Over ons",
+      "careers": "Carrières",
+      "news": "Nieuws",
+      "contact": "Contact"
+    },
+    "product": {
+      "title": "Product",
+      "features": "Functies",
+      "pricing": "Prijzen",
+      "tutorials": "Tutorials",
+      "resources": "Bronnen"
+    },
+    "legal": {
+      "title": "Juridisch",
+      "terms": "Algemene voorwaarden",
+      "privacy": "Privacybeleid",
+      "cookies": "Cookiebeleid",
+      "security": "Beveiligingsinfo"
+    },
+    "newsletter": {
+      "title": "Blijf op de hoogte",
+      "description": "Abonneer u op onze nieuwsbrief voor updates, tips en speciale aanbiedingen",
+      "placeholder": "Uw e-mailadres",
+      "button": "Abonneren"
+    },
+    "copyright": "© 2025 AdvertPlatform. Alle rechten voorbehouden.",
+    "languageTitle": "Taal",
+    "quickLinks": "Snelle links",
+    "features": "Functies"
+  },
+  "client": {
+    "selectClients": "Selecteer Client",
+    "selectAll": "Alle",
+    "selectNone": "Geen",
+    "selectedClientsSummary": "Samenvatting geselecteerde klanten"
+  },
+  "case": {
+    "backToCase": "Terug naar het geval",
+    "title": "Titel"
   }
 }

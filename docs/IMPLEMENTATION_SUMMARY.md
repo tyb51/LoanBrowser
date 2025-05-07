@@ -2,7 +2,7 @@
 
 ## Overview of Implemented Changes
 
-We have successfully integrated the Python FastAPI backend with the NextJS frontend of the LoanBrowser application. The implementation provides a robust, flexible system that allows for:
+We have successfully integrated the Python FastAPI backend with the NextJS frontend of the LoanLogic application. The implementation provides a robust, flexible system that allows for:
 
 1. Real calculations using the Python backend
 2. Graceful fallback to JavaScript mock implementations

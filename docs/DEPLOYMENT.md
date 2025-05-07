@@ -1,10 +1,10 @@
-# Loan Browser Deployment Guide
+# LoanLogic Deployment Guide
 
-This guide provides instructions for setting up and running the Loan Browser application, including both the NextJS frontend and Python backend API.
+This guide provides instructions for setting up and running the LoanLogic application, including both the NextJS frontend and Python backend API.
 
 ## Project Structure
 
-The Loan Browser application consists of two main components:
+The LoanLogic application consists of two main components:
 
 - **Frontend**: NextJS application with Chart.js for visualizations
 - **Backend**: Python API built with FastAPI for loan calculations
@@ -21,7 +21,7 @@ The Loan Browser application consists of two main components:
 ### 1. Navigate to the Python directory
 
 ```bash
-cd T:\Development\LoanBrowser\python
+cd T:\Development\LoanLogic\python
 ```
 
 ### 2. Create a virtual environment
@@ -61,7 +61,7 @@ The API server will start on http://localhost:8000. You can access the API docum
 ### 1. Navigate to the project root directory
 
 ```bash
-cd T:\Development\LoanBrowser
+cd T:\Development\LoanLogic
 ```
 
 ### 2. Install dependencies

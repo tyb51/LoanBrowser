@@ -1,4 +1,4 @@
-// T:\Development\LoanBrowser\app\components\common\LanguageSwitcher.tsx
+// T:\Development\LoanLogic\app\components\common\LanguageSwitcher.tsx
 "use client";
 
 import React, { useState } from 'react';

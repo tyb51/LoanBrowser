@@ -1,12 +1,25 @@
 {
   "common": {
-    "appName": "Navegador de Préstamos",
-    "copyright": "© {{year}} Navegador de Préstamos - Solo para fines educativos"
+    "appName": "LoanLogic",
+    "copyright": "© {{year}} LoanLogic - Solo para fines educativos",
+    "months": "meses",
+    "notAvailable": "No disponible"
   },
   "navigation": {
     "singleLoan": "Préstamo Único",
     "loanComparison": "Comparación de Préstamos",
-    "investmentSimulation": "Simulación de Inversión"
+    "investmentSimulation": "Simulación de Inversión",
+    "home": "Inicio",
+    "features": "Características",
+    "pricing": "Precios",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "dashboard": "Panel",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "logout": "Cerrar sesión"
   },
   "loanTypes": {
     "annuity": "Anualidad",
@@ -43,7 +56,10 @@
     "compare": "Comparar Préstamos",
     "comparing": "Comparando...",
     "simulate": "Ejecutar Simulación de Inversión",
-    "simulating": "Simulando..."
+    "simulating": "Simulando...",
+    "next": "Próximo",
+    "save": "Ahorrar",
+    "saving": ""
   },
   "charts": {
     "paymentBreakdown": "Desglose Anual de Pagos",
@@ -144,6 +160,243 @@
     "investmentPlaceholder": "Configure los parámetros del préstamo y la configuración de inversión, luego haga clic en \"Ejecutar Simulación de Inversión\" para ver los resultados."
   },
   "ui": {
-    "myCases": ""
+    "myCases": "Mis casos"
+  },
+  "landing": {
+    "hero": {
+      "title": "Descubre una nueva forma de hacer publicidad",
+      "subtitle": "Llega a tu público objetivo de manera más efectiva con nuestra plataforma publicitaria avanzada",
+      "cta": "Empezar ahora",
+      "secondaryCta": "Más información"
+    },
+    "features": {
+      "title": "Nuestras características principales",
+      "subtitle": "Diseñadas para mejorar tus campañas publicitarias",
+      "feature1": {
+        "title": "Segmentación avanzada",
+        "description": "Llega a las personas adecuadas en el momento adecuado"
+      },
+      "feature2": {
+        "title": "Análisis detallados",
+        "description": "Visualiza resultados en tiempo real y optimiza tus campañas"
+      },
+      "feature3": {
+        "title": "Integración sencilla",
+        "description": "Funciona a la perfección con tus herramientas de marketing existentes"
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "subtitle": "Tres sencillos pasos para empezar",
+      "step1": {
+        "title": "Crea una cuenta",
+        "description": "Regístrate y configura tu perfil en minutos"
+      },
+      "step2": {
+        "title": "Crea tu campaña",
+        "description": "Diseña tus anuncios y define tu audiencia"
+      },
+      "step3": {
+        "title": "Lanza y optimiza",
+        "description": "Inicia tu campaña y mejórala según los resultados"
+      }
+    },
+    "testimonials": {
+      "title": "Lo que dicen nuestros clientes",
+      "subtitle": "Historias de anunciantes exitosos",
+      "testimonial1": {
+        "quote": "Esta plataforma aumentó nuestras tasas de conversión un 40% en solo dos meses.",
+        "author": "María García",
+        "company": "TechStart SL"
+      },
+      "testimonial2": {
+        "quote": "La interfaz intuitiva y los análisis detallados hacen que la publicidad sea más fácil que nunca.",
+        "author": "David Martínez",
+        "company": "Crecimiento Marketing"
+      },
+      "testimonial3": {
+        "quote": "Por fin hemos encontrado una plataforma que se adapta a nuestra audiencia específica.",
+        "author": "Sofía Rodríguez",
+        "company": "SaludPlus"
+      }
+    },
+    "partners": {
+      "title": "Nuestros socios",
+      "subtitle": "Colaboraciones que fortalecen nuestra plataforma"
+    },
+    "cta": {
+      "title": "¿Listo para llevar tu publicidad al siguiente nivel?",
+      "subtitle": "Regístrate hoy y comienza a ver mejores resultados",
+      "button": "Iniciar prueba gratuita"
+    }
+  },
+  "pricing": {
+    "title": "Precios transparentes",
+    "subtitle": "Elige el plan que se adapte a tus necesidades",
+    "monthly": "Mensual",
+    "annually": "Anual",
+    "plans": {
+      "basic": {
+        "title": "Básico",
+        "price": "29 €",
+        "period": "/mes",
+        "description": "Perfecto para pequeñas empresas y startups",
+        "features": [
+          "Hasta 5 campañas",
+          "Segmentación básica de audiencia",
+          "Análisis estándar",
+          "Soporte por correo electrónico"
+        ],
+        "cta": "Elegir Básico"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "79 €",
+        "period": "/mes",
+        "description": "Ideal para empresas en crecimiento",
+        "features": [
+          "Hasta 20 campañas",
+          "Segmentación avanzada",
+          "Análisis completos",
+          "Soporte prioritario",
+          "Acceso a API"
+        ],
+        "cta": "Elegir Pro"
+      },
+      "enterprise": {
+        "title": "Empresa",
+        "price": "199 €",
+        "period": "/mes",
+        "description": "Para grandes organizaciones con necesidades complejas",
+        "features": [
+          "Campañas ilimitadas",
+          "Segmentación premium",
+          "Análisis personalizados",
+          "Gestor de cuenta dedicado",
+          "Acceso completo a API",
+          "Integraciones personalizadas"
+        ],
+        "cta": "Elegir Empresa"
+      }
+    },
+    "adOptions": {
+      "title": "Opciones de publicidad",
+      "subtitle": "Opciones flexibles para diferentes presupuestos",
+      "option1": {
+        "title": "Pago por clic",
+        "description": "Paga solo cuando los usuarios hagan clic en tus anuncios"
+      },
+      "option2": {
+        "title": "Impresiones",
+        "description": "Paga por el número de veces que se muestra tu anuncio"
+      },
+      "option3": {
+        "title": "Conversiones",
+        "description": "Paga solo por resultados que conduzcan a una acción"
+      }
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "question1": "¿Puedo cambiar de plan?",
+      "answer1": "Sí, puedes actualizar o reducir tu plan en cualquier momento. La facturación se ajustará según los días restantes en tu período de facturación.",
+      "question2": "¿Hay contratos a largo plazo?",
+      "answer2": "No, todos los planes se pueden facturar mensual o anualmente sin compromisos a largo plazo.",
+      "question3": "¿Puedo añadir varios usuarios a mi cuenta?",
+      "answer3": "Sí, los planes Pro y Empresa ofrecen soporte para varios usuarios con diferentes niveles de acceso."
+    }
+  },
+  "about": {
+    "mission": {
+      "title": "Nuestra misión",
+      "description": "Nos esforzamos por hacer que la publicidad sea más accesible, efectiva y transparente para empresas de todos los tamaños."
+    },
+    "story": {
+      "title": "Nuestra historia",
+      "description": "Fundada en 2018, comenzamos como un pequeño equipo con una gran visión. Hoy ayudamos a miles de empresas a optimizar sus campañas publicitarias.",
+      "paragraph1": "Todo comenzó con una idea simple: la publicidad debería ser más fácil y efectiva.",
+      "paragraph2": "Después de años de investigación y desarrollo, hemos construido una plataforma que hace realidad esta visión.",
+      "paragraph3": "Continuamos innovando y nos esforzamos por mantenernos a la vanguardia en el mundo cambiante de la publicidad digital."
+    },
+    "team": {
+      "title": "Nuestro equipo",
+      "description": "Conoce a las personas detrás de nuestra plataforma",
+      "member1": {
+        "name": "Juan Pérez",
+        "position": "CEO y Fundador",
+        "bio": "Con 15 años de experiencia en marketing digital, Juan dirige nuestra orientación estratégica."
+      },
+      "member2": {
+        "name": "Elena López",
+        "position": "CTO",
+        "bio": "Elena se asegura de que nuestra plataforma se mantenga técnicamente avanzada y confiable."
+      },
+      "member3": {
+        "name": "Lucas Sánchez",
+        "position": "Director de Éxito del Cliente",
+        "bio": "Lucas se asegura de que nuestros clientes obtengan resultados máximos con nuestra plataforma."
+      }
+    },
+    "values": {
+      "title": "Nuestros valores",
+      "value1": {
+        "title": "Transparencia",
+        "description": "Creemos en una comunicación honesta y abierta con nuestros clientes."
+      },
+      "value2": {
+        "title": "Innovación",
+        "description": "Nos esforzamos constantemente por mejorar nuestra plataforma y desarrollar nuevas características."
+      },
+      "value3": {
+        "title": "Orientación al cliente",
+        "description": "El éxito de nuestros clientes está en el centro de todo lo que hacemos."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contacta con nosotros",
+    "subtitle": "Nos encantaría saber de ti",
+    "form": {
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Tu nombre completo",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "tu.email@ejemplo.es",
+      "subjectLabel": "Asunto",
+      "subjectPlaceholder": "¿Cómo podemos ayudarte?",
+      "messageLabel": "Mensaje",
+      "messagePlaceholder": "Escribe tu mensaje aquí...",
+      "submitButton": "Enviar mensaje"
+    },
+    "info": {
+      "title": "Información de contacto",
+      "email": "info@plataformapublicidad.es",
+      "phone": "+34 91 123 45 67",
+      "address": "Calle Gran Vía 123, 28013 Madrid"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "question1": "¿Qué rapidez de respuesta puedo esperar?",
+      "answer1": "Nos esforzamos por responder a todas las consultas en un plazo de 24 horas.",
+      "question2": "¿Puedo obtener una demostración de la plataforma?",
+      "answer2": "Sí, puedes solicitar una demostración personalizada a través del formulario de contacto.",
+      "question3": "¿Ofrecen soporte los fines de semana?",
+      "answer3": "Sí, nuestro equipo de soporte está disponible para ayudarte los fines de semana."
+    }
+  },
+  "footer": {
+    "legal": {
+      "title": "Legal"
+    },
+    "quickLinks": "Enlaces rápidos",
+    "features": "Características"
+  },
+  "client": {
+    "selectClients": "Seleccionar cliente",
+    "selectAll": "Todo",
+    "selectNone": "Ninguno",
+    "selectedClientsSummary": "Resumen de clientes seleccionados"
+  },
+  "case": {
+    "backToCase": "Volver al caso",
+    "title": "Título"
   }
 }

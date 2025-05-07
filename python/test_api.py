@@ -238,7 +238,7 @@ def test_compare_loans():
         return None
 
 if __name__ == "__main__":
-    print("Testing Loan Browser API...")
+    print("Testing LoanLogic API...")
     
     # Run the tests
     #test_calculate_loan_annuity()

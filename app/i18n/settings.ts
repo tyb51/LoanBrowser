@@ -1,4 +1,4 @@
-// T:\Development\LoanBrowser\app\i18n\settings.ts
+// T:\Development\LoanLogic\app\i18n\settings.ts
 
 export const LANGUAGES = {
     en: { nativeName: 'English' },

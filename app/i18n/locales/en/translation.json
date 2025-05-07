@@ -1,17 +1,45 @@
 {
   "common": {
-    "appName": "Loan Browser",
-    "copyright": "© {{year}} Loan Browser - For educational purposes only"
+    "appName": "LoanLogic",
+    "copyright": "© {{year}} LoanLogic- For educational purposes only",
+    "unexpectedError": "An unexpected error occurred",
+    "backToCases": "Back to Cases",
+    "notSpecified": "Not specified",
+    "at": "at",
+    "month": "month",
+    "months": "months",
+    "years": "years",
+    "quickActions": "Quick Actions",
+    "commonOperations": "Common operations for this case.",
+    "compareSimulations": "Compare Simulations",
+    "notAvailable": "Not available"
   },
   "navigation": {
-    "singleLoan": "Single Loan",
-    "loanComparison": "Loan Comparison",
-    "investmentSimulation": "Investment Simulation"
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "singleLoan": "Calculate Loan",
+    "loanComparison": "Compare Loans",
+    "investmentSimulation": "Investment Simulation",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "logout": "Sign out",
+    "settings": "Settings",
+    "signup": "Sign up"
   },
   "loanTypes": {
     "annuity": "Annuity",
     "bullet": "Bullet",
-    "modular": "Modular"
+    "modular": "Modular",
+    "mortgage": "Mortgage",
+    "personal": "Personal",
+    "auto": "Auto",
+    "student": "Student",
+    "other": "Other"
   },
   "forms": {
     "loanType": "Loan Type",
@@ -44,13 +72,22 @@
     "bulletLoanInfo": "For bullet loans, principal will be paid in the final month.",
     "modularLoanInfo": "For modular loans, specify when principal payments will be made.",
     "equalInvestment": "Equalized",
-    "separateInvestment": "Split"
+    "separateInvestment": "Split",
+    "required": "Required",
+    "ofPurchasePrice": "of purchase price"
   },
   "buttons": {
     "compare": "Compare Loans",
     "comparing": "Comparing...",
     "simulate": "Run Investment Simulation",
-    "simulating": "Simulating..."
+    "simulating": "Simulating...",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "learn": "Learn more",
+    "next": "Next",
+    "save": "Save",
+    "saving": "Saving"
   },
   "charts": {
     "paymentBreakdown": "Annual Payment Breakdown",
@@ -104,6 +141,7 @@
     "next": "Next"
   },
   "investment": {
+    "runSimulation": "Run Simulation",
     "minimumRequiredGrowthRate": "Minimum Required Growth Rate",
     "netWorthEndOfTerm": "Net Worth at End of Term",
     "minimumAnnualReturn": "Minimum annual return needed to cover the final loan payment",
@@ -152,5 +190,489 @@
   },
   "ui": {
     "myCases": "My Cases"
+  },
+  "landing": {
+    "hero": {
+      "title": "Smart Loan Visualization",
+      "subtitle": "Make informed decisions with our powerful loan comparison tools",
+      "tryButton": "Try it now",
+      "pricingButton": "View pricing"
+    },
+    "features": {
+      "title": "Make smarter financial decisions",
+      "feature1": {
+        "title": "Detailed Loan Visualization",
+        "description": "Interactive charts and tables showing loan balance, payment breakdown, and amortization schedules."
+      },
+      "feature2": {
+        "title": "Side-by-Side Comparison",
+        "description": "Compare different loan types and terms to find the best option for your financial situation."
+      },
+      "feature3": {
+        "title": "Investment Simulation",
+        "description": "Simulate how investing alongside your loan can impact your overall financial position."
+      }
+    },
+    "howItWorks": {
+      "title": "How LoanLogic Works",
+      "step1": {
+        "title": "Enter Loan Details",
+        "description": "Input your loan amount, interest rate, term, and other parameters."
+      },
+      "step2": {
+        "title": "Visualize Results",
+        "description": "See interactive charts and tables showing your loan details over time."
+      },
+      "step3": {
+        "title": "Compare Options",
+        "description": "Create multiple scenarios to compare different loan options side by side."
+      },
+      "step4": {
+        "title": "Save & Share",
+        "description": "Save your calculations and share the results with advisors or family."
+      }
+    },
+    "testimonials": {
+      "title": "What Our Users Say",
+      "quote1": "LoanLogic helped me understand exactly how different loan options would impact my finances over time. I saved thousands by making a more informed decision.",
+      "quote2": "As a financial advisor, I use LoanLogic with all my clients. The visualization tools make it so much easier to explain complex loan concepts and help clients make better decisions.",
+      "quote3": "The investment simulation feature is a game-changer. Being able to compare different loan strategies and seeing how they affect my investment portfolio made a complex decision simple."
+    },
+    "partners": {
+      "title": "Trusted by Leading Financial Institutions",
+      "subtitle": "We partner with top banks and mortgage brokers to provide you with the best loan options.",
+      "adSpot": "Your bank or brokerage here",
+      "contactUs": "Contact for advertising"
+    },
+    "cta": {
+      "title": "Ready to make smarter loan decisions?",
+      "subtitle": "Join thousands of users who trust LoanLogic to visualize their financial future.",
+      "registerButton": "Create free account",
+      "pricingButton": "View pricing plans"
+    }
+  },
+  "pricing": {
+    "title": "Flexible Plans for Every Need",
+    "subtitle": "Choose the perfect plan to help you visualize, compare, and optimize your loan decisions.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "month": "month",
+    "year": "year",
+    "forever": "forever",
+    "includes": "Includes:",
+    "popularLabel": "MOST POPULAR",
+    "freePlan": {
+      "name": "Basic",
+      "price": "€0",
+      "description": "Perfect for individual users looking to explore loan options.",
+      "button": "Get Started",
+      "feature1": "Basic loan calculation",
+      "feature2": "Standard visualization",
+      "feature3": "Save up to 3 calculations",
+      "featureUnavailable1": "Advanced comparisons",
+      "featureUnavailable2": "Investment simulations"
+    },
+    "proPlan": {
+      "name": "Pro",
+      "description": "For homebuyers and professionals who need advanced features.",
+      "button": "Go Pro",
+      "feature1": "Everything in Basic",
+      "feature2": "Unlimited saved calculations",
+      "feature3": "Advanced loan comparison",
+      "feature4": "Investment simulation",
+      "feature5": "Export to PDF/CSV"
+    },
+    "enterprisePlan": {
+      "name": "Enterprise",
+      "description": "For financial advisors and mortgage brokers managing multiple clients.",
+      "button": "Contact Sales",
+      "feature1": "Everything in Pro",
+      "feature2": "Multi-client management",
+      "feature3": "Client portal",
+      "feature4": "Advanced insurance approximation",
+      "feature5": "White-labeling options"
+    },
+    "adPlans": {
+      "title": "For Banks & Mortgage Brokers",
+      "subtitle": "Connect with potential clients through targeted advertising on our platform.",
+      "standard": "Standard",
+      "premium": "Premium",
+      "enterprise": "Enterprise",
+      "standardTitle": "Standard Advertising",
+      "premiumTitle": "Premium Advertising",
+      "enterpriseTitle": "Enterprise Advertising",
+      "enterprisePrice": "Custom",
+      "standardDescription": "Basic advertising presence with logo display and simple targeting.",
+      "premiumDescription": "Enhanced visibility with prominent placement and detailed targeting options.",
+      "enterpriseDescription": "Tailored advertising solutions with maximum visibility and exclusive features.",
+      "contactButton": "Contact our team",
+      "featuresTitle": "Key Features:",
+      "standardFeature1": "Logo placement on landing page",
+      "standardFeature2": "Basic geographic targeting",
+      "standardFeature3": "Monthly performance reports",
+      "standardFeature4": "Up to 50 qualified leads per month",
+      "premiumFeature1": "Everything in Standard",
+      "premiumFeature2": "Featured placement on calculator results",
+      "premiumFeature3": "Advanced targeting (location, loan amount, term)",
+      "premiumFeature4": "Weekly performance reports",
+      "premiumFeature5": "Up to 200 qualified leads per month",
+      "enterpriseFeature1": "Everything in Premium",
+      "enterpriseFeature2": "Direct loan product integration",
+      "enterpriseFeature3": "Custom data integration via API",
+      "enterpriseFeature4": "Real-time rate display in calculations",
+      "enterpriseFeature5": "Dedicated account manager",
+      "enterpriseFeature6": "Unlimited qualified leads"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "question1": "Can I upgrade or downgrade my plan later?",
+      "answer1": "Yes, you can change your plan at any time. If you upgrade, you'll be charged the prorated difference. If you downgrade, you'll receive credit towards your next billing cycle.",
+      "question2": "Do you offer discounts for financial advisors or brokers?",
+      "answer2": "Yes, we offer volume discounts for financial professionals who need multiple accounts. Please contact our sales team for more information on our professional packages.",
+      "question3": "How are qualified leads defined for advertisers?",
+      "answer3": "Qualified leads are users who have completed a loan calculation matching your target criteria and have explicitly expressed interest in receiving more information about financing options.",
+      "question4": "Is there a trial period available?",
+      "answer4": "We offer a 14-day free trial of our Pro plan so you can experience all the advanced features before committing. No credit card required to start your trial.",
+      "question5": "How do I cancel my subscription?",
+      "answer5": "You can cancel your subscription at any time from your account settings page. Your access will continue until the end of your current billing period."
+    },
+    "cta": {
+      "title": "Ready to get started with LoanLogic?",
+      "subtitle": "Join thousands of users making smarter financial decisions with our powerful loan visualization tools.",
+      "registerButton": "Create free account",
+      "demoButton": "Try demo"
+    }
+  },
+  "about": {
+    "title": "About LoanLogic",
+    "subtitle": "Empowering users with powerful tools to make better financial decisions.",
+    "mission": {
+      "title": "Our Mission",
+      "paragraph1": "At LoanLogic, we believe that financial decisions should be made with complete transparency and understanding. Our mission is to demystify complex loan structures and empower individuals to make informed choices about their financial future.",
+      "paragraph2": "We've developed powerful visualization tools that make it easy to see exactly how different loan options affect your finances over time, allowing you to compare scenarios and find the option that best fits your unique situation.",
+      "description": "We strive to make advertising more accessible, effective and transparent for businesses of all sizes."
+    },
+    "story": {
+      "title": "Our Story",
+      "beginning": {
+        "title": "The Beginning",
+        "description": "LoanLogic started in 2022 when our founders, frustrated by the lack of transparency in mortgage calculations, set out to create a tool that would make complex financial decisions clear and accessible to everyone."
+      },
+      "growth": {
+        "title": "Growth & Development",
+        "description": "Over the years, we've expanded our functionality to include investment simulations, insurance approximation, and advanced comparison tools. Our user base has grown to include not just individuals, but financial advisors and mortgage brokers."
+      },
+      "today": {
+        "title": "Today & Beyond",
+        "description": "Today, LoanLogic helps thousands of users make better financial decisions. We continue to innovate with new features like multi-client management, case systems, and integrations with financial institutions."
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "member1": {
+        "bio": "Former financial advisor with 15+ years of experience in the mortgage industry."
+      },
+      "member2": {
+        "bio": "Software engineer with expertise in fintech and data visualization."
+      },
+      "member3": {
+        "bio": "Product designer focused on creating intuitive financial tools for non-experts."
+      },
+      "member4": {
+        "bio": "Marketing strategist with a background in financial education and consumer advocacy."
+      }
+    },
+    "partners": {
+      "title": "Our Partners & Investors"
+    },
+    "cta": {
+      "title": "Join us in revolutionizing financial decision-making",
+      "subtitle": "Experience the power of clear, visual loan comparisons and make your next financial decision with confidence.",
+      "registerButton": "Create free account",
+      "contactButton": "Contact us"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have questions or feedback? We're here to help you make the most of LoanLogic.",
+    "methods": {
+      "title": "Get in Touch",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "hours": {
+      "title": "Office Hours",
+      "monday": "Monday - Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "closed": "Closed"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "name": "Your Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "category": "Category",
+      "categories": {
+        "general": "General Inquiry",
+        "support": "Technical Support",
+        "billing": "Billing & Subscription",
+        "feedback": "Feature Request/Feedback",
+        "partnership": "Partnership Opportunity",
+        "advertising": "Advertising"
+      },
+      "message": "Your Message",
+      "sending": "Sending...",
+      "submit": "Send Message"
+    },
+    "success": {
+      "title": "Message Sent!",
+      "message": "Thank you for contacting us. We will get back to you as soon as possible.",
+      "button": "Send Another Message"
+    },
+    "location": {
+      "title": "Our Location",
+      "mapPlaceholder": "Map would be displayed here in production."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "question1": "What is your typical response time?",
+      "answer1": "We aim to respond to all inquiries within 24 hours during business days. For technical support, our premium users receive priority service with responses typically within 4 hours.",
+      "question2": "How can I report a technical issue?",
+      "answer2": "You can report technical issues through this contact form by selecting \"Technical Support\" from the category dropdown. Please include as much detail as possible, including browser type, device, and steps to reproduce the issue.",
+      "question3": "I'm interested in advertising on LoanLogic. How do I get started?",
+      "answer3": "Select \"Advertising\" from the category dropdown in the contact form, and our advertising team will get in touch with you. You can also check our pricing page for information on our advertising packages."
+    }
+  },
+  "features": {
+    "title": "Powerful Loan Visualization Features",
+    "subtitle": "Explore the tools that make LoanLogic the ultimate loan calculation and comparison platform.",
+    "loanCalculator": {
+      "title": "Comprehensive Loan Calculator",
+      "description1": "Our advanced calculator handles multiple loan types including annuity, bullet, and modular loans with customizable parameters for complete flexibility.",
+      "description2": "Input your specific loan parameters and instantly see how changes affect your monthly payments, total interest, and overall loan costs.",
+      "feature1": "Multiple loan type support",
+      "feature2": "Customizable interest rates and terms",
+      "feature3": "Real-time calculation updates"
+    },
+    "visualizations": {
+      "title": "Interactive Visualizations",
+      "chart1": {
+        "title": "Loan Balance Over Time",
+        "description": "Watch your loan balance decrease over time with our interactive chart. Visualize the impact of extra payments and see exactly when your loan will be paid off."
+      },
+      "chart2": {
+        "title": "Payment Breakdown",
+        "description": "See exactly how your payments are distributed between principal, interest, and insurance with our detailed breakdown charts. Understand where your money is going each month."
+      },
+      "chart3": {
+        "title": "Amortization Schedule",
+        "description": "Access a complete month-by-month breakdown of your loan payments with our detailed amortization tables. Filter and sort to find the information you need quickly."
+      },
+      "chart4": {
+        "title": "Loan Comparison",
+        "description": "Compare multiple loan scenarios side-by-side to identify the best option for your needs. Visualize differences in monthly payments, total costs, and payoff timelines."
+      },
+      "chart5": {
+        "title": "Investment Simulation",
+        "description": "Simulate how investing alongside your loan payments can impact your overall financial position. Find the optimal balance between paying down debt and growing your investments."
+      },
+      "chart6": {
+        "title": "Insurance Approximator",
+        "description": "Estimate life and home insurance costs based on your personal information and loan details. Visualize how insurance affects your total loan costs over time."
+      }
+    },
+    "advanced": {
+      "title": "Advanced Features for Professionals",
+      "description1": "LoanLogic includes specialized tools for financial advisors, mortgage brokers, and other professionals who need to manage multiple clients and cases.",
+      "description2": "Our case management system allows you to organize all your client information, loan simulations, and documents in one secure location.",
+      "feature1": "Multi-client management",
+      "feature2": "Case/dossier organization",
+      "feature3": "Client portal access",
+      "feature4": "White-labeling options",
+      "enterprise": "Enterprise-Ready",
+      "security": "Secure, scalable, and built for businesses of all sizes."
+    },
+    "integration": {
+      "title": "Integration & Export Options",
+      "export": {
+        "title": "Export Options",
+        "description": "Export your calculations and visualizations in multiple formats for sharing or record-keeping."
+      },
+      "api": {
+        "title": "API Integration",
+        "description": "Integrate LoanLogic calculations directly into your own applications using our robust API."
+      },
+      "sharing": {
+        "title": "Sharing & Collaboration",
+        "description": "Share your calculations and reports with clients, colleagues, or partners for collaborative decision-making."
+      }
+    },
+    "accessibility": {
+      "title": "Accessibility & Customization",
+      "description1": "LoanLogic is built with accessibility in mind, ensuring that everyone can use our tools regardless of their abilities or preferences.",
+      "description2": "Customize your experience with different languages, themes, and display options to suit your specific needs.",
+      "languages": "Languages",
+      "features": "Accessibility Features",
+      "feature1": "Screen reader support",
+      "feature2": "Keyboard navigation",
+      "feature3": "Color contrast options",
+      "feature4": "Text size adjustment"
+    },
+    "security": {
+      "title": "Security & Privacy",
+      "dataProtection": {
+        "title": "Data Protection",
+        "description": "Your financial data is protected with industry-leading security measures. We use encryption, secure data storage, and regular security audits to keep your information safe.",
+        "feature1": "End-to-end encryption",
+        "feature2": "Secure data storage",
+        "feature3": "Regular security audits",
+        "feature4": "Compliance with financial regulations"
+      },
+      "privacy": {
+        "title": "Privacy Controls",
+        "description": "We respect your privacy and give you control over your data. Choose what information to share and with whom through our granular privacy settings.",
+        "feature1": "Granular sharing controls",
+        "feature2": "Data anonymization options",
+        "feature3": "GDPR compliance",
+        "feature4": "Data export and deletion options"
+      }
+    },
+    "cta": {
+      "title": "Ready to explore LoanLogic?",
+      "subtitle": "Sign up today to experience the full power of our loan visualization tools.",
+      "registerButton": "Create free account",
+      "pricingButton": "View pricing"
+    }
+  },
+  "footer": {
+    "tagline": "Smart visualization tools for better financial decisions.",
+    "quickLinks": "Quick Links",
+    "features": "Features",
+    "pricing": "Pricing",
+    "dashboard": "Dashboard",
+    "about": "About Us",
+    "contact": "Contact",
+    "resources": "Resources",
+    "blog": "Blog",
+    "guides": "Guides",
+    "faq": "FAQ",
+    "support": "Support",
+    "apiDocs": "API Documentation",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "disclaimer": "Disclaimer",
+    "newsletter": {
+      "title": "Subscribe to our newsletter",
+      "description": "Stay updated with the latest financial tools and tips.",
+      "placeholder": "Your email",
+      "button": "Subscribe"
+    },
+    "rightsReserved": "All rights reserved.",
+    "sitemap": "Sitemap",
+    "backToTop": "Back to top",
+    "languageTitle": "Language"
+  },
+  "case": {
+    "notFound": "Case not found",
+    "failedToFetch": "Failed to fetch case data",
+    "failedToUpdate": "Failed to update case",
+    "confirmDelete": "Are you sure you want to delete this case?",
+    "failedToDelete": "Failed to delete case",
+    "details": "Case Details",
+    "basicInformation": "Basic information about the case.",
+    "description": "Description",
+    "noDescriptionProvided": "No description provided",
+    "projectName": "Project Name",
+    "purchaseDate": "Purchase Date",
+    "purchasePrice": "Purchase Price",
+    "created": "Created",
+    "lastUpdated": "Last Updated",
+    "exportData": "Export Data",
+    "projectInformation": "Case and Project Information",
+    "projectInfoDescription": "Information about the case and associated project.",
+    "backToCase": "Back to case",
+    "title": "Title"
+  },
+  "client": {
+    "addClient": "Add Client",
+    "addClientToStart": "Add a client to start.",
+    "addNewClient": "Add New Client",
+    "associatedWithCase": "Clients associated with this case.",
+    "associatedWithLoan": "Clients associated with this loan.",
+    "clientInformation": "Client Information",
+    "clients": "Clients",
+    "clientSummary": "Client Summary",
+    "combinedNetWorth": "Combined Net Worth",
+    "individual": "Individual",
+    "company": "Company",
+    "companies": "Companies",
+    "income": "Income",
+    "individuals": "Individuals",
+    "netWorth": "Net Worth",
+    "noClientsYet": "No clients added yet.",
+    "selectClientsForLoan": "Select clients for this loan.",
+    "selectedClients": "Selected Clients",
+    "totalCapital": "Total Capital",
+    "totalDebt": "Total Debt",
+    "monthlyIncome": "Monthly Income",
+    "totalMonthlyIncome": "Total Monthly Income",
+    "totalClients": "Total Clients",
+    "selectClients": "Select client",
+    "selectAll": "All",
+    "selectNone": "None",
+    "selectedClientsSummary": "Selected Clients summary"
+  },
+  "loan": {
+    "addSimulation": "Add Simulation",
+    "addSimulationToStart": "Add a loan simulation to start.",
+    "amortizationSchedule": "Amortization Schedule",
+    "annualInterest": "Annual Interest",
+    "annualPayment": "Annual Payment",
+    "annualPrincipal": "Annual Principal",
+    "calculationResults": "Calculation Results",
+    "configureLoanParameters": "Configure Loan Parameters",
+    "confirmDelete": "Are you sure you want to delete this loan simulation?",
+    "createLoanSimulation": "Create Loan Simulation",
+    "debtRatio": "Debt Ratio",
+    "debtRatioGood": "Good",
+    "debtRatioHigh": "High",
+    "debtRatioModerate": "Moderate",
+    "editLoanParameters": "Edit Loan Parameters",
+    "insuranceCoverage": "Insurance Coverage",
+    "keyFinancialFigures": "Key financial figures for this loan.",
+    "loanInformation": "Loan Information",
+    "loanParameters": "Loan Parameters",
+    "loanSimulations": "Loan Simulations",
+    "loanSummary": "Loan Summary",
+    "loanType": "Loan Type",
+    "monthlyPayment": "Monthly Payment",
+    "nameRequired": "Loan name is required.",
+    "newLoan": "New Loan",
+    "noSimulationsYet": "No loan simulations added yet.",
+    "notFound": "Loan simulation not found",
+    "ownContribution": "Own Contribution",
+    "paymentScheduleOverTime": "Payment schedule over time.",
+    "perClientDebtRatio": "Per Client Debt Ratio",
+    "perClientInsurance": "Per Client Insurance",
+    "principal": "Principal",
+    "principalAmount": "Principal Amount",
+    "purchasePrice": "Purchase Price",
+    "remainingBalance": "Remaining Balance",
+    "saveLoanSimulation": "Save Loan Simulation",
+    "scenariosForCase": "Loan scenarios for this case.",
+    "selectAtLeastOneClient": "Please select at least one client.",
+    "startYear": "Start Year",
+    "termYears": "Term (Years)",
+    "totalInterest": "Total Interest",
+    "totalPayment": "Total Payment",
+    "year": "Year",
+    "interestRate": "Interest Rate"
+  },
+  "insurance": {  
+    "configureInsurance": "Configure Insurance"
   }
 }

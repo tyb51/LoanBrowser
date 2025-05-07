@@ -1,4 +1,4 @@
-// T:\Development\LoanBrowser\app\i18n\server.ts
+// T:\Development\LoanLogic\app\i18n\server.ts
 
 import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';

@@ -1,4 +1,4 @@
-# Loan Browser Project Guide
+# LoanLogic Project Guide
 
 ## Project Structure
 - NextJS 15 application with TypeScript and Tailwind CSS

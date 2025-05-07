@@ -11,7 +11,7 @@ export default function ApiConfigPage() {
 
   useEffect(() => {
     // Get the stored API configuration
-    const storedConfig = localStorage.getItem('loanBrowserApiConfig');
+    const storedConfig = localStorage.getItem('LoanLogicApiConfig');
     if (storedConfig) {
       const config = JSON.parse(storedConfig);
       setUseBackendApi(config.useBackendApi);
@@ -45,7 +45,7 @@ export default function ApiConfigPage() {
 
   const handleSaveConfig = () => {
     // Save the API configuration to localStorage
-    localStorage.setItem('loanBrowserApiConfig', JSON.stringify({
+    localStorage.setItem('LoanLogicApiConfig', JSON.stringify({
       useBackendApi,
       backendUrl,
     }));

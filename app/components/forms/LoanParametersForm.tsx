@@ -1,31 +1,38 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { LoanParameters, LoanType, ModularLoanScheduleItem } from '@/app/types/loan';
+import { calculateLoanValues, updateLoanWithPurchasePrice } from '@/app/utils/loan/calculateLoanValues';
 
 interface LoanParametersFormProps {
   defaultValues?: Partial<LoanParameters>;
   onSubmit: (data: LoanParameters, modularSchedule?: ModularLoanScheduleItem[]) => void;
   isLoading?: boolean;
+  onValuesChange?: (data: LoanParameters) => void;
 }
 
 export function LoanParametersForm({ 
   defaultValues, 
   onSubmit, 
-  isLoading = false 
+  isLoading = false,
+  onValuesChange
 }: LoanParametersFormProps) {
   const { t } = useTranslation();
   
+  // Set default values with calculated loan amount and own contribution
+  const initialPurchasePrice = defaultValues?.purchasePrice || 500000;
+  const { principal, ownContribution } = calculateLoanValues(initialPurchasePrice);
+  
   const [formData, setFormData] = useState<LoanParameters>({
     loanType: defaultValues?.loanType || LoanType.ANNUITY,
-    principal: defaultValues?.principal || 500000,
+    principal: defaultValues?.principal || principal,
     interestRate: defaultValues?.interestRate || 3.5,
     termYears: defaultValues?.termYears || 30,
-    ownContribution: defaultValues?.ownContribution || 100000,
-    purchasePrice: defaultValues?.purchasePrice || 825000,
+    ownContribution: defaultValues?.ownContribution || ownContribution,
+    purchasePrice: defaultValues?.purchasePrice || initialPurchasePrice,
     delayMonths: defaultValues?.delayMonths || 0,
-    startYear: defaultValues?.startYear || 2025,
+    startYear: defaultValues?.startYear || new Date().getFullYear(),
     insuranceCoveragePct: defaultValues?.insuranceCoveragePct || 1.0,
   });
 
@@ -33,18 +40,57 @@ export function LoanParametersForm({
     { month: (formData.termYears * 12).toString(), amount: formData.principal.toString() }
   ]);
 
+  // Notify parent component when values change
+  // Using a ref to avoid infinite update loops
+  const prevFormDataRef = React.useRef(formData);
+  
+  useEffect(() => {
+    // Only call onValuesChange if the formData has actually changed meaningfully
+    //if (onValuesChange && JSON.stringify(prevFormDataRef.current) !== JSON.stringify(formData)) {
+      //prevFormDataRef.current = formData;
+      if (onValuesChange) {
+        onValuesChange(formData);
+      }
+   // }
+  }, [formData]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
-    
     // If the field is a number, convert it
     const parsedValue = type === 'number' ? 
       (value === '' ? '' : parseFloat(value)) : 
       value;
     
-    setFormData(prev => ({
-      ...prev,
-      [name]: parsedValue
-    }));
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [name]: parsedValue
+      };
+
+      // Auto-calculate loan amount and own contribution when purchase price changes
+      if (name === 'purchasePrice' && parsedValue) {
+        const updatedData = updateLoanWithPurchasePrice(newData, parsedValue as number);
+        return updatedData;
+      }
+
+      // Update loan amount when own contribution changes
+      if (name === 'ownContribution' && parsedValue && newData.purchasePrice) {
+        return {
+          ...newData,
+          principal: newData.purchasePrice - (parsedValue as number)
+        };
+      }
+
+      // Update own contribution when principal changes
+      if (name === 'principal' && parsedValue && newData.purchasePrice) {
+        return {
+          ...newData,
+          ownContribution: newData.purchasePrice - (parsedValue as number)
+        };
+      }
+
+      return newData;
+    });
 
     // If the principal changes, update the bullet loan schedule
     if (name === 'principal' && formData.loanType !== LoanType.ANNUITY) {
@@ -180,6 +226,11 @@ export function LoanParametersForm({
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
+            <p className="mt-1 text-xs text-gray-500">
+              {formData.purchasePrice && formData.ownContribution ? 
+                `${((formData.ownContribution / formData.purchasePrice) * 100).toFixed(1)}% ${t('forms.ofPurchasePrice')}` : 
+                ''}
+            </p>
           </div>
 
           {/* Principal Amount */}
@@ -192,6 +243,11 @@ export function LoanParametersForm({
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
+            <p className="mt-1 text-xs text-gray-500">
+              {formData.purchasePrice && formData.principal ? 
+                `${((formData.principal / formData.purchasePrice) * 100).toFixed(1)}% ${t('forms.ofPurchasePrice')}` : 
+                ''}
+            </p>
           </div>
 
           {/* Interest Rate */}
@@ -303,8 +359,7 @@ export function LoanParametersForm({
                       className="p-2 bg-red-50 text-red-500 rounded-md hover:bg-red-100"
                     >
                       -
-                      {//t('forms.remove')
-                      }
+                      {/* t('forms.remove') */}
                     </button>
                     {index === scheduleItems.length - 1 && (
                       <button 
@@ -313,8 +368,7 @@ export function LoanParametersForm({
                         className="p-2 bg-blue-50 text-blue-500 rounded-md hover:bg-blue-100"
                       >
                         +
-                         {//t('forms.add')
-                      }
+                        {/* t('forms.add') */}
                       </button>
                     )}
                   </>

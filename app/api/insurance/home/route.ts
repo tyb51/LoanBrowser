@@ -108,7 +108,7 @@ export async function POST(request: Request) {
         await prisma.insurance.create({
           data: {
             type: 'HOME',
-            coveragePercentage,
+            coveragePercentage: coveragePercentage as number,
             initialPremium: result.monthlyPremium,
             clientId,
             homeInsurance: {

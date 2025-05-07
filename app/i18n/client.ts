@@ -1,4 +1,4 @@
-// T:\Development\LoanBrowser\app\i18n\client.ts
+// T:\Development\LoanLogic\app\i18n\client.ts
 "use client";
 
 import i18next from 'i18next';

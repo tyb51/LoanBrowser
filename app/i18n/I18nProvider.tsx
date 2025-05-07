@@ -1,4 +1,4 @@
-// T:\Development\LoanBrowser\app\i18n\I18nProvider.tsx
+// T:\Development\LoanLogic\app\i18n\I18nProvider.tsx
 "use client";
 
 import { ReactNode, useEffect } from 'react';
