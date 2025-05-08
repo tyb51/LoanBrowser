@@ -34,6 +34,7 @@ class MultiClientLoanRequest(BaseModel):
     clientIds: List[str]
     clientSummary: ClientSummary
     modularSchedule: Optional[ModularLoanSchedule] = None
+    insuranceSimulationIds: Optional[List[str]] = None
 
 @router.post("/calculate-multi-client-loan")
 async def calculate_multi_client_loan(request: MultiClientLoanRequest):
@@ -41,6 +42,10 @@ async def calculate_multi_client_loan(request: MultiClientLoanRequest):
         params = request.params
         client_summary = request.clientSummary
         loan_type = params.loanType.value  # Convert enum to string
+        
+        # Set insurance simulation IDs if provided
+        if request.insuranceSimulationIds:
+            params.insuranceSimulationIds = request.insuranceSimulationIds
         
         # Use client summary for calculations
         monthly_income = client_summary.totalMonthlyIncome

@@ -210,9 +210,20 @@ export async function DELETE(request: Request, { params }: Params) {
       where: { clientId },
     });
 
-    // Delete loans associated with the client
-    await prisma.loan.deleteMany({
-      where: { clientId },
+    // Delete loanSimulations where the only client is this client
+    await prisma.loanSimulation.deleteMany({
+      where: {
+        clients: {
+          every: {
+            id: clientId,
+          },
+          none: {
+            NOT: {
+              id: clientId,
+            },
+          },
+        },
+      },
     });
 
     // Delete the client

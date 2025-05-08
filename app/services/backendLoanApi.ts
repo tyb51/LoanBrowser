@@ -25,16 +25,28 @@ export function updateBaseUrl(newBaseUrl: string) {
  * Calculate a loan using the Python backend API
  * @param params Loan parameters
  * @param modularSchedule Optional modular schedule for bullet/modular loans
+ * @param insuranceSimulationIds Optional array of insurance simulation IDs
  * @returns Loan calculation result
  */
 export async function calculateLoan(
   params: LoanParameters, 
-  modularSchedule?: ModularLoanSchedule
+  modularSchedule?: ModularLoanSchedule,
+  insuranceSimulationIds?: string[]
 ): Promise<LoanCalculationResult> {
   try {
     // Send params directly without wrapping
     const requestData: any = {};
-    requestData.params =params 
+    
+    // Add insurance simulation IDs if provided
+    if (insuranceSimulationIds && insuranceSimulationIds.length > 0) {
+      params = {
+        ...params,
+        insuranceSimulationIds
+      };
+    }
+    
+    requestData.params = params;
+    
     // Add modular schedule if provided (directly in the payload)
     if (modularSchedule) {
       requestData.modularSchedule = modularSchedule;
@@ -74,6 +86,8 @@ interface ComparisonRequest {
   alternativeOwnContribution: number;
   investmentParams?: InvestmentParameters;
   modularSchedule?: ModularLoanSchedule;
+  refInsuranceSimulationIds?: string[];
+  altInsuranceSimulationIds?: string[];
 }
 
 /**
@@ -84,6 +98,8 @@ interface ComparisonRequest {
  * @param alternativeOwnContribution Alternative loan own contribution
  * @param investmentParams Optional investment parameters
  * @param modularSchedule Optional modular schedule for alternative loan
+ * @param refInsuranceSimulationIds Optional array of insurance simulation IDs for reference loan
+ * @param altInsuranceSimulationIds Optional array of insurance simulation IDs for alternative loan
  * @returns Comparison result
  */
 export async function compareLoans(
@@ -92,7 +108,9 @@ export async function compareLoans(
   referenceOwnContribution: number,
   alternativeOwnContribution: number,
   investmentParams?: InvestmentParameters,
-  modularSchedule?: ModularLoanSchedule
+  modularSchedule?: ModularLoanSchedule,
+  refInsuranceSimulationIds?: string[],
+  altInsuranceSimulationIds?: string[]
 ): Promise<ComparisonResult> {
   try {
     // Prepare request data using the interface
@@ -103,6 +121,8 @@ export async function compareLoans(
       alternativeOwnContribution,
       investmentParams,
       modularSchedule,
+      refInsuranceSimulationIds,
+      altInsuranceSimulationIds
     };
     
     // Make API request

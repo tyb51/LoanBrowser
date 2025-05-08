@@ -35,6 +35,7 @@ export async function GET(
             alternativeLoan: true,
           },
         },
+        insuranceSimulations: true
       },
     });
 

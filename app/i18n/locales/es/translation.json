@@ -397,6 +397,14 @@
   },
   "case": {
     "backToCase": "Volver al caso",
-    "title": "Título"
+    "title": "Título",
+    "backToCases": "Volver a los casos"
+  },
+  "insurance": {
+    "insuranceSimulations": "Simulaciones de seguro",
+    "simulationsForCase": "Simulaciones de seguro para este caso.",
+    "addSimulation": "Agregar simulación",
+    "noSimulationsYet": "No hay simulación de seguro todavía",
+    "addSimulationToStart": "Agregue simulación para comenzar."
   }
 }

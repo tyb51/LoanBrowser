@@ -31,6 +31,19 @@ interface LoanSimulation {
   clients?: Client[];
 }
 
+interface InsuranceSimulation {
+  id: string;
+  name: string;
+  type: 'LIFE' | 'HOME';
+  clientId: string;
+  client?: {
+    name: string;
+    type: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Case {
   id: string;
   title: string;
@@ -42,6 +55,7 @@ interface Case {
   purchaseDate?: string | null;
   clients: Client[];
   loanSimulations: LoanSimulation[];
+  insuranceSimulations?: InsuranceSimulation[];
 }
 
 export default function CaseDetail() {
@@ -85,6 +99,7 @@ export default function CaseDetail() {
         }
         
         const data = await response.json();
+        console.log('Fetched case data:', data);
         setCaseData(data.case);
         setTitle(data.case.title);
         setDescription(data.case.description || '');
@@ -504,7 +519,59 @@ export default function CaseDetail() {
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Insurance Simulations Section */}
+      <div className="grid grid-cols-1 mb-6">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+            <div>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">{t('insurance.insuranceSimulations')}</h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                {t('insurance.simulationsForCase')}
+              </p>
+            </div>
+            <Link href={`/cases/${id}/insurance-simulations/new`} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+              {t('insurance.addSimulation')}
+            </Link>
+          </div>
+          <div className="border-t border-gray-200">
+            {!caseData.insuranceSimulations || caseData.insuranceSimulations.length === 0 ? (
+              <div className="px-4 py-5 sm:px-6 text-center">
+                <p className="text-sm text-gray-500">{t('insurance.noSimulationsYet')}</p>
+                <p className="mt-2 text-sm text-gray-500">{t('insurance.addSimulationToStart')}</p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {caseData.insuranceSimulations.map((insurance) => (
+                  <li key={insurance.id} className="px-4 py-4 sm:px-6 hover:bg-gray-50">
+                    <Link href={`/cases/${id}/insurance-simulations/${insurance.id}`} className="flex justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-blue-600">{insurance.name}</p>
+                        <div className="flex items-center mt-1">
+                          <span className={`px-2 py-0.5 text-xs rounded-full ${
+                            insurance.type === 'LIFE' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
+                          }`}>
+                            {insurance.type}
+                          </span>
+                          {insurance.client && (
+                            <span className="ml-2 text-xs text-gray-500">
+                              {insurance.client.name}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        <p className="text-xs text-right text-gray-500">
+                          {new Date(insurance.updatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
       <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900">{t('common.quickActions')}</h3>
@@ -535,7 +602,7 @@ export default function CaseDetail() {
             </Link>
             
             <Link 
-              href={`/cases/${id}/insurance`}
+              href={`/cases/${id}/insurance-simulations/new`}
               className="p-4 border border-gray-300 rounded-md hover:bg-blue-50 flex items-center"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

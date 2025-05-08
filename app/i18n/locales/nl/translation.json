@@ -496,6 +496,14 @@
   },
   "case": {
     "backToCase": "Terug naar het geval",
-    "title": "Titel"
+    "title": "Titel",
+    "backToCases": "Terug naar cases"
+  },
+  "insurance": {
+    "insuranceSimulations": "Verzekeringssimulaties",
+    "simulationsForCase": "Verzekeringssimulaties voor deze zaak.",
+    "addSimulation": "Simulatie toevoegen",
+    "noSimulationsYet": "Nog geen verzekeringssimulatie",
+    "addSimulationToStart": "Simulatie toevoegen om te starten."
   }
 }

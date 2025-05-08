@@ -595,7 +595,8 @@
     "projectInformation": "Case and Project Information",
     "projectInfoDescription": "Information about the case and associated project.",
     "backToCase": "Back to case",
-    "title": "Title"
+    "title": "Title",
+    "backToCases": "Back to cases"
   },
   "client": {
     "addClient": "Add Client",
@@ -672,7 +673,12 @@
     "year": "Year",
     "interestRate": "Interest Rate"
   },
-  "insurance": {  
-    "configureInsurance": "Configure Insurance"
+  "insurance": {
+    "configureInsurance": "Configure Insurance",
+    "insuranceSimulations": "Insurance Simulations",
+    "simulationsForCase": "Insurance simulations for this case.",
+    "addSimulation": "Add simulation",
+    "noSimulationsYet": "No insurance simulation yet",
+    "addSimulationToStart": "Add simulation to start."
   }
 }

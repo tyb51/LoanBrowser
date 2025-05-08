@@ -13,13 +13,15 @@ import { Client, ClientSummary } from '@/app/types/client';
  * @param clientIds Array of client IDs
  * @param clientSummary Summary information for the selected clients
  * @param modularSchedule Optional modular schedule for bullet/modular loans
+ * @param insuranceSimulationIds Optional array of insurance simulation IDs
  * @returns Loan calculation result
  */
 export async function calculateMultiClientLoan(
   params: LoanParameters,
   clientIds: string[],
   clientSummary: ClientSummary,
-  modularSchedule?: ModularLoanSchedule
+  modularSchedule?: ModularLoanSchedule,
+  insuranceSimulationIds?: string[]
 ): Promise<LoanCalculationResult> {
   try {
     // Base URL from apiService
@@ -36,7 +38,8 @@ export async function calculateMultiClientLoan(
       params,
       clientIds,
       clientSummary,
-      modularSchedule
+      modularSchedule,
+      insuranceSimulationIds
     };
     
     // Make API request

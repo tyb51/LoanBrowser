@@ -33,7 +33,7 @@ export function LoanParametersForm({
     purchasePrice: defaultValues?.purchasePrice || initialPurchasePrice,
     delayMonths: defaultValues?.delayMonths || 0,
     startYear: defaultValues?.startYear || new Date().getFullYear(),
-    insuranceCoveragePct: defaultValues?.insuranceCoveragePct || 1.0,
+    insuranceCoveragePct: 0, // Default to no insurance - insurance functionality moved to Case pages
   });
 
   const [scheduleItems, setScheduleItems] = useState<{ month: string, amount: string }[]>([
@@ -287,26 +287,7 @@ export function LoanParametersForm({
             />
           </div>
 
-          {/* Insurance Coverage */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('forms.insuranceCoverage')}</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              max="100"
-              name="insuranceCoveragePct"
-              value={formData.insuranceCoveragePct * 100}
-              onChange={(e) => {
-                const value = e.target.value;
-                setFormData(prev => ({
-                  ...prev,
-                  insuranceCoveragePct: parseFloat(value) / 100
-                }));
-              }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+          {/* Insurance Coverage field removed - insurance functionality moved to Case pages */}
 
           {/* Delay Months */}
           <div>

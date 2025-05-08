@@ -70,23 +70,26 @@ model Case {
   clients              Client[]
   investmentSimulation InvestmentSimulation?
   loanSimulations      LoanSimulation[]
+  insuranceSimulations InsuranceSimulation[]
 }
 
 model Client {
-  id             String            @id @default(uuid())
-  name           String
-  type           ClientType
-  age            Int?
-  height         Float?
-  weight         Float?
-  smoker         Boolean?
-  currentCapital Float
-  currentDebt    Float
-  monthlyIncome  Float
-  caseId         String
-  case           Case              @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  insurances     Insurance[]
-  loanSimulations LoanSimulation[]  // Many-to-many relationship with LoanSimulation
+  id                    String                 @id @default(uuid())
+  name                  String
+  type                  ClientType
+  age                   Int?
+  height                Float?
+  weight                Float?
+  smoker                Boolean?
+  currentCapital        Float
+  currentDebt           Float
+  monthlyIncome         Float
+  caseId                String
+  case                  Case                   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  insurances            Insurance[]
+  loanSimulations       LoanSimulation[] // Many-to-many relationship with LoanSimulation
+  investmentSimulations InvestmentSimulation[]
+  InsuranceSimulation   InsuranceSimulation[]
 }
 
 model LoanSimulation {
@@ -103,8 +106,8 @@ model LoanSimulation {
   monthlyPayment       Float?
   totalInterest        Float?
   totalPayment         Float?
-  calculationResult    String?               // JSON string containing calculation details
-  delayMonths          Int                   @default(0)
+  calculationResult    String? // JSON string containing calculation details
+  delayMonths          Int                    @default(0)
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
   caseId               String
@@ -112,7 +115,7 @@ model LoanSimulation {
   referenceFor         InvestmentSimulation[] @relation("ReferenceLoan")
   case                 Case                   @relation(fields: [caseId], references: [id], onDelete: Cascade)
   modularSchedule      ModularScheduleItem[]
-  clients              Client[]               // Many-to-many relationship with clients
+  clients              Client[] // Many-to-many relationship with clients
 }
 
 model ModularScheduleItem {
@@ -138,8 +141,25 @@ model InvestmentSimulation {
   alternativeLoan   LoanSimulation @relation("AlternativeLoan", fields: [alternativeLoanId], references: [id])
   case              Case           @relation(fields: [caseId], references: [id], onDelete: Cascade)
   referenceLoan     LoanSimulation @relation("ReferenceLoan", fields: [referenceLoanId], references: [id])
+  Client            Client?        @relation(fields: [clientId], references: [id])
+  clientId          String?
 }
 
+model InsuranceSimulation {
+  id                String        @id @default(uuid())
+  name              String
+  type              InsuranceType
+  parameters        Json // Store parameters like coverage%, paymentType, propertyValue, etc.
+  calculationResult Json? // Store calculated premium, amortization if needed (optional)
+  clientId          String // Link to the client this insurance is for
+  client            Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  caseId            String        @unique
+  case              Case          @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+// These models are kept for historical data but are deprecated and will be removed in future versions
 model Insurance {
   id                 String         @id @default(uuid())
   type               InsuranceType

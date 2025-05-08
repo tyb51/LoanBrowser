@@ -58,6 +58,7 @@ class LoanParameters(BaseModel):
     delayMonths: Optional[int] = 0
     startYear: Optional[int] = 2025
     insuranceCoveragePct: Optional[float] = 1.0
+    insuranceSimulationIds: Optional[List[str]] = None
 
 class InvestmentParameters(BaseModel):
     startCapital: Optional[float] = None
@@ -72,6 +73,8 @@ class ComparisonRequest(BaseModel):
     alternativeOwnContribution: float
     investmentParams: Optional[InvestmentParameters] = None
     modularSchedule: Optional[ModularLoanSchedule] = None
+    refInsuranceSimulationIds: Optional[List[str]] = None
+    altInsuranceSimulationIds: Optional[List[str]] = None
 
 # Helper functions to transform data
 def transform_monthly_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
@@ -205,6 +208,7 @@ async def calculate_loan(params: LoanParameters, modular_schedule: Optional[Modu
         schedule_tuples = []
         if modular_schedule and loan_type in ["bullet", "modular"]:
             schedule_tuples = [(item.month, item.amount) for item in modular_schedule.schedule]
+        
         # Call the appropriate calculation function based on loan type
         if loan_type == "annuity":
             result_df = simuleer_klassieke_lening(
@@ -247,17 +251,37 @@ async def calculate_loan(params: LoanParameters, modular_schedule: Optional[Modu
                 "annualData": [],
                 "statistics": transform_statistics(bereken_statistieken(pd.DataFrame(), hoofdsom=(params.purchasePrice - params.ownContribution)))
             }
+            
+        # Process insurance simulation IDs if provided
+        insurance_simulation_info = []
+        if params.insuranceSimulationIds and len(params.insuranceSimulationIds) > 0:
+            # For now, we'll just add a note about insurance simulations being used
+            # In a complete implementation, we would:
+            # 1. Fetch insurance simulations from database
+            # 2. Calculate insurance premiums based on simulation parameters
+            # 3. Apply those premiums to the result_df data
+            
+            # Add insurance simulation IDs to the result
+            insurance_simulation_info = params.insuranceSimulationIds
+        
         # Generate annual data
         annual_data = aggregeer_jaarlijks(result_df)
 
         # Calculate statistics
         statistics = bereken_statistieken(result_df, hoofdsom=(params.purchasePrice - params.ownContribution))
+        
         # Transform data to the expected API response format
-        return {
+        response = {
             "monthlyData": transform_monthly_data(result_df),
             "annualData": transform_annual_data(annual_data),
             "statistics": transform_statistics(statistics)
         }
+        
+        # Add insurance simulation info if provided
+        if insurance_simulation_info:
+            response["insuranceSimulationIds"] = insurance_simulation_info
+            
+        return response
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -272,6 +296,13 @@ async def compare_loans(request: ComparisonRequest):
             request.modularSchedule = ModularLoanSchedule(
                 schedule=[ModularLoanScheduleItem(month=last_month, amount=request.alternativeLoan.principal)]
             )
+        
+        # Set insurance simulation IDs for the reference and alternative loans if provided
+        if request.refInsuranceSimulationIds:
+            request.referenceLoan.insuranceSimulationIds = request.refInsuranceSimulationIds
+            
+        if request.altInsuranceSimulationIds:
+            request.alternativeLoan.insuranceSimulationIds = request.altInsuranceSimulationIds
         
         # Calculate reference loan
         ref_loan_result = await calculate_loan(request.referenceLoan)
@@ -289,6 +320,7 @@ async def compare_loans(request: ComparisonRequest):
             start_capital = request.investmentParams.startCapital or 0
             annual_growth_rate = request.investmentParams.annualGrowthRate or 0
             monthly_growth_rate = (1 + annual_growth_rate / 100) ** (1/12) - 1
+            
             # Run investment simulation
             investment_df, start_inv_alt, ref_invest_df, start_inv_ref = simuleer_met_investering(
                 df_referentie=ref_df,
