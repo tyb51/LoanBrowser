@@ -9,8 +9,8 @@ export interface LifeInsuranceParameters {
   coveragePercentage: number;
   paymentType: 'LUMP_SUM' | 'DISTRIBUTED';
   basedOnRemainingCapital: boolean;
-  loanAmount: number;
-  termYears: number;
+  // loanAmount and termYears are no longer required as parameters
+  // as they will be derived from the selected loan
 }
 
 export interface HomeInsuranceParameters {
@@ -20,23 +20,57 @@ export interface HomeInsuranceParameters {
   squareMeters?: number;
   deductible?: number;
   coveragePercentage: number;
+  clientShares?: Record<string, number>; // New: percentage share for each client
 }
 
 export type InsuranceParameters = LifeInsuranceParameters | HomeInsuranceParameters;
+
+// Amortization table entry for insurance
+export interface InsuranceAmortizationEntry {
+  month: number;
+  year: number;
+  premium: number;
+  cumulativePremium: number;
+  coverage: number;
+}
+
+// Insurance calculation result
+export interface InsuranceCalculationResult {
+  monthlyPremium: number;
+  totalPremium: number;
+  coverageAmount: number;
+  amortizationTable: InsuranceAmortizationEntry[];
+}
 
 export interface InsuranceSimulation {
   id: string;
   name: string;
   type: InsuranceType;
   parameters: InsuranceParameters;
-  calculationResult?: any;
-  clientId: string;
+  calculationResult?: InsuranceCalculationResult;
+  clientId?: string;
+  homeInsuranceClients?: {
+    clientId: string;
+    sharePercentage: number;
+    client: {
+      name: string;
+      type: string;
+    }
+  }[];
   caseId: string;
+  simulatedInterestRate?: number;
   createdAt: string;
   updatedAt: string;
   client?: {
     name: string;
     type: string;
+  };
+  // If this is a life insurance and a loan is selected for viewing
+  currentLoan?: {
+    id: string;
+    name: string;
+    principal: number;
+    termYears: number;
   };
 }
 
@@ -44,14 +78,19 @@ export interface CreateInsuranceSimulationParams {
   name: string;
   type: InsuranceType;
   parameters: InsuranceParameters;
-  clientId: string;
+  clientIds: string[];
   caseId: string;
+  selectedLoanId?: string; // For life insurance
+  simulatedInterestRate?: number; // For home insurance
   calculateResult?: boolean;
 }
 
 export interface UpdateInsuranceSimulationParams {
   name?: string;
   parameters?: InsuranceParameters;
+  clientIds?: string[];
+  selectedLoanId?: string; // For life insurance
+  simulatedInterestRate?: number; // For home insurance
   calculateResult?: boolean;
 }
 
@@ -75,9 +114,14 @@ export async function getInsuranceSimulations(caseId: string): Promise<Insurance
 }
 
 // Get a specific insurance simulation
-export async function getInsuranceSimulation(simId: string): Promise<InsuranceSimulation | null> {
+export async function getInsuranceSimulation(simId: string, loanId?: string): Promise<InsuranceSimulation | null> {
   try {
-    const response = await fetch(`/api/insurance-simulations/${simId}`);
+    let url = `/api/insurance-simulations/${simId}`;
+    if (loanId) {
+      url += `?loanId=${loanId}`;
+    }
+    
+    const response = await fetch(url);
     
     if (!response.ok) {
       const error = await response.json();
@@ -168,5 +212,29 @@ export async function deleteInsuranceSimulation(simId: string): Promise<boolean>
     console.error('Error deleting insurance simulation:', error);
     toast.error('Failed to delete insurance simulation');
     return false;
+  }
+}
+
+// Calculate insurance for a specific loan
+export async function calculateInsuranceForLoan(
+  simId: string,
+  loanId: string
+): Promise<InsuranceCalculationResult | null> {
+  try {
+    const response = await fetch(`/api/insurance-simulations/${simId}/calculate?loanId=${loanId}`, {
+      method: 'POST',
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to calculate insurance for loan');
+    }
+    
+    const data = await response.json();
+    return data.calculationResult;
+  } catch (error) {
+    console.error('Error calculating insurance for loan:', error);
+    toast.error('Failed to calculate insurance for loan');
+    return null;
   }
 }

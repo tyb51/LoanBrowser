@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
@@ -9,39 +9,75 @@ import {
   InsuranceSimulation, 
   getInsuranceSimulation, 
   updateInsuranceSimulation,
-  deleteInsuranceSimulation
+  deleteInsuranceSimulation,
+  calculateInsuranceForLoan
 } from '@/app/services/insuranceSimulationApi';
 import { InsuranceSimulationForm } from '@/app/components/forms/InsuranceSimulationForm';
+import { InsuranceAmortizationTable } from '@/app/components/tables/InsuranceAmortizationTable';
+import { getCaseLoans } from '@/app/actions/caseActions';
 
-export default function InsuranceSimulationDetailPage({ params }: { params: { id: string; simId: string } }) {
+interface Loan {
+  id: string;
+  name: string;
+  principal: number;
+  interestRate: number;
+  termYears: number;
+}
+
+
+export default function InsuranceSimulationDetailPage({ params }: { params: Promise<{ id: string; simId: string }> }) {
   const router = useRouter();
-  const caseId = params.id;
-  const simId = params.simId;
+  const {id: caseId, simId} = use(params);
+ 
   
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isCalculating, setIsCalculating] = useState<boolean>(false);
   const [insuranceSimulation, setInsuranceSimulation] = useState<InsuranceSimulation | null>(null);
+  const [loans, setLoans] = useState<Loan[]>([]);
+  const [selectedLoanId, setSelectedLoanId] = useState<string>('');
   
   // Fetch insurance simulation data
   useEffect(() => {
-    const fetchInsuranceSimulation = async () => {
+    const fetchData = async () => {
       try {
-        const simulation = await getInsuranceSimulation(simId);
+        // Fetch loans in parallel with insurance simulation data
+        const [simulation, loansList] = await Promise.all([
+          getInsuranceSimulation(simId),
+          getCaseLoans(caseId)
+        ]);
+        
         setInsuranceSimulation(simulation);
+        setLoans(loansList);
+        
+        // If this is a life insurance and there's a current loan, select it
+        if (simulation?.type === 'LIFE' && simulation.currentLoan) {
+          setSelectedLoanId(simulation.currentLoan.id);
+        } else if (loansList.length > 0) {
+          // Otherwise, select the first loan by default
+          setSelectedLoanId(loansList[0].id);
+        }
       } catch (error) {
-        console.error('Error fetching insurance simulation:', error);
-        toast.error('Failed to load insurance simulation');
+        console.error('Error fetching data:', error);
+        toast.error('Failed to load insurance simulation data');
       } finally {
         setIsLoading(false);
       }
     };
     
-    fetchInsuranceSimulation();
-  }, [simId]);
+    fetchData();
+  }, [simId, caseId]);
   
-  const handleUpdate = async (formData: { name: string; parameters: any; calculateResult?: boolean }) => {
+  const handleUpdate = async (formData: { 
+    name: string; 
+    parameters: any; 
+    calculateResult?: boolean;
+    clientIds: string[];
+    selectedLoanId?: string;
+    simulatedInterestRate?: number;
+  }) => {
     if (!insuranceSimulation) return;
     
     setIsSaving(true);
@@ -50,6 +86,9 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
       const result = await updateInsuranceSimulation(simId, {
         name: formData.name,
         parameters: formData.parameters,
+        clientIds: formData.clientIds,
+        selectedLoanId: formData.selectedLoanId,
+        simulatedInterestRate: formData.simulatedInterestRate,
         calculateResult: formData.calculateResult
       });
       
@@ -88,6 +127,29 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
     }
   };
   
+  const handleLoanChange = async (loanId: string) => {
+    if (!insuranceSimulation || insuranceSimulation.type !== 'LIFE' || loanId === selectedLoanId) {
+      return;
+    }
+    
+    setSelectedLoanId(loanId);
+    setIsCalculating(true);
+    
+    try {
+      // For life insurance, recalculate with the selected loan
+      const result = await getInsuranceSimulation(simId, loanId);
+      
+      if (result) {
+        setInsuranceSimulation(result);
+      }
+    } catch (error) {
+      console.error('Error calculating insurance for loan:', error);
+      toast.error('Failed to calculate insurance for selected loan');
+    } finally {
+      setIsCalculating(false);
+    }
+  };
+  
   // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('nl-BE', { style: 'currency', currency: 'EUR' }).format(amount);
@@ -98,20 +160,56 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
     if (!insuranceSimulation || insuranceSimulation.type !== 'LIFE') return null;
     
     const params = insuranceSimulation.parameters as any;
+    const currentLoan = insuranceSimulation.currentLoan || loans.find(loan => loan.id === selectedLoanId);
     
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
+        {/* Loan selector for life insurance */}
+        <div className="bg-blue-50 p-4 rounded-md">
+          <h4 className="text-sm font-medium text-blue-900 mb-2">Selected Loan</h4>
+          <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+            <div className="flex-grow">
+              <select
+                value={selectedLoanId}
+                onChange={(e) => handleLoanChange(e.target.value)}
+                disabled={isCalculating}
+                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+              >
+                <option value="" disabled>Select a loan</option>
+                {loans.map((loan) => (
+                  <option key={loan.id} value={loan.id}>
+                    {loan.name} (€{loan.principal.toLocaleString()}, {loan.termYears} years)
+                  </option>
+                ))}
+              </select>
+            </div>
+            {isCalculating && (
+              <div className="flex items-center justify-center sm:justify-start">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span className="text-sm text-blue-700">Calculating...</span>
+              </div>
+            )}
+          </div>
+          
+          {currentLoan && (
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+              <div>
+                <span className="text-blue-700 font-medium">Loan Amount:</span> {formatCurrency(currentLoan.principal)}
+              </div>
+              <div>
+                <span className="text-blue-700 font-medium">Term:</span> {currentLoan.termYears} years
+              </div>
+              <div>
+                <span className="text-blue-700 font-medium">Interest Rate:</span> {currentLoan?.interestRate ? `${currentLoan.interestRate}%` : 'N/A'}
+              </div>
+            </div>
+          )}
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-sm font-medium text-gray-500">Loan Amount</h4>
-            <p className="mt-1 text-sm text-gray-900">{formatCurrency(params.loanAmount)}</p>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-medium text-gray-500">Term</h4>
-            <p className="mt-1 text-sm text-gray-900">{params.termYears} years</p>
-          </div>
-          
           <div>
             <h4 className="text-sm font-medium text-gray-500">Coverage Percentage</h4>
             <p className="mt-1 text-sm text-gray-900">{params.coveragePercentage * 100}%</p>
@@ -126,28 +224,45 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
             <h4 className="text-sm font-medium text-gray-500">Based on Remaining Capital</h4>
             <p className="mt-1 text-sm text-gray-900">{params.basedOnRemainingCapital ? 'Yes' : 'No'}</p>
           </div>
+          
+          <div>
+            <h4 className="text-sm font-medium text-gray-500">Client</h4>
+            <p className="mt-1 text-sm text-gray-900">{insuranceSimulation.client?.name || 'Not specified'}</p>
+          </div>
         </div>
         
         {insuranceSimulation.calculationResult && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <h4 className="text-sm font-medium text-gray-900">Calculation Results</h4>
-            <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Monthly Premium</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.monthlyPremium)}</p>
-              </div>
-              
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Total Premium</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.totalPremium)}</p>
-              </div>
-              
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Coverage Amount</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.coverageAmount)}</p>
+          <>
+            <div className="mt-6 p-4 bg-gray-50 rounded-md">
+              <h4 className="text-sm font-medium text-gray-900">Calculation Results</h4>
+              <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Monthly Premium</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.monthlyPremium)}</p>
+                </div>
+                
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Total Premium</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.totalPremium)}</p>
+                </div>
+                
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Coverage Amount</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.coverageAmount)}</p>
+                </div>
               </div>
             </div>
-          </div>
+            
+            <div className="mt-4">
+              <InsuranceAmortizationTable 
+                data={insuranceSimulation.calculationResult.amortizationTable}
+                title="Life Insurance Amortization Schedule"
+                coverageAmount={insuranceSimulation.calculationResult.coverageAmount}
+                totalPremium={insuranceSimulation.calculationResult.totalPremium}
+                monthlyPremium={insuranceSimulation.calculationResult.monthlyPremium}
+              />
+            </div>
+          </>
         )}
       </div>
     );
@@ -160,7 +275,26 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
     const params = insuranceSimulation.parameters as any;
     
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
+        {/* Client information for home insurance */}
+        {insuranceSimulation.homeInsuranceClients && insuranceSimulation.homeInsuranceClients.length > 0 && (
+          <div className="bg-green-50 p-4 rounded-md">
+            <h4 className="text-sm font-medium text-green-900 mb-2">Associated Clients</h4>
+            <div className="mt-2 space-y-2">
+              {insuranceSimulation.homeInsuranceClients.map((clientAssoc) => (
+                <div key={clientAssoc.clientId} className="flex justify-between items-center">
+                  <span className="text-sm text-gray-900">{clientAssoc.client.name} ({clientAssoc.client.type})</span>
+                  {insuranceSimulation.homeInsuranceClients &&insuranceSimulation.homeInsuranceClients.length > 1 && (
+                    <span className="text-sm font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded">
+                      {clientAssoc.sharePercentage.toFixed(1)}%
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h4 className="text-sm font-medium text-gray-500">Property Value</h4>
@@ -197,33 +331,70 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
             <h4 className="text-sm font-medium text-gray-500">Coverage Percentage</h4>
             <p className="mt-1 text-sm text-gray-900">{params.coveragePercentage * 100}%</p>
           </div>
+          
+          {insuranceSimulation.simulatedInterestRate !== undefined && insuranceSimulation.simulatedInterestRate > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-gray-500">Simulated Interest Rate</h4>
+              <p className="mt-1 text-sm text-gray-900">{insuranceSimulation.simulatedInterestRate}%</p>
+            </div>
+          )}
         </div>
         
         {insuranceSimulation.calculationResult && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <h4 className="text-sm font-medium text-gray-900">Calculation Results</h4>
-            <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Monthly Premium</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.monthlyPremium)}</p>
-              </div>
-              
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Yearly Premium</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.yearlyPremium)}</p>
-              </div>
-              
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Coverage Amount</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.coverageAmount)}</p>
-              </div>
-              
-              <div>
-                <h5 className="text-xs font-medium text-gray-500">Deductible</h5>
-                <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.deductible)}</p>
+          <>
+            <div className="mt-6 p-4 bg-gray-50 rounded-md">
+              <h4 className="text-sm font-medium text-gray-900">Calculation Results</h4>
+              <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Monthly Premium</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.monthlyPremium)}</p>
+                </div>
+                
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Annual Premium</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.monthlyPremium * 12)}</p>
+                </div>
+                
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Coverage Amount</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(insuranceSimulation.calculationResult.coverageAmount)}</p>
+                </div>
+                
+                <div>
+                  <h5 className="text-xs font-medium text-gray-500">Deductible</h5>
+                  <p className="text-sm text-gray-900">{formatCurrency(params.deductible || 0)}</p>
+                </div>
               </div>
             </div>
-          </div>
+            
+            {/* Generate an amortization table for home insurance */}
+            {insuranceSimulation.simulatedInterestRate !== undefined && insuranceSimulation.simulatedInterestRate > 0 && (
+              <div className="mt-4">
+                <InsuranceAmortizationTable 
+                  data={[
+                    {
+                      month: 1,
+                      year: 1,
+                      premium: insuranceSimulation.calculationResult.monthlyPremium,
+                      cumulativePremium: insuranceSimulation.calculationResult.monthlyPremium,
+                      coverage: insuranceSimulation.calculationResult.coverageAmount
+                    },
+                    {
+                      month: 12,
+                      year: 1,
+                      premium: insuranceSimulation.calculationResult.monthlyPremium,
+                      cumulativePremium: insuranceSimulation.calculationResult.monthlyPremium * 12,
+                      coverage: insuranceSimulation.calculationResult.coverageAmount
+                    }
+                  ]}
+                  title="Home Insurance Premium Schedule"
+                  coverageAmount={insuranceSimulation.calculationResult.coverageAmount}
+                  totalPremium={insuranceSimulation.calculationResult.monthlyPremium * 12}
+                  monthlyPremium={insuranceSimulation.calculationResult.monthlyPremium}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     );
@@ -301,9 +472,16 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
               <div className="p-6">
                 <InsuranceSimulationForm 
                   type={insuranceSimulation.type}
+                  clients={[]} // This should be fetched from the case
+                  loans={loans}
                   defaultValues={{
                     name: insuranceSimulation.name,
-                    parameters: insuranceSimulation.parameters
+                    parameters: insuranceSimulation.parameters,
+                    selectedClientIds: insuranceSimulation.type === 'LIFE' && insuranceSimulation.clientId ? 
+                      [insuranceSimulation.clientId] : 
+                      insuranceSimulation.homeInsuranceClients?.map(c => c.clientId) || [],
+                    selectedLoanId: insuranceSimulation.currentLoan?.id,
+                    simulatedInterestRate: insuranceSimulation.simulatedInterestRate
                   }}
                   onSubmit={handleUpdate}
                   isLoading={isSaving}
@@ -342,7 +520,9 @@ export default function InsuranceSimulationDetailPage({ params }: { params: { id
                       {insuranceSimulation.type === 'LIFE' ? 'Life Insurance' : 'Home Insurance'}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      Client: {insuranceSimulation.client?.name}
+                      {insuranceSimulation.type === 'LIFE' ? 
+                        `Client: ${insuranceSimulation.client?.name || 'Not specified'}` : 
+                        `Clients: ${insuranceSimulation.homeInsuranceClients?.length || 0}`}
                     </p>
                   </div>
                 </div>

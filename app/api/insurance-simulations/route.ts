@@ -47,7 +47,7 @@ export async function GET(request: Request) {
       );
     }
 
-    // Get all insurance simulations for the case
+    // Get all insurance simulations for the case with different includes based on type
     const insuranceSimulations = await prisma.insuranceSimulation.findMany({
       where: { caseId },
       include: {
@@ -55,6 +55,16 @@ export async function GET(request: Request) {
           select: {
             name: true,
             type: true
+          }
+        },
+        homeInsuranceClients: {
+          include: {
+            client: {
+              select: {
+                name: true,
+                type: true
+              }
+            }
           }
         }
       }
@@ -84,10 +94,19 @@ export async function POST(request: Request) {
 
     // Get the request body
     const body = await request.json();
-    const { name, type, parameters, clientId, caseId, calculateResult } = body;
+    const { 
+      name, 
+      type, 
+      parameters, 
+      clientIds, 
+      caseId, 
+      selectedLoanId, 
+      simulatedInterestRate, 
+      calculateResult 
+    } = body;
 
     // Validate input
-    if (!name || !type || !parameters || !clientId || !caseId) {
+    if (!name || !type || !parameters || !clientIds || !caseId) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -115,35 +134,53 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if client exists and belongs to the case
-    const client = await prisma.client.findUnique({
-      where: { 
-        id: clientId,
+    // Validate clients exist and belong to the case
+    const clients = await prisma.client.findMany({
+      where: {
+        id: { in: clientIds },
         caseId
       }
     });
 
-    if (!client) {
+    if (clients.length !== clientIds.length) {
       return NextResponse.json(
-        { message: "Client not found for this case" },
+        { message: "One or more clients not found for this case" },
         { status: 404 }
       );
+    }
+
+    // For life insurance, validate selectedLoanId
+    let selectedLoan = null;
+    if (type === 'LIFE' && selectedLoanId) {
+      selectedLoan = await prisma.loanSimulation.findUnique({
+        where: {
+          id: selectedLoanId,
+          caseId
+        }
+      });
+
+      if (!selectedLoan) {
+        return NextResponse.json(
+          { message: "Selected loan not found for this case" },
+          { status: 404 }
+        );
+      }
     }
 
     // Calculate result if requested
     let calculationResult = null;
     if (calculateResult) {
-      if (type === 'LIFE') {
+      if (type === 'LIFE' && selectedLoan) {
         // For life insurance
         const { 
           coveragePercentage, 
           paymentType, 
-          basedOnRemainingCapital,
-          loanAmount,
-          termYears 
+          basedOnRemainingCapital 
         } = parameters;
 
         // Get client data for calculation
+        const client = clients[0]; // Life insurance is linked to a single client
+        
         const lifeResult = calculateLifeInsurance({
           client: {
             age: client.age as number,
@@ -151,8 +188,8 @@ export async function POST(request: Request) {
             height: client.height || undefined,
             weight: client.weight || undefined
           },
-          loanAmount,
-          termYears,
+          loanAmount: selectedLoan.principal,
+          termYears: selectedLoan.termYears,
           coveragePercentage,
           paymentType,
           basedOnRemainingCapital
@@ -184,24 +221,65 @@ export async function POST(request: Request) {
       }
     }
 
-    // Create the insurance simulation
-    const insuranceSimulation = await prisma.insuranceSimulation.create({
-      data: {
-        name,
-        type,
-        parameters,
-        calculationResult,
-        clientId,
-        caseId,
-        createdAt: new Date(),
-        updatedAt: new Date()
+    // Create the insurance simulation in a transaction
+    const result = await prisma.$transaction(async (prisma) => {
+      // Create the base insurance simulation
+      const insuranceSimulation = await prisma.insuranceSimulation.create({
+        data: {
+          name,
+          type,
+          parameters,
+          calculationResult,
+          // clientId only for LIFE insurance
+          clientId: type === 'LIFE' ? clientIds[0] : undefined,
+          caseId,
+          simulatedInterestRate: simulatedInterestRate > 0 ? simulatedInterestRate : undefined,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+      });
+
+      // For HOME insurance, create the client associations
+      if (type === 'HOME' && parameters.clientShares) {
+        const clientShareEntries = clientIds.map(clientId => ({
+          insuranceSimulationId: insuranceSimulation.id,
+          clientId,
+          sharePercentage: parameters.clientShares?.[clientId] || (100 / clientIds.length)
+        }));
+
+        await prisma.homeInsuranceClient.createMany({
+          data: clientShareEntries
+        });
       }
+
+      // Fetch the complete insurance simulation with associations
+      return await prisma.insuranceSimulation.findUnique({
+        where: { id: insuranceSimulation.id },
+        include: {
+          client: {
+            select: {
+              name: true,
+              type: true
+            }
+          },
+          homeInsuranceClients: {
+            include: {
+              client: {
+                select: {
+                  name: true,
+                  type: true
+                }
+              }
+            }
+          }
+        }
+      });
     });
 
     return NextResponse.json(
       { 
         message: "Insurance simulation created successfully", 
-        insuranceSimulation 
+        insuranceSimulation: result
       },
       { status: 201 }
     );

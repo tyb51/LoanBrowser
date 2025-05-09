@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
@@ -8,9 +8,9 @@ import { compareLoans } from '@/app/services/backendLoanApi';
 import { LoanComparisonTable } from '@/app/components/tables/LoanComparisonTable';
 import { LoanComparisonChart } from '@/app/components/charts/LoanComparisonChart';
 
-export default function ComparisonPage({ params }: { params: { id: string } }) {
+export default function ComparisonPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const caseId = params.id;
+  const {id: caseId} = use(params);
   
   // State for loan/insurance selection
   const [loanSimulations, setLoanSimulations] = useState<any[]>([]);

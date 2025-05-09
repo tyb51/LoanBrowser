@@ -27,6 +27,13 @@ export async function GET(
         loanSimulations: {
           include: {
             modularSchedule: true,
+            clients: {
+              select: {
+                id: true,
+                name: true,
+                type: true
+              }
+            }
           },
         },
         investmentSimulation: {
@@ -35,7 +42,57 @@ export async function GET(
             alternativeLoan: true,
           },
         },
-        insuranceSimulations: true
+        insuranceSimulations: {
+          include: {
+            client: {
+              select: {
+                id: true,
+                name: true,
+                type: true
+              }
+            },
+            homeInsuranceClients: {
+              include: {
+                client: {
+                  select: {
+                    id: true,
+                    name: true,
+                    type: true
+                  }
+                }
+              }
+            }
+          }
+        },
+        // Include linked cases
+        linkedToCases: {
+          include: {
+            toCase: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                projectName: true,
+                createdAt: true,
+                updatedAt: true
+              }
+            }
+          }
+        },
+        linkedFromCases: {
+          include: {
+            fromCase: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                projectName: true,
+                createdAt: true,
+                updatedAt: true
+              }
+            }
+          }
+        }
       },
     });
 
@@ -109,7 +166,8 @@ export async function PUT(
       description, 
       projectName, 
       purchasePrice, 
-      purchaseDate 
+      purchaseDate,
+      linkedCaseIds // New: array of case IDs to link to this case
     } = body;
 
     // Validate input
@@ -118,6 +176,60 @@ export async function PUT(
         { message: "Title is required" },
         { status: 400 }
       );
+    }
+
+    // Handle linked cases if provided
+    if (linkedCaseIds && Array.isArray(linkedCaseIds)) {
+      // Verify all linked cases exist and belong to the user
+      const linkedCases = await prisma.case.findMany({
+        where: {
+          id: { in: linkedCaseIds },
+          userId: session.user.id
+        },
+        select: { id: true }
+      });
+
+      if (linkedCases.length !== linkedCaseIds.length) {
+        return NextResponse.json(
+          { message: "One or more linked cases not found or not authorized" },
+          { status: 400 }
+        );
+      }
+
+      // Get existing links to avoid duplicates
+      const existingLinks = await prisma.caseLink.findMany({
+        where: {
+          fromCaseId: id
+        },
+        select: { toCaseId: true }
+      });
+      
+      const existingLinkedIds = existingLinks.map(link => link.toCaseId);
+      
+      // Find IDs to add and remove
+      const idsToAdd = linkedCaseIds.filter(caseId => !existingLinkedIds.includes(caseId));
+      const idsToRemove = existingLinkedIds.filter(caseId => !linkedCaseIds.includes(caseId));
+      
+      // Create new links in a transaction
+      await prisma.$transaction([
+        // Remove links that are no longer needed
+        prisma.caseLink.deleteMany({
+          where: {
+            fromCaseId: id,
+            toCaseId: { in: idsToRemove }
+          }
+        }),
+        
+        // Add new links
+        ...idsToAdd.map(toCaseId => 
+          prisma.caseLink.create({
+            data: {
+              fromCaseId: id,
+              toCaseId
+            }
+          })
+        )
+      ]);
     }
 
     // Update the case
@@ -130,6 +242,18 @@ export async function PUT(
         purchasePrice: purchasePrice || null,
         purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
       },
+      include: {
+        linkedToCases: {
+          include: {
+            toCase: {
+              select: {
+                id: true,
+                title: true
+              }
+            }
+          }
+        }
+      }
     });
 
     return NextResponse.json({

@@ -3,22 +3,45 @@
 import React, { useState, useEffect } from 'react';
 import { InsuranceType, LifeInsuranceParameters, HomeInsuranceParameters } from '@/app/services/insuranceSimulationApi';
 
+interface Client {
+  id: string;
+  name: string;
+  type: string;
+}
+
+interface LoanSimulation {
+  id: string;
+  name: string;
+  principal: number;
+  termYears: number;
+}
+
 interface InsuranceSimulationFormProps {
   type: InsuranceType;
+  clients: Client[];
+  loans?: LoanSimulation[];
   defaultValues?: {
     name?: string;
     parameters?: LifeInsuranceParameters | HomeInsuranceParameters;
+    selectedClientIds?: string[];
+    selectedLoanId?: string;
+    simulatedInterestRate?: number;
   };
   onSubmit: (data: { 
     name: string; 
     parameters: LifeInsuranceParameters | HomeInsuranceParameters;
     calculateResult?: boolean;
+    clientIds: string[];
+    selectedLoanId?: string;
+    simulatedInterestRate?: number;
   }) => void;
   isLoading?: boolean;
 }
 
 export function InsuranceSimulationForm({
   type,
+  clients,
+  loans = [],
   defaultValues = {},
   onSubmit,
   isLoading = false
@@ -26,6 +49,12 @@ export function InsuranceSimulationForm({
   // Common form state
   const [name, setName] = useState(defaultValues.name || '');
   const [calculateResult, setCalculateResult] = useState(true);
+  const [selectedClientIds, setSelectedClientIds] = useState<string[]>(
+    defaultValues.selectedClientIds || []
+  );
+  const [selectedLoanId, setSelectedLoanId] = useState<string>(
+    defaultValues.selectedLoanId || ''
+  );
   
   // Life insurance form state
   const [coveragePercentage, setCoveragePercentage] = useState<number>(
@@ -36,12 +65,6 @@ export function InsuranceSimulationForm({
   );
   const [basedOnRemainingCapital, setBasedOnRemainingCapital] = useState<boolean>(
     (defaultValues.parameters as LifeInsuranceParameters)?.basedOnRemainingCapital ?? true
-  );
-  const [loanAmount, setLoanAmount] = useState<number>(
-    (defaultValues.parameters as LifeInsuranceParameters)?.loanAmount || 0
-  );
-  const [termYears, setTermYears] = useState<number>(
-    (defaultValues.parameters as LifeInsuranceParameters)?.termYears || 30
   );
   
   // Home insurance form state
@@ -63,6 +86,61 @@ export function InsuranceSimulationForm({
   const [homeCoveragePercentage, setHomeCoveragePercentage] = useState<number>(
     (defaultValues.parameters as HomeInsuranceParameters)?.coveragePercentage * 100 || 100
   );
+  const [simulatedInterestRate, setSimulatedInterestRate] = useState<number>(
+    defaultValues.simulatedInterestRate || 0
+  );
+  
+  // Client share percentages for home insurance
+  const [clientShares, setClientShares] = useState<Record<string, number>>({});
+  
+  // Update client shares when selected clients change
+  useEffect(() => {
+    if (type === 'HOME') {
+      const newShares: Record<string, number> = {};
+      if (selectedClientIds.length > 0) {
+        const equalShare = 100 / selectedClientIds.length;
+        selectedClientIds.forEach(clientId => {
+          newShares[clientId] = equalShare;
+        });
+      }
+      setClientShares(newShares);
+    }
+  }, [selectedClientIds, type]);
+  
+  const handleClientSelection = (clientId: string, isSelected: boolean) => {
+    let newSelectedClientIds: string[];
+    
+    if (type === 'LIFE') {
+      // For life insurance, only one client can be selected
+      newSelectedClientIds = isSelected ? [clientId] : [];
+    } else {
+      // For home insurance, multiple clients can be selected
+      if (isSelected) {
+        newSelectedClientIds = [...selectedClientIds, clientId];
+      } else {
+        newSelectedClientIds = selectedClientIds.filter(id => id !== clientId);
+      }
+    }
+    
+    setSelectedClientIds(newSelectedClientIds);
+  };
+  
+  const handleClientShareChange = (clientId: string, share: number) => {
+    setClientShares(prev => ({
+      ...prev,
+      [clientId]: share
+    }));
+  };
+  
+  const validateHomeInsuranceShares = (): boolean => {
+    if (type !== 'HOME' || selectedClientIds.length === 0) return true;
+    
+    // Sum all shares
+    const totalShare = Object.values(clientShares).reduce((sum, share) => sum + share, 0);
+    
+    // Check if total is close to 100% (allowing for floating point errors)
+    return Math.abs(totalShare - 100) < 0.01;
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,18 +151,33 @@ export function InsuranceSimulationForm({
     }
     
     if (type === 'LIFE') {
+      if (selectedClientIds.length !== 1) {
+        alert('Please select a client for the life insurance');
+        return;
+      }
+      
       onSubmit({
         name,
         parameters: {
           coveragePercentage: coveragePercentage / 100,
           paymentType,
-          basedOnRemainingCapital,
-          loanAmount,
-          termYears
+          basedOnRemainingCapital
         } as LifeInsuranceParameters,
-        calculateResult
+        calculateResult,
+        clientIds: selectedClientIds,
+        selectedLoanId: selectedLoanId || undefined
       });
     } else if (type === 'HOME') {
+      if (selectedClientIds.length === 0) {
+        alert('Please select at least one client for the home insurance');
+        return;
+      }
+      
+      if (!validateHomeInsuranceShares()) {
+        alert('The total share percentage for all clients must be 100%');
+        return;
+      }
+      
       onSubmit({
         name,
         parameters: {
@@ -93,9 +186,12 @@ export function InsuranceSimulationForm({
           constructionYear,
           squareMeters,
           deductible,
-          coveragePercentage: homeCoveragePercentage / 100
+          coveragePercentage: homeCoveragePercentage / 100,
+          clientShares: clientShares
         } as HomeInsuranceParameters,
-        calculateResult
+        calculateResult,
+        clientIds: selectedClientIds,
+        simulatedInterestRate: simulatedInterestRate > 0 ? simulatedInterestRate : undefined
       });
     }
   };
@@ -132,52 +228,86 @@ export function InsuranceSimulationForm({
               />
             </div>
             
+            {/* Client Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                {type === 'LIFE' ? 'Select Client' : 'Select Clients'}
+              </label>
+              <div className="mt-1 space-y-2">
+                {clients.map(client => (
+                  <div key={client.id} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <input
+                        type={type === 'LIFE' ? 'radio' : 'checkbox'}
+                        id={`client-${client.id}`}
+                        name={type === 'LIFE' ? 'client' : undefined}
+                        value={client.id}
+                        checked={selectedClientIds.includes(client.id)}
+                        onChange={(e) => handleClientSelection(client.id, e.target.checked)}
+                        className={`${type === 'LIFE' ? 'h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500' : 'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'}`}
+                      />
+                      <label htmlFor={`client-${client.id}`} className="ml-3 block text-sm text-gray-700">
+                        {client.name} ({client.type})
+                      </label>
+                    </div>
+                    
+                    {/* Share percentage input for HOME insurance with multiple clients */}
+                    {type === 'HOME' && selectedClientIds.includes(client.id) && selectedClientIds.length > 1 && (
+                      <div className="flex items-center">
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          step="0.1"
+                          value={clientShares[client.id] || 0}
+                          onChange={(e) => handleClientShareChange(client.id, parseFloat(e.target.value))}
+                          className="w-20 h-8 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        />
+                        <span className="ml-1 text-sm text-gray-500">%</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {type === 'HOME' && selectedClientIds.length > 1 && (
+                <p className="mt-2 text-xs text-gray-500">
+                  Total: {Object.values(clientShares).reduce((sum, share) => sum + share, 0).toFixed(1)}% 
+                  {Math.abs(Object.values(clientShares).reduce((sum, share) => sum + share, 0) - 100) > 0.01 && 
+                    ' (must equal 100%)'}
+                </p>
+              )}
+            </div>
+            
+            {/* Loan Selection for Life Insurance */}
+            {type === 'LIFE' && loans.length > 0 && (
+              <div>
+                <label htmlFor="loan-selection" className="block text-sm font-medium text-gray-700">
+                  Select Loan
+                </label>
+                <select
+                  id="loan-selection"
+                  value={selectedLoanId}
+                  onChange={(e) => setSelectedLoanId(e.target.value)}
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                >
+                  <option value="">-- Select a loan --</option>
+                  {loans.map(loan => (
+                    <option key={loan.id} value={loan.id}>
+                      {loan.name} (€{loan.principal.toLocaleString()}, {loan.termYears} years)
+                    </option>
+                  ))}
+                </select>
+                {selectedLoanId && (
+                  <div className="mt-2 p-2 bg-gray-50 rounded-md text-sm">
+                    <p>This insurance will adapt to the selected loan's parameters when viewed or used in simulations.</p>
+                  </div>
+                )}
+              </div>
+            )}
+            
             {/* Type-specific Fields */}
             {type === 'LIFE' && (
               <>
-                <div>
-                  <label htmlFor="loan-amount" className="block text-sm font-medium text-gray-700">
-                    Loan Amount
-                  </label>
-                  <div className="mt-1 relative rounded-md shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className="text-gray-500 sm:text-sm">€</span>
-                    </div>
-                    <input
-                      type="number"
-                      id="loan-amount"
-                      value={loanAmount}
-                      onChange={(e) => setLoanAmount(Number(e.target.value))}
-                      className="mt-1 block w-full pl-7 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                      min="0"
-                      step="1000"
-                      required
-                    />
-                  </div>
-                  <p className="mt-1 text-xs text-gray-500">
-                    The loan amount that will be used for insurance calculations
-                  </p>
-                </div>
-                
-                <div>
-                  <label htmlFor="term-years" className="block text-sm font-medium text-gray-700">
-                    Term (Years)
-                  </label>
-                  <input
-                    type="number"
-                    id="term-years"
-                    value={termYears}
-                    onChange={(e) => setTermYears(Number(e.target.value))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    min="1"
-                    max="50"
-                    required
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    The loan term in years
-                  </p>
-                </div>
-                
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Coverage Percentage
@@ -195,7 +325,7 @@ export function InsuranceSimulationForm({
                     <span className="ml-2 w-16 text-sm text-gray-700">{coveragePercentage}%</span>
                   </div>
                   <p className="mt-1 text-xs text-gray-500">
-                    Percentage of the loan amount to insure (€{Math.round(loanAmount * coveragePercentage / 100)})
+                    Percentage of the loan amount to insure
                   </p>
                 </div>
                 
@@ -363,7 +493,26 @@ export function InsuranceSimulationForm({
                     <span className="ml-2 w-16 text-sm text-gray-700">{homeCoveragePercentage}%</span>
                   </div>
                   <p className="mt-1 text-xs text-gray-500">
-                    Percentage of the property value to insure (€{Math.round(propertyValue * homeCoveragePercentage / 100)})
+                    Percentage of the property value to insure (€{Math.round(propertyValue * homeCoveragePercentage / 100).toLocaleString()})
+                  </p>
+                </div>
+                
+                <div>
+                  <label htmlFor="simulated-interest" className="block text-sm font-medium text-gray-700">
+                    Simulated Interest Rate (%)
+                  </label>
+                  <input
+                    type="number"
+                    id="simulated-interest"
+                    value={simulatedInterestRate}
+                    onChange={(e) => setSimulatedInterestRate(Number(e.target.value))}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    min="0"
+                    max="20"
+                    step="0.1"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Optional: Simulate interest on premium payments (0% = no interest)
                   </p>
                 </div>
               </>

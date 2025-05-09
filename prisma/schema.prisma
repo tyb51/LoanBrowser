@@ -71,6 +71,10 @@ model Case {
   investmentSimulation InvestmentSimulation?
   loanSimulations      LoanSimulation[]
   insuranceSimulations InsuranceSimulation[]
+
+  // New: linked cases
+  linkedToCases   CaseLink[] @relation("LinkedToCase")
+  linkedFromCases CaseLink[] @relation("LinkedFromCase")
 }
 
 model Client {
@@ -90,6 +94,7 @@ model Client {
   loanSimulations       LoanSimulation[] // Many-to-many relationship with LoanSimulation
   investmentSimulations InvestmentSimulation[]
   InsuranceSimulation   InsuranceSimulation[]
+  HomeInsuranceClient   HomeInsuranceClient[]
 }
 
 model LoanSimulation {
@@ -151,12 +156,23 @@ model InsuranceSimulation {
   type              InsuranceType
   parameters        Json // Store parameters like coverage%, paymentType, propertyValue, etc.
   calculationResult Json? // Store calculated premium, amortization if needed (optional)
-  clientId          String // Link to the client this insurance is for
-  client            Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  caseId            String        @unique
-  case              Case          @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+
+  // Life insurance is linked to a client
+  clientId String? // Optional for home insurance 
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Home insurance can be associated with multiple clients
+  homeInsuranceClients HomeInsuranceClient[]
+
+  // Both types are linked to a case
+  caseId String
+  case   Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  // Simulated interest for home insurance (optional)
+  simulatedInterestRate Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // These models are kept for historical data but are deprecated and will be removed in future versions
@@ -206,4 +222,28 @@ enum InsuranceType {
 enum PaymentType {
   LUMP_SUM
   DISTRIBUTED
+}
+
+// New: Model to represent case links (for linked cases feature)
+model CaseLink {
+  id         String   @id @default(uuid())
+  fromCaseId String
+  toCaseId   String
+  linkType   String? // Optional field to describe the type of link (e.g., "Parent", "Related", etc.)
+  createdAt  DateTime @default(now())
+  fromCase   Case     @relation("LinkedFromCase", fields: [fromCaseId], references: [id], onDelete: Cascade)
+  toCase     Case     @relation("LinkedToCase", fields: [toCaseId], references: [id], onDelete: Cascade)
+}
+
+// New: Model to represent home insurance client relationships (many-to-many)
+model HomeInsuranceClient {
+  id                    String              @id @default(uuid())
+  insuranceSimulationId String
+  clientId              String
+  sharePercentage       Float               @default(100.0) // Percentage of the insurance cost assigned to this client
+  insuranceSimulation   InsuranceSimulation @relation(fields: [insuranceSimulationId], references: [id], onDelete: Cascade)
+  client                Client              @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdAt             DateTime            @default(now())
+
+  @@unique([insuranceSimulationId, clientId])
 }
