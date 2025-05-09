@@ -5,13 +5,14 @@ import { prisma } from "@/app/lib/prisma";
 import { calculateLifeInsurance, calculateHomeInsurance } from "@/app/lib/insurance";
 
 interface Params {
-  params: {
+  params: Promise<{
     simId: string;
-  };
+  }>;
 }
 
 // GET /api/insurance-simulations/[simId] - Get a specific insurance simulation
-export async function GET(request: Request, { params }: Params) {
+export async function GET(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -135,7 +136,8 @@ export async function GET(request: Request, { params }: Params) {
 }
 
 // PUT /api/insurance-simulations/[simId] - Update an insurance simulation
-export async function PUT(request: Request, { params }: Params) {
+export async function PUT(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -232,9 +234,9 @@ export async function PUT(request: Request, { params }: Params) {
       if (insuranceSimulation.type === 'LIFE') {
         // Get client data for calculation
         const clientToUse = clients.length > 0 ? clients[0] : insuranceSimulation.client;
-        const loanToUse = selectedLoan || await prisma.loanSimulation.findFirst({
+        const loanToUse = selectedLoan || (await prisma.loanSimulation.findFirst({
           where: { caseId: insuranceSimulation.case.id }
-        });
+        }));
         
         if (clientToUse && loanToUse) {
           const { 
@@ -362,7 +364,8 @@ export async function PUT(request: Request, { params }: Params) {
 }
 
 // DELETE /api/insurance-simulations/[simId] - Delete an insurance simulation
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);

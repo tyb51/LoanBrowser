@@ -4,13 +4,14 @@ import { authOptions } from "../../../auth/[...nextauth]/route";
 import { prisma } from "@/app/lib/prisma";
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // GET /api/clients/[id]/insurances - Get all insurances for a specific client
-export async function GET(request: Request, { params }: Params) {
+export async function GET(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -70,7 +71,8 @@ export async function GET(request: Request, { params }: Params) {
 }
 
 // POST /api/clients/[id]/insurances - Create a new insurance for a specific client
-export async function POST(request: Request, { params }: Params) {
+export async function POST(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);

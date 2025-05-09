@@ -59,7 +59,10 @@
     "previous": "Zurück",
     "next": "Weiter",
     "page": "Seite",
-    "of": "von"
+    "of": "von",
+    "showing": "Zeigen",
+    "to": "Zu",
+    "results": "Ergebnisse"
   },
   "buttons": {
     "compare": "Darlehen vergleichen",
@@ -129,7 +132,9 @@
     "noResults": "Keine Ergebnisse gefunden",
     "loading": "Daten werden geladen...",
     "search": "Suchen...",
-    "rowsPerPage": "Zeilen pro Seite:"
+    "rowsPerPage": "Zeilen pro Seite:",
+    "showMonthly": "Monatlich zeigen",
+    "showAnnual": "Jährlich zeigen"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Mindesterforderliche Wachstumsrate",
@@ -212,6 +217,12 @@
     "simulationsForCase": "Versicherungssimulationen für diesen Fall.",
     "addSimulation": "Simulation hinzufügen",
     "noSimulationsYet": "Noch keine Versicherungssimulation",
-    "addSimulationToStart": "Fügen Sie Simulation hinzu, um zu starten."
+    "addSimulationToStart": "Fügen Sie Simulation hinzu, um zu starten.",
+    "premium": "Versicherungsprämie",
+    "cumulativePremium": "Cumulativer Premium",
+    "coverage": "Berichterstattung",
+    "monthlyPremium": "Monatliche Prämie",
+    "totalPremium": "Gesamtprämie",
+    "coverageAmount": "Abdeckungsbetrag"
   }
 }

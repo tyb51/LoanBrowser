@@ -5,13 +5,14 @@ import { prisma } from "@/app/lib/prisma";
 import { calculateLifeInsurance } from "@/app/lib/insurance";
 
 interface Params {
-  params: {
+  params: Promise<{
     simId: string;
-  };
+  }>;
 }
 
 // POST /api/insurance-simulations/[simId]/calculate - Calculate insurance for a specific loan
-export async function POST(request: Request, { params }: Params) {
+export async function POST(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);

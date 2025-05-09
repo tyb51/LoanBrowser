@@ -81,7 +81,10 @@
     "previous": "Précédent",
     "next": "Suivant",
     "page": "Page",
-    "of": "sur"
+    "of": "sur",
+    "showing": "Projection",
+    "to": "À",
+    "results": "Résultats"
   },
   "charts": {
     "paymentBreakdown": "Répartition Annuelle des Paiements",
@@ -142,7 +145,9 @@
     "noResults": "Aucun résultat trouvé",
     "loading": "Chargement des données...",
     "search": "Rechercher...",
-    "rowsPerPage": "Lignes par page :"
+    "rowsPerPage": "Lignes par page :",
+    "showMonthly": "Montrer mensuellement",
+    "showAnnual": "Montrer annuel"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Taux de Croissance Minimum Requis",
@@ -501,6 +506,12 @@
     "simulationsForCase": "Simulations d'assurance pour cette affaire.",
     "addSimulation": "Ajouter une simulation",
     "noSimulationsYet": "Aucune simulation d'assurance encore",
-    "addSimulationToStart": "Ajoutez une simulation pour commencer."
+    "addSimulationToStart": "Ajoutez une simulation pour commencer.",
+    "premium": "\nPrime d'assurance",
+    "cumulativePremium": "Cumulaver Premium",
+    "coverage": "Couverture",
+    "monthlyPremium": "Prime mensuelle",
+    "totalPremium": "Prime totale",
+    "coverageAmount": "Montant de la couverture"
   }
 }

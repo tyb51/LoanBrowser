@@ -110,7 +110,9 @@
     "of": "de",
     "results": "resultados",
     "previous": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "showMonthly": "Mostrar mensualmente",
+    "showAnnual": "Exhibir"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Tasa de Crecimiento Mínima Requerida",
@@ -405,6 +407,20 @@
     "simulationsForCase": "Simulaciones de seguro para este caso.",
     "addSimulation": "Agregar simulación",
     "noSimulationsYet": "No hay simulación de seguro todavía",
-    "addSimulationToStart": "Agregue simulación para comenzar."
+    "addSimulationToStart": "Agregue simulación para comenzar.",
+    "premium": "\nPrima de seguro",
+    "cumulativePremium": "Premio acumulador",
+    "coverage": "Cobertura",
+    "monthlyPremium": "Prima mensual",
+    "totalPremium": "Prima total",
+    "coverageAmount": "Cantidad de cobertura"
+  },
+  "pagination": {
+    "previous": "Previo",
+    "next": "Próximo",
+    "showing": "Demostración",
+    "to": "A",
+    "of": "de",
+    "results": "Resultados"
   }
 }

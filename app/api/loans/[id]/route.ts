@@ -5,10 +5,8 @@ import { prisma } from "@/app/lib/prisma";
 import { LoanType } from "@/prisma/generated/prisma/client";
 
 // GET /api/loans/[id] - Get a specific loan by ID
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -66,10 +64,8 @@ export async function GET(
 }
 
 // PUT /api/loans/[id] - Update a loan
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -247,10 +243,8 @@ export async function PUT(
 }
 
 // DELETE /api/loans/[id] - Delete a loan
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);

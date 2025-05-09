@@ -138,7 +138,9 @@
     "of": "of",
     "results": "results",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "showMonthly": "Show monthly",
+    "showAnnual": "Show annual"
   },
   "investment": {
     "runSimulation": "Run Simulation",
@@ -679,6 +681,20 @@
     "simulationsForCase": "Insurance simulations for this case.",
     "addSimulation": "Add simulation",
     "noSimulationsYet": "No insurance simulation yet",
-    "addSimulationToStart": "Add simulation to start."
+    "addSimulationToStart": "Add simulation to start.",
+    "premium": "Premium",
+    "cumulativePremium": "Cumulativer premium",
+    "coverage": "Coverage",
+    "monthlyPremium": "Monthly premium",
+    "totalPremium": "Total premium",
+    "coverageAmount": "Coverage amount"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "showing": "Showing",
+    "to": "To",
+    "of": "of",
+    "results": "Results"
   }
 }

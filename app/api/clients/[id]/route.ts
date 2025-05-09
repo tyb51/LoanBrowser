@@ -4,13 +4,14 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import { prisma } from "@/app/lib/prisma";
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // GET /api/clients/[id] - Get a specific client
-export async function GET(request: Request, { params }: Params) {
+export async function GET(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -64,7 +65,8 @@ export async function GET(request: Request, { params }: Params) {
 }
 
 // PUT /api/clients/[id] - Update a client
-export async function PUT(request: Request, { params }: Params) {
+export async function PUT(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);
@@ -164,7 +166,8 @@ export async function PUT(request: Request, { params }: Params) {
 }
 
 // DELETE /api/clients/[id] - Delete a client
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(request: Request, props: Params) {
+  const params = await props.params;
   try {
     // Get the session
     const session = await getServerSession(authOptions);

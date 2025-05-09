@@ -103,7 +103,10 @@
     "previous": "Vorige",
     "next": "Volgende",
     "page": "Pagina",
-    "of": "van"
+    "of": "van",
+    "showing": "Tonen",
+    "to": "Naar",
+    "results": "Resultaat"
   },
   "tables": {
     "loanStatistics": "Leningstatistieken",
@@ -144,7 +147,9 @@
     "noResults": "Geen resultaten gevonden",
     "loading": "Gegevens laden...",
     "search": "Zoeken...",
-    "rowsPerPage": "Rijen per pagina:"
+    "rowsPerPage": "Rijen per pagina:",
+    "showMonthly": "Toon maandelijks",
+    "showAnnual": "Toon een jaarlijkse"
   },
   "investment": {
     "minimumRequiredGrowthRate": "Minimaal Vereiste Groeivoet",
@@ -504,6 +509,12 @@
     "simulationsForCase": "Verzekeringssimulaties voor deze zaak.",
     "addSimulation": "Simulatie toevoegen",
     "noSimulationsYet": "Nog geen verzekeringssimulatie",
-    "addSimulationToStart": "Simulatie toevoegen om te starten."
+    "addSimulationToStart": "Simulatie toevoegen om te starten.",
+    "premium": "Verzekeringspremie",
+    "cumulativePremium": "Cumulativer premium",
+    "coverage": "Dekking",
+    "monthlyPremium": "Maandelijkse premie",
+    "totalPremium": "Totale premium",
+    "coverageAmount": "Dekkingsbedrag"
   }
 }
