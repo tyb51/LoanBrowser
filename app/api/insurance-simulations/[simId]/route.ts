@@ -21,7 +21,7 @@ export async function GET(request: Request, { params }: Params) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { simId } = await params;
+    const { simId } = params;
     const url = new URL(request.url);
     const loanId = url.searchParams.get('loanId');
 
